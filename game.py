@@ -5,6 +5,8 @@ Strategy simulator for Red Cross Climate Center Game
 """
 import numpy as np
 
+debug = 0
+
 def generate_rainfall(n_sides, n_teams, target_rain):
     """Randomly generate local and regional rainfall and determine flooding
     """
@@ -12,7 +14,8 @@ def generate_rainfall(n_sides, n_teams, target_rain):
     local_rainfall = np.random.randint(1, 7, size=(n_teams,))
     total_rainfall = local_rainfall + regional_rainfall
     flooded = (total_rainfall >= target_rain).astype(np.int)
-    print regional_rainfall.T, local_rainfall.T, flooded.T
+    if debug:
+        print regional_rainfall.T, local_rainfall.T, flooded.T
     return regional_rainfall, local_rainfall, flooded
 
 
@@ -120,7 +123,7 @@ class RainGame(object):
                     break
         return payments
 
-    def simulate(self, random_state=0):
+    def simulate_once(self, random_state=None):
         beans = self.n_beans * np.ones((self.n_teams))
         crises = np.zeros((self.n_teams))
         # perform forecast bids
@@ -138,11 +141,13 @@ class RainGame(object):
 
         # Winning teams pay their beans
         beans = beans - (drr_teams * self.drr_bids)
-        print beans.T
-        print forecast_teams
-        print drr_teams
+        if debug:
+            print beans.T
+            print forecast_teams
+            print drr_teams
 
-        np.random.RandomState(random_state)
+        if random_state is not None:
+            np.random.RandomState(random_state)
 
         for turn in range(1, self.n_rounds + 1):
             n_sides = 6
@@ -159,11 +164,31 @@ class RainGame(object):
                                  drr_teams,
                                  self.penalty, self.drr_penalty,
                                  self.drr_round_start)
-        print beans.T
-        result = {}
+
+        if debug:
+            print beans.T
+            print np.argsort(beans.T)
+            print beans.T[np.argsort(beans.T)]
+        return beans
+
+    def simulate(self, n_iters=1000):
+        result_beans = np.zeros((self.n_teams, n_iters))
+        winners = np.zeros((self.n_teams, n_iters))
+        for i in range(n_iters):
+            beans = self.simulate_once()
+            result_beans[:, i] = beans
+            winners[:, i] = beans == beans[np.argsort(beans)][-1]
+        if debug:
+            print result_beans
+        crises = np.sum(result_beans * (result_beans < 0), axis=1)
+        result = []
         for team in self.teams:
-            result[team] = beans[self.get_team_index(team)]
+            team_index = self.get_team_index(team)
+            result.append(dict(team=team,
+                               summary=[np.sum(winners[team_index, :]),
+                                        crises[team_index]]))
         return result
+
 
 if __name__ == "__main__":
     rg = RainGame()
@@ -188,7 +213,8 @@ if __name__ == "__main__":
         rg.submit_strategy('T%03d' % team_id, generate_strategy(rg.n_beans,
                                                                 rg.n_rounds,
                                                                 rg.n_die_change))
-    result = rg.simulate()
+    debug = 0
+    result = rg.simulate(n_iters=10)
     print result
 
 
