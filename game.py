@@ -136,6 +136,10 @@ class RainGame(object):
                                  self.penalty, self.drr_penalty,
                                  self.drr_round_start)
         print beans.T
+        result = {}
+        for team in self.teams:
+            result[team] = beans[self.get_team_index(team)]
+        return result
 
 if __name__ == "__main__":
     rg = RainGame()
@@ -156,6 +160,8 @@ if __name__ == "__main__":
                 ]
     }
     for team_id in range(rg.n_teams):
-        rg.submit_strategy(team_id, strategy)
-    rg.simulate()
+        rg.submit_strategy('T%03d' % team_id, strategy)
+    result = rg.simulate()
+    print result
+
 
