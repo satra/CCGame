@@ -1,2 +1,1 @@
-Tornado-Chat
-Simple real-time chat made in python using tornado framework
+A web for the Red Cross Climate Center game.
