@@ -32,6 +32,30 @@ def adjust_beans(beans, payments, flooded, round_idx, drr_teams,
     in_crisis = already_in_crisis - beans_joining_crisis
     return beans + in_crisis
 
+def generate_strategy(max_beans, max_rounds, die_change_round):
+    """
+    0+ - if [F and DRR/F/DRR/neither] and [round eeq/geq/leq (1,10)] and
+         [regional forecast >= int(1, 6 or 8)] then take early action
+
+    """
+    strategy = {'forecast_bid': int(np.random.randint(0, max_beans/2, 1))}
+    strategy['drr_bid'] = int(np.random.randint(0,
+                                            max_beans/2-strategy['forecast_bid'],
+                                            1))
+    strategy['rules'] = []
+    bid_conditions = ['F+DRR', 'F', 'DRR', 'neither']
+    round_condition = ['geq', 'eeq', 'leq']
+    random_select = lambda x : x[np.random.randint(0, len(x) - 1, 1)]
+    for i in range(np.random.randint(0, 10, 1)):
+        rule = [random_select(bid_conditions),
+                random_select(round_condition),
+                int(np.random.randint(1, max_rounds, 1))]
+        max_sides = 6
+        if rule[2] >= die_change_round:
+            max_sides = 8
+        rule.append(int(np.random.randint(1, max_sides, 1)))
+        strategy['rules'].append(rule)
+    return strategy
 
 class RainGame(object):
 
@@ -152,15 +176,18 @@ if __name__ == "__main__":
     If I have DRR and forecast and round greater than 6 and dice greater than 6 then take early action.
     By default take no action.
     """
-    strategy = {'forecast_bid': 1,
-                'drr_bid': 1,
+    strategy = {'forecast_bid': 2,
+                'drr_bid': 2,
                 'rules': [['neither', 'geq', 7, 1],
                           ['F', 'geq', 1, 5],
                           ['F+DRR', 'geq', 7, 7],
                 ]
     }
-    for team_id in range(rg.n_teams):
-        rg.submit_strategy('T%03d' % team_id, strategy)
+    rg.submit_strategy('T000', strategy)
+    for team_id in range(1, rg.n_teams):
+        rg.submit_strategy('T%03d' % team_id, generate_strategy(rg.n_beans,
+                                                                rg.n_rounds,
+                                                                rg.n_die_change))
     result = rg.simulate()
     print result
 
