@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html ng-app="predictionApp">
+<head>
+  <title>competitions</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" type="text/css" href="css/ng-grid.css" />  
+  <!-- Angular does some things with CSS so it's good to load this in the head -->
+
+  <script type="text/javascript" src="/js/lib/angular.js"></script>
+
+  <style type="text/css">
+
+  .gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 100%; 
+    height: 300px;
+  }
+
+  </style>
+  
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <ng-include src="'partials/header.html'"></ng-include>
+    
+    <div class="row-fluid" ng-show="currentUser" ng-controller="CompetitionsController">
+      <div class="span6">
+
+        <h2>Current competitions</h2>
+
+        <div class="gridStyle" ng-grid="gridOptions"></div>
+
+
+        <form >
+
+          <h2>Create a competition here </h2>
+        
+          <label>Competition name</label>
+          <input type="text" class="input-xlarge" ng-model="compname" />
+          
+          <label>Minimum number of players</label>
+          <select ng-model="minPlayers">
+            <option selected="selected">1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+
+          <label>Maximum number of players</label>
+          <select ng-model="maxPlayers">
+            <option selected="selected">1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          
+          <div>
+
+
+            <button class="btn btn-success" ng-click="register()">Create competition</button>
+            <a href="/" ng-href="{{referrer}}" class="btn btn-link">cancel</a>
+          </div>
+
+        </form>   
+
+
+        
+      </div>
+    
+      <div class="span6">
+
+        <div class="competition-detail" ng-show="showCompetitionDetail">
+
+            <h2>{{selectedCompetition.competitionName}}</h2>
+            <div class="gridStyle" ng-grid="competitionGridOptions"></div>
+            <br>
+            <div class="btn-group">
+              <a class="btn" href="#">Join this competition</a>
+              <a class="btn" href="#">Leave this competition</a>
+              <a class="btn" href="#">Run this competition</a>
+            </div>
+            <br>
+            <div>
+              <ul>
+                <li>Minimum team number: {{selectedCompetition.minTeams}}</li>
+                <li>Maximum team number: {{selectedCompetition.maxTeams}}</li>
+                <li>Current team count: {{selectedCompetition.teamCount}}</li>
+                <li>Owner: {{selectedCompetition.owner}}</li>
+                <li>Name: {{selectedCompetition.competitionName}}</li>
+                <li>State: {{selectedCompetition.simulateState}}</li>
+                <li>Sim date: {{selectedCompetition.simulationDate}}</li>
+                <li>Create date: {{selectedCompetition.createDate}}</li>
+                <li>Comp ID: {{selectedCompetition.id}}</li>
+              </ul>
+            </div>
+
+        </div>
+        
+      </div>
+
+    </div>
+  </div>
+  
+  <script type="text/javascript" src="/js/lib/jquery.js"></script>
+  <script type="text/javascript" src="/js/lib/ng-grid-2.0.5.min.js"></script>
+  <script type="text/javascript" src="/dpd.js"></script>
+  <script type="text/javascript" src="/js/global.js"></script>
+  <script type="text/javascript" src="/js/competitions.js"></script>
+</body>
+</html>

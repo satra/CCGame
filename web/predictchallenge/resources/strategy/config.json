@@ -1,0 +1,61 @@
+{
+	"type": "Collection",
+	"properties": {
+		"owner": {
+			"name": "owner",
+			"type": "object",
+			"typeLabel": "object",
+			"required": false,
+			"id": "owner",
+			"order": 0
+		},
+		"competitionID": {
+			"name": "competitionID",
+			"type": "object",
+			"typeLabel": "object",
+			"required": false,
+			"id": "competitionID",
+			"order": 1
+		},
+		"sForecastBid": {
+			"name": "sForecastBid",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "sForecastBid",
+			"order": 2
+		},
+		"sDRRBid": {
+			"name": "sDRRBid",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "sDRRBid",
+			"order": 3
+		},
+		"sRules": {
+			"name": "sRules",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "sRules",
+			"order": 4
+		},
+		"aggregateBeans": {
+			"name": "aggregateBeans",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "aggregateBeans",
+			"order": 5
+		},
+		"aggregateCrises": {
+			"name": "aggregateCrises",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "aggregateCrises",
+			"order": 6
+		}
+	}
+}

@@ -1,0 +1,77 @@
+{
+	"type": "Collection",
+	"properties": {
+		"simulationDate": {
+			"name": "simulationDate",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "simulationDate",
+			"order": 0
+		},
+		"simulateState": {
+			"name": "simulateState",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "simulateState",
+			"order": 1
+		},
+		"maxTeams": {
+			"name": "maxTeams",
+			"type": "number",
+			"typeLabel": "number",
+			"required": true,
+			"id": "maxTeams",
+			"order": 2
+		},
+		"minTeams": {
+			"name": "minTeams",
+			"type": "number",
+			"typeLabel": "number",
+			"required": true,
+			"id": "minTeams",
+			"order": 3
+		},
+		"owner": {
+			"name": "owner",
+			"type": "string",
+			"typeLabel": "string",
+			"required": true,
+			"id": "owner",
+			"order": 4
+		},
+		"competitionName": {
+			"name": "competitionName",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "competitionName",
+			"order": 5
+		},
+		"createDate": {
+			"name": "createDate",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "createDate",
+			"order": 6
+		},
+		"data": {
+			"name": "data",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "data",
+			"order": 7
+		},
+		"teamCount": {
+			"name": "teamCount",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "teamCount",
+			"order": 8
+		}
+	}
+}
