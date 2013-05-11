@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Modal header</h3>
+</div>
+<div class="modal-body">
+
+
+        <form >
+
+          <h2>Create a competition here </h2>
+        
+          <label>Competition name</label>
+          <input type="text" class="input-xlarge" ng-model="compname" />
+          
+          <label>Minimum number of players</label>
+          <select ng-model="minPlayers">
+            <option selected="selected">1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+
+          <label>Maximum number of players</label>
+          <select ng-model="maxPlayers">
+            <option selected="selected">1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          
+          <div>
+
+
+            <button class="btn btn-success" ng-click="register()">Create competition</button>
+            <a href="/" ng-href="{{referrer}}" class="btn btn-link">cancel</a>
+          </div>
+
+        </form>   
+
+</div>
+<div class="modal-footer">
+  <button class="btn" ng-click="dismiss()">Close</button>
+  <button class="btn btn-primary" ng-click="modal.saved=true;dismiss()">Save changes</button>
+  <button class="btn btn-primary" ng-click="parentController(dismiss)">Parent dismiss</button>
+</div>

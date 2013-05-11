@@ -213,8 +213,8 @@ if __name__ == "__main__":
         rg.submit_strategy('T%03d' % team_id, generate_strategy(rg.n_beans,
                                                                 rg.n_rounds,
                                                                 rg.n_die_change))
-    debug = 1
-    result = rg.simulate(n_iters=10)
+    debug = 0
+    result = rg.simulate(n_iters=1000)
     print result
 
 
