@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="predictionApp">
 <head>
-  <title>competitions</title>
+  <title>Paying for Predictions</title>
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   
   <link rel="stylesheet" href="css/style.css" />
@@ -23,90 +23,57 @@
 </head>
 
 <body>
-  <div class="container-fluid">
-
+  <div class="container">
     
-    <div class="row-fluid">
-
-
-      <ng-include src="'partials/header.html'"></ng-include>
-
-
-      <div class="page-header">
-            <h1>Paying for Predictions</h1>
-      </div>
-  
-      <h2>Strategy competition</h2>
-
-      <p>What is the best strategy to reduce the risk of disaster as a humanitarian worker? Red Cross Red Crescent workers must balance their time and resources between long-term programming such as hygiene promotion, preparing right before a disaster happens, and responding to disasters when they happen. Fortunately, there are many tools to help with this, including science-based forecasts that can help people anticipate a disaster. While forecasts can be confusing, making a strategy for how to act based on a forecast can help humanitarian workers best manage their time and resources.
-      </p>
-
+    <div class="page-header">
+      <h1>Paying for Predictions</h1>          
     </div>
 
+    <div class="row">
 
+      <div class="span8">
+        <p>What is the best strategy to reduce the risk of disaster as a humanitarian worker? Red Cross Red Crescent workers must balance their time and resources between long-term programming such as hygiene promotion, preparing right before a disaster happens, and responding to disasters when they happen. Fortunately, there are many tools to help with this, including science-based forecasts that can help people anticipate a disaster. While forecasts can be confusing, making a strategy for how to act based on a forecast can help humanitarian workers best manage their time and resources.
+        </p>
 
-    
-    
-    <div class="row-fluid" ng-show="currentUser" ng-controller="CompetitionsController">
-      <div class="span6">
+        <p>links to original challenge <a>http://www.climatecentre.org/site/paying-for-predictions</a></p>
 
-        <h2>Current competitions</h2>
+      </div>
 
-        <div class="gridStyle" ng-grid="gridOptions"></div>
-
-
-        <form >
-
-          <h2>Create a competition here </h2>
+      <div class="span4">
         
-          <label>Competition name</label>
-          <input type="text" class="input-xlarge" ng-model="compname" />
-          
-          <label>Minimum number of players</label>
-          <select ng-model="minPlayers">
-            <option selected="selected">1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
+        <ng-include src="'partials/header.html'"></ng-include>
 
-          <label>Maximum number of players</label>
-          <select ng-model="maxPlayers">
-            <option selected="selected">1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
-          
-          <div>
+      </div>
+    </div>      
+
+    <div class="row" ng-show="currentUser" ng-controller='UserCompControl'>
 
 
-            <button class="btn btn-success" ng-click="register()">Create competition</button>
-            <a href="/" ng-href="{{referrer}}" class="btn btn-link">cancel</a>
-          </div>
+      <div class="span12">
+        <hr>
+      </div>
 
-        </form>   
+      <div class="span8">
+        
+          <h3>Active competitions <small>competitions you're in</small></h3>          
+        
+            <div class="gridStyle" ng-grid="gridOptions"></div>
 
+          <h3>Completed competitions <small>competitions you've competed in</small></h3>          
+
+            <div class="gridStyle" ng-grid="gridOptions"></div>
 
         
       </div>
-    
-      <div class="span6">
 
-          <button type="button" class="btn btn-large btn-primary" bs-modal="'partials/modal.html'">Click to open modal</button>
+      <div class="span4">
+        
+            <h3>Details</h3>       
 
-        <div class="competition-detail" ng-show="showCompetitionDetail">
+             <div class="competition-detail" ng-show="showCompetitionDetail">
 
             <h2>{{selectedCompetition.competitionName}}</h2>
             <div class="gridStyle" ng-grid="competitionGridOptions"></div>
-            <br>
-            <div class="btn-group">
-              <a class="btn" href="#">Join this competition</a>
-              <a class="btn" href="#">Leave this competition</a>
-              <a class="btn" href="#">Run this competition</a>
-            </div>
             <br>
             <div>
               <ul>
@@ -122,15 +89,18 @@
               </ul>
             </div>
 
-        </div>
+        </div>   
         
       </div>
+    
 
     </div>
+
   </div>
 
 
 
+      
   <script type="text/javascript" src="/js/lib/jquery.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
 
