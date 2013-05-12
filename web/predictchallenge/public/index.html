@@ -5,7 +5,8 @@
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" type="text/css" href="css/ng-grid.css" />  
+  <link rel="stylesheet" type="text/css" href="css/ng-grid.css" />
+  <link rel="stylesheet" type="text/css" href="css/slider.css" />  
   <!-- Angular does some things with CSS so it's good to load this in the head -->
 
   <script type="text/javascript" src="/js/lib/angular.js"></script>
@@ -17,6 +18,12 @@
     width: 100%; 
     height: 300px;
   }
+
+  .modal {
+  width: 680px; /* SET THE WIDTH OF THE MODAL */
+
+  margin: 050px 0 0 -450px; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+}
 
   </style>
   
@@ -53,39 +60,36 @@
       </div>
     </div>      
 
-    <div class="row" ng-show="currentUser" ng-controller='UserCompControl'>
+    <div class="row" ng-show="currentUser" ng-controller='UserCompControl' >
 
 
       <div class="span12">
         <hr>
       </div>
 
-   
-
       <br>
 
-
-
-      <div class="span8">
+      <div class="span7">
         
-          <h3>Active competitions <small>competitions you're in</small></h3>          
-        
+          <h3>Your competitions <small>competitions you're in</small></h3>          
             <div class="gridStyle" ng-grid="gridOptions"></div>
+            <br>
+            <div class="btn-group">
 
-          <h3>Completed competitions <small>competitions you've competed in</small></h3>          
-
-            <div class="gridStyle" ng-grid="gridOptions"></div>
-
+              <button type="button" class="btn btn-success" bs-modal="'partials/createCompetitionModal.html'">Create a new competition</button>
+              
+              <a class="btn btn-primary" href="#">Find open competitions</a>
+            </div>
         
       </div>
 
-      <div class="span4">
+      <div class="span5">
         
             <h3 ng-hide="showCompetitionDetail">Details</h3>       
 
              <div class="competition-detail" ng-show="showCompetitionDetail">
 
-            <h2>&nbsp;{{selectedCompetition.competitionName}}</h2>
+            <h3>&nbsp;{{selectedCompetition.competitionName}}</h3>
             <div class="gridStyle" ng-grid="competitionGridOptions"></div>
             <br>
             <div>
@@ -116,11 +120,13 @@
       
   <script type="text/javascript" src="/js/lib/jquery.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-
+  <script type="text/javascript" src="/js/bootstrap-slider.js"></script>
   <script type="text/javascript" src="/js/lib/ng-grid-2.0.5.min.js"></script>
-
   <script type="text/javascript" src="https://raw.github.com/mgcrea/angular-strap/master/dist/angular-strap.min.js"></script>
   <script type="text/javascript" src="/dpd.js"></script>
   <script type="text/javascript" src="/js/global.js"></script>
+  <script type="text/javascript" src="/js/index.js"></script>
+  
+
 </body>
 </html>

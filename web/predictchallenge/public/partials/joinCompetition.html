@@ -1,0 +1,99 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Create a strategy</h3>
+</div>
+<div class="modal-body">
+
+        <form class="form-horizontal">     
+
+          <div>   
+            <div>Would you like the computer to generate a strategy for you? <button class="btn btn-small btn-info pull-right" ng-click="dismiss()">Generate strategy</button></div>
+            <hr>
+          </div>
+          
+          <div class="span10" style="float:left;">
+            <h4>Initial Bids</h4>
+
+            Forecast bid:
+            
+            <input id="minp" class="input-small" type="number" value="4" min="1" max="20" ng-model="modal.strategy.forecast_bid">
+ 
+            DRR bid:
+
+            <input id="maxp" class="input-small" type="number" value="4" min="1" max="20" ng-model="modal.strategy.drr_bid">
+            
+          </div>
+
+          <div class="span10" style="float:left;">
+            <h4>Add rules</h4>
+
+            <div>IF 
+          
+            <select class="input-small">
+              <option selected="selected">Forecast</option>
+              <option>DDR</option>
+              <option>Forecast + DDR</option>
+              <option>Neither</option>
+            </select>
+
+            and Round
+
+            <select class="input-small">
+              <option selected="selected">>=</option>
+              <option><=</option>
+              <option>==</option>
+            </select>
+
+            <input id="maxp" class="input-small" type="number" value="4" min="1" max="20">
+
+            and Regional rainfail > 
+
+            <select class="input-small">
+              <option selected="selected">1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+            </select>     
+
+            <button class="btn pull-right" ng-click="dismiss()">Add rule <i class="icon-ok"></i></button>
+
+            </div>
+          </div>      
+
+          <div class="span10"  style="float:left;">
+            
+            <h4>Rule list</h4>
+            <div class="well" style="min-height:100px;">
+
+
+              <ol dnd-list="modal.strategy.rules">
+                <li ng-repeat="rule in modal.strategy.rules">
+                  
+                  IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain < <b>{{rule[3]}} </b>
+
+
+                </li>
+              </ol>
+            </div>             
+            
+            
+          </div>
+
+
+        
+          
+
+
+        
+      
+      </form>   
+
+</div>
+<div class="modal-footer">
+
+  <button class="btn btn-success" ng-click="parentController(dismiss)">Submit strategy</button>
+  <button class="btn btn-link" ng-click="dismiss()">cancel</button>
+  
+</div>

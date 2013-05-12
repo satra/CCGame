@@ -105,15 +105,7 @@ app.controller('UserCtrl', function($scope, $rootScope) {
     });
   };
 
-  $scope.populateCompetitionList = function()
-  {
-
-  };
-
 });
-
-
-
 
 
 
@@ -198,127 +190,6 @@ app.factory('CompetitionList', function($rootScope)
 });
 
 
-
-app.controller('UserCompControl', function($scope, CompetitionList, $modal) {
-
-  if (document.referrer && document.referrer !== location.href) {
-    $scope.referrer = document.referrer;
-  } else {
-    $scope.referrer = '/';
-  }
-
-// define default competition settings here
-
-  $scope.minPlayers = 1;
-  $scope.maxPlayers = 2;
-
-  $scope.selectedCompetition = {};
-  $scope.showCompetitionDetail = false;
-
-
-
-  var feed = new CompetitionList();
-  feed.refresh();
-
-
-  $scope.modal = {content: 'Hello Modal', saved: false};
-
-  $scope.feed = feed;
-  $scope.updateList = feed.getList;
-
-  $scope.gdata = feed.competitions;
-
-  var customCellTemplate = '<div ng-click="selectCompetition(row.entity)" class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{row.getProperty(col.field)}}</span></div>';
-
-  $scope.gridOptions = { 
-        data: 'gdata',
-        columnDefs: [
-        {field:'competitionName', displayName:'Name', width: 180, cellTemplate: customCellTemplate },
-        {field:'simulateState', displayName:'State'}, 
-        {field:'teamCount', displayName:'Current'},
-        {field:'maxTeams', displayName:'Total'},
-        ]
-      };
-
-  $scope.competitionGridOptions = {
-    data: 'selectedCompetition.data',
-    columnDefs: [
-        {field:'0', displayName:'Name'},
-        {field:'1', displayName:'State'}, 
-        {field:'2', displayName:'Current'},
-        {field:'3', displayName:'Total'}
-        ]
-  }
-
-  $scope.parentController = function(dismiss) {
-    // console.log(dismiss);
-    // do something
-    dismiss();
-  }
-
-  $scope.selectCompetition = function(entry_id) {
-
-    $scope.selectedCompetition = entry_id;
-    $scope.showCompetitionDetail = true;
-  }
-
-
-  $scope.register = function() {
-      
-      dpd.users.me(function(me) {
-
-        var createDate = new Date().getTime();
-
-        dpd.competitions.post(
-        {  
-          simulationDate: null,
-          simulateState: 'created',
-          maxTeams: $scope.maxPlayers,
-          teamCount: 1,
-          minTeams: $scope.minPlayers,
-          owner: me.id,
-          competitionName: $scope.compname,
-          data: [[me.id, '', -1, -1]],
-          createDate: createDate
-
-        }, 
-
-        function (result, err) {
-          if(err) 
-          {
-            return console.log(err);
-          }
-          else
-          {
-            console.log(result, result.id);
-            feed.refresh();
-          }
-        });
-      
-      });
-    };
-
-  // $scope.submit = function(newPost) {
-  //   dpd.posts.post({
-  //     message: newPost
-  //   }, function(result, error) {
-  //     if (error) {
-  //       if (error.message) {
-  //         alert(error.message);
-  //       } else if (error.errors && error.errors.message) {
-  //         alert("Message " + error.errors.message);
-  //       } else {
-  //         alert("An error occurred");
-  //       }
-  //     } else {
-  //       feed.posts.unshift(result);
-  //       $scope.newPost = '';
-  //       $scope.$apply();
-  //     }
-  //   }); 
-  // };
-  
-});
 
 
 
