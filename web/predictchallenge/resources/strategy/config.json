@@ -3,43 +3,27 @@
 	"properties": {
 		"owner": {
 			"name": "owner",
-			"type": "object",
-			"typeLabel": "object",
-			"required": false,
+			"type": "string",
+			"typeLabel": "string",
+			"required": true,
 			"id": "owner",
 			"order": 0
 		},
 		"competitionID": {
 			"name": "competitionID",
-			"type": "object",
-			"typeLabel": "object",
+			"type": "array",
+			"typeLabel": "array",
 			"required": false,
 			"id": "competitionID",
 			"order": 1
 		},
-		"sForecastBid": {
-			"name": "sForecastBid",
-			"type": "number",
-			"typeLabel": "number",
+		"strategy": {
+			"name": "strategy",
+			"type": "object",
+			"typeLabel": "object",
 			"required": false,
-			"id": "sForecastBid",
+			"id": "strategy",
 			"order": 2
-		},
-		"sDRRBid": {
-			"name": "sDRRBid",
-			"type": "number",
-			"typeLabel": "number",
-			"required": false,
-			"id": "sDRRBid",
-			"order": 3
-		},
-		"sRules": {
-			"name": "sRules",
-			"type": "array",
-			"typeLabel": "array",
-			"required": false,
-			"id": "sRules",
-			"order": 4
 		},
 		"aggregateBeans": {
 			"name": "aggregateBeans",
@@ -47,7 +31,7 @@
 			"typeLabel": "array",
 			"required": false,
 			"id": "aggregateBeans",
-			"order": 5
+			"order": 3
 		},
 		"aggregateCrises": {
 			"name": "aggregateCrises",
@@ -55,7 +39,15 @@
 			"typeLabel": "array",
 			"required": false,
 			"id": "aggregateCrises",
-			"order": 6
+			"order": 4
+		},
+		"createDate": {
+			"name": "createDate",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "createDate",
+			"order": 5
 		}
 	}
 }

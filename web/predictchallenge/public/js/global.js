@@ -30,6 +30,7 @@ app.controller('UserCtrl', function($scope, $rootScope) {
     dpd.users.post({
       username: $scope.suusername,
       password: $scope.supassword,
+      competitions: [],
       displayName: $scope.sudisplayname
     }, 
       function(user, error) {
@@ -274,40 +275,51 @@ app.controller('CompetitionsController', function($scope, CompetitionList, $moda
   }
 
 
-  $scope.register = function() {
+  // $scope.register = function() {
       
-      dpd.users.me(function(me) {
+  //     dpd.users.me(function(me) {
 
-        var createDate = new Date().getTime();
+  //       var createDate = new Date().getTime();
 
-        dpd.competitions.post(
-        {  
-          simulationDate: null,
-          simulateState: 'created',
-          maxTeams: $scope.maxPlayers,
-          teamCount: 1,
-          minTeams: $scope.minPlayers,
-          owner: me.id,
-          competitionName: $scope.compname,
-          data: [[me.id, '', -1, -1]],
-          createDate: createDate
+  //       dpd.competitions.post(
+  //       {  
+  //         simulationDate: null,
+  //         simulateState: 'created',
+  //         maxTeams: $scope.maxPlayers,
+  //         teamCount: 1,
+  //         minTeams: $scope.minPlayers,
+  //         owner: me.id,
+  //         competitionName: $scope.compname,
+  //         data: [[me.id, '', -1, -1]],
+  //         createDate: createDate
 
-        }, 
+  //       }, 
 
-        function (result, err) {
-          if(err) 
-          {
-            return console.log(err);
-          }
-          else
-          {
-            console.log(result, result.id);
-            feed.refresh();
-          }
-        });
+  //       function (result, err) {
+  //         if(err) 
+  //         {
+  //           return console.log(err);
+  //         }
+  //         else
+  //         {
+  //           console.log(result, result.id);
+
+  //           me.competitions.push(result.id);
+
+  //           console.log(me);
+
+  //           dpd.users.put(me, {"displayName":"foobar"}, function(result, err) {
+  //             if(err) return console.log(err);
+  //             console.log(result, result.id);
+  //           });
+
+
+  //           feed.refresh();
+  //         }
+  //       });
       
-      });
-    };
+  //     });
+  //   };
 
   // $scope.submit = function(newPost) {
   //   dpd.posts.post({

@@ -1,4 +1,4 @@
-app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal) {
+app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $rootScope) {
 
   if (document.referrer && document.referrer !== location.href) {
     $scope.referrer = document.referrer;
@@ -9,23 +9,13 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal) {
   var query = location.search;
   var compid = query.split('?id=')[1];
 
+  $rootScope.ownership = false;
 
-// populate modal with 
+
+// populate modal with default strategy
   var strategy = {'forecast_bid': 2,
                 'drr_bid': 2,
-                'rules': [['neither', 'geq', 7, 1],
-                          ['F', 'geq', 1, 5],
-                          ['F+DRR', 'geq', 7, 7],
-                          ['neither', 'geq', 7, 1],
-                          ['F', 'geq', 1, 5],
-                          ['F+DRR', 'geq', 7, 7],
-                          ['neither', 'geq', 7, 1],
-                          ['F', 'geq', 1, 5],
-                          ['F+DRR', 'geq', 7, 7],
-                          ['neither', 'geq', 7, 1],
-                          ['F', 'geq', 1, 5],
-                          ['F+DRR', 'geq', 7, 7],
-                ]
+                'rules': [],
               }
 
   $scope.modal = {
@@ -34,64 +24,103 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal) {
   }
 
 
+  $scope.generateStrategy = function()
+  {
+    var rules = [['neither', 'geq', 7, 1],
+                 ['F', 'geq', 1, 5],
+                 ['F+DRR', 'geq', 7, 7]
+                 ];
 
-
-
-
-
-  $scope.competitionData = {};
-
-  if (!compid) {
-
-    console.log('no id provided, should redirect')    
-    // location.href = "/";
-
+    $scope.modal.strategy.rules = rules;
   }
-  else
+
+
+  $scope.addRule = function()
+  {
+    rule_to_add = [$("#fddropt").val(), $("#equalopt").val(), $("#roundopt").val(), $("#rainopt").val()];
+    $scope.modal.strategy.rules[$scope.modal.strategy.rules.length] = rule_to_add;
+  }
+
+  // could add code to generate random rule and add it
+  $scope.generateRandomRule = function()
   {
 
-    $scope.compid = compid;
-
-    dpd.competitions.get(compid, function(result) {
-    
-      if(!result)
-      {
-        console.log('incorrect id, should redirect')    
-        // location.href = "/";
-      }
+  }
 
 
-      // console.log(result);
+  $scope.deleteRule = function(ruleIndex)
+  {
+    $scope.modal.strategy.rules.splice(ruleIndex,1);
 
-      $scope.competitionData = result;
+  }
 
-      dpd.users.me(function(me) {
+  $scope.submitStrategy = function()
+  {
 
-        if(me)
+  }
+
+  // this is the callback from the modal to try to register a strategy
+  $scope.parentController = function(dismiss) {
+    // console.log(dismiss);
+    // do something
+     dpd.users.me(function(me) {
+
+        var createDate = new Date().getTime();
+
+        var submitstrat = $scope.modal.strategy;
+
+        // after we have a strategy,
+        // 1) add it to the strategy table
+        // 2) add it + user information to the competition data
+
+        dpd.strategy.post(
         {
-          if(me.id == result.owner) 
+          owner: me.id,
+          competitionID: $scope.competitionData.id,
+          strategy: submitstrat, 
+          aggregateBeans: [],
+          aggregateCrises: [],
+          createDate: createDate
+        }, function (result, err) {
+          if(err) 
           {
-            console.log('this is mine');
-
-            $scope.ownership = true;
+            return console.log(err);
           }
           else
           {
-            console.log('this is not mine');
-            $scope.ownership = false;            
+            // this branch assumes we've inserted into strategy table successful
+            // now add to competition table
+
+            $scope.competitionData.data.push([me.id, me.username, submitstrat, result.id, -1, -1, -1, -1]);
+
+            dpd.competitions.put($scope.competitionData,
+              function(result, err) {
+                if(err) {
+                  return console.log(err);
+                }
+                else
+                {
+                  $scope.competitionData = undefined;
+                  $scope.competitionData = result;
+                  dismiss();
+
+                }
+              
+
+            });
           }
-        }
-        else
-        {
-          console.log('im not logged in');
-        }
+        });      
+
+
       });
-
-      $scope.competitionCompleted = false;
-      $scope.mycompetition = result
+  }
 
 
-    });
+
+
+  $scope.competitionData = {
+    data: [],
+  };
 
     $scope.competitionGridOptions = {
       data: 'competitionData.data',
@@ -102,12 +131,63 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal) {
           {field:'3', displayName:'Beans'},
           {field:'4', displayName:'Crises'}
           ]
+      }    
+
+  if (!compid) {
+
+    console.log('no id provided, should redirect')    
+    location.href = "/";
+
+  }
+  else
+  {
+
+    $scope.compid = compid;
+
+    console.log('loading compid:' + compid);
+
+    dpd.users.me(function(me) {
+
+      if(me)
+      {
+        console.log(me);
+        
+        if (me.competitions.indexOf(compid) >= 0)
+        {
+          $scope.ownership = true;
+
+
+          
+        }
       }
+
+
+    });
+
+      dpd.competitions.get(compid, function(result) {
+      
+        if(!result)
+        {
+          console.log('incorrect id, should redirect')    
+          location.href = "/";
+        }
+        else
+        {
+
+          $scope.competitionData = result;          
+
+        }
+      });
+
+
+
   }
 });
 
 
 // directive for a single list
+// based on code from 
+// http://www.smartjava.org/content/drag-and-drop-angularjs-using-jquery-ui
 app.directive('dndList', function() {
  
     return function(scope, element, attrs) {

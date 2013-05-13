@@ -92,10 +92,17 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal) {
           {
             console.log(result, result.id);
             feed.refresh();
-            
+
+            me.competitions.push(result.id);
+
+            dpd.users.put(me, function(result, err) {
+              if(err) return console.log(err);
+              console.log(result, result.id);
+            });
+
             dismiss();
 
-              window.location = '/competition.html?id=' + result.id;
+            // window.location = '/competition.html?id=' + result.id;
 
 
           }

@@ -7,7 +7,7 @@
         <form class="form-horizontal">     
 
           <div>   
-            <div>Would you like the computer to generate a strategy for you? <button class="btn btn-small btn-info pull-right" ng-click="dismiss()">Generate strategy</button></div>
+            <div>Would you like the computer to generate a strategy for you? <button class="btn btn-info pull-right" ng-click="generateStrategy()">Generate strategy</button></div>
             <hr>
           </div>
           
@@ -29,26 +29,26 @@
 
             <div>IF 
           
-            <select class="input-small">
-              <option selected="selected">Forecast</option>
-              <option>DDR</option>
-              <option>Forecast + DDR</option>
-              <option>Neither</option>
+            <select class="input-small" id="fddropt">
+              <option value="F" selected="selected">Forecast</option>
+              <option value="DDR">DDR</option>
+              <option value="F+DDR">Forecast + DDR</option>
+              <option value="neither">Neither</option>
             </select>
 
             and Round
 
-            <select class="input-small">
-              <option selected="selected">>=</option>
-              <option><=</option>
-              <option>==</option>
+            <select class="input-small" id="equalopt">
+              <option value="geq" selected="selected">>=</option>
+              <option value="leq"><=</option>
+              <option value="eq">==</option>
             </select>
 
-            <input id="maxp" class="input-small" type="number" value="4" min="1" max="20">
+            <input id="roundopt" class="input-small" type="number" value="4" min="1" max="20">
 
             and Regional rainfail > 
 
-            <select class="input-small">
+            <select class="input-small" id="rainopt">
               <option selected="selected">1</option>
               <option>2</option>
               <option>3</option>
@@ -57,37 +57,28 @@
               <option>6</option>
             </select>     
 
-            <button class="btn pull-right" ng-click="dismiss()">Add rule <i class="icon-ok"></i></button>
+            <button class="btn pull-right" ng-click="addRule()">Add rule <i class="icon-ok"></i></button>
 
             </div>
           </div>      
 
           <div class="span10"  style="float:left;">
             
-            <h4>Rule list</h4>
+            <h4>Rule list <small>Drag and drop to re-order</small></h4>
             <div class="well" style="min-height:100px;">
 
 
               <ol dnd-list="modal.strategy.rules">
                 <li ng-repeat="rule in modal.strategy.rules">
                   
-                  IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain < <b>{{rule[3]}} </b>
-
+                  IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain < <b>{{rule[3]}} </b> <a class="btn btn-mini btn-link" ng-click="deleteRule( $index )">(delete)</a>
 
                 </li>
               </ol>
             </div>             
-            
-            
+                        
           </div>
 
-
-        
-          
-
-
-        
-      
       </form>   
 
 </div>

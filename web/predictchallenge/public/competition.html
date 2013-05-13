@@ -68,14 +68,16 @@
           <h2>{{competitionData.competitionName}}</h2>
 
           <div ng-show="currentUser">
-            <div ng-show="!competitionCompleted">
+            <div ng-show="userLoaded" >
+
               <button type="button" class="btn btn-success btn-small" bs-modal="'partials/joinCompetition.html'">Join this competition</button>
+              
               <a class="btn btn-primary btn-small" href ng-click="showLogin(true)">Run competition</a>
             </div>
           </div>
 
           <h4>Teams</h4>
-          <div class="gridStyle" ng-show="mycompetition" ng-grid="competitionGridOptions"></div>
+          <div class="gridStyle" ng-grid="competitionGridOptions"></div>
 
           <div>
             <ul>
@@ -112,16 +114,14 @@
 
 
       
-  <script type="text/javascript" src="/js/lib/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="/js/lib/jquery-1.9.1.js"></script>
   <script type="text/javascript" src="/js/lib/jquery-ui-1.10.3.custom.min.js"></script>
-  
-  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-
+  <script type="text/javascript" src="/js/lib/bootstrap.min.js"></script>
   <script type="text/javascript" src="/js/lib/ng-grid-2.0.5.min.js"></script>
-  
-  <script type="text/javascript" src="https://raw.github.com/mgcrea/angular-strap/master/dist/angular-strap.min.js"></script>
+  <script type="text/javascript" src="/js/lib/angular-strap.min.js"></script>
 
   <script type="text/javascript" src="/dpd.js"></script>
+  
   <script type="text/javascript" src="/js/global.js"></script>
   <script type="text/javascript" src="/js/competitions.js"></script>
 </body>
