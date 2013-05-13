@@ -2,11 +2,11 @@
 <html ng-app="predictionApp">
 <head>
   <title>Paying for Predictions</title>
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
   
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" type="text/css" href="css/ng-grid.css" />
-  <link rel="stylesheet" type="text/css" href="css/slider.css" />  
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+
   <!-- Angular does some things with CSS so it's good to load this in the head -->
 
   <script type="text/javascript" src="/js/lib/angular.js"></script>
@@ -20,31 +20,33 @@
   }
 
   .modal {
-  width: 680px; /* SET THE WIDTH OF THE MODAL */
-  margin: 050px 0 0 -450px; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+  width: 800px; /* SET THE WIDTH OF THE MODAL */
+  /*margin: 50px 0 0 -450px;  CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
 }
 
+  body {
+    padding-top: 40px;
+  }
+
   </style>
+  <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+  
   
 </head>
 
 <body>
+
+  <ng-include src="'partials/headerNavbar.html'"></ng-include>
+
   <div class="container">
     
     <div class="page-header">
-      <span><h1>Paying for Predictions</h1></span>
-      <span class="">
-        <div class="btn-group">
-          <a class="btn btn-link" href="/">Home</a>
-          <a class="btn btn-link" href="/allcomps.html">Competitions</a>
-          <a class="btn btn-link" href="#">Strategies</a>
-        </div>
-      </span>
+      <span><h1>Paying for Predictions <small>A small-world competition</small></h1></span>
     </div>
 
     <div class="row">
 
-      <div class="span8">
+      <div class="span12">
         <p>What is the best strategy to reduce the risk of disaster as a humanitarian worker? Red Cross Red Crescent workers must balance their time and resources between long-term programming such as hygiene promotion, preparing right before a disaster happens, and responding to disasters when they happen. Fortunately, there are many tools to help with this, including science-based forecasts that can help people anticipate a disaster. While forecasts can be confusing, making a strategy for how to act based on a forecast can help humanitarian workers best manage their time and resources.
         </p>
 
@@ -52,11 +54,6 @@
 
       </div>
 
-      <div class="span4">
-        
-        <ng-include src="'partials/header.html'"></ng-include>
-
-      </div>
     </div>      
 
     <div class="row" ng-show="currentUser" ng-controller='UserCompControl' >
@@ -74,7 +71,7 @@
 
               <button type="button" class="btn btn-success" bs-modal="'partials/createCompetitionModal.html'">Create a new competition</button>
               
-              <a class="btn btn-primary" href="#">Find open competitions</a>
+              <a class="btn btn-primary" href="/allcomps.html?status=open">Find open competitions</a>
             </div>
         
         

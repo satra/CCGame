@@ -2,45 +2,40 @@
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
   <h3 id="myModalLabel">Start a new competition</h3>
 </div>
+
 <div class="modal-body">
-
-        <form>     
-
-          <div span="span12" style="float:left;">   
-  
-          <label><h4>Competition name</h4></label>
-          <input type="text" class="input-xlarge" ng-model="modal.compname"/>
-          
-          <br>
-          <label>Minimum number of players (teams)</label>
-          <input id="minp" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.minPlayers">
-          <br>
-
-          <label>Maximum number of players</label>
-          <input id="maxp" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.maxPlayers">
-          <br>
-
-        </div>
-
-          <div class="span4 well" style="float:left;">
-
-          <label>Starting bean count</label>
-          <input id="beancount"  class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.numberBeans">
-
-          <br>
-          <label>Number of rounds</label>
-          <input id="rounds" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.numberRounds">
-          <br>
-
-
-          <label>Number of rain events</label>
-          <input id="rainevents" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.numberRain">
+  <div class="row-fluid">
+    <form class="form-horizontal" >     
+          <div class="span6">   
+            <fieldset>
+              <label>Competition name</label>
+              <input type="text" class="input-xlarge" ng-model="modal.compname"/>
+            
+              <label>Minimum number of players (teams)</label>
+              <input id="minp" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.minPlayers">
+            
+              <label>Maximum number of players</label>
+              <input id="maxp" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.maxPlayers">
+            </fieldset>
           </div>
 
+          <div class="span4">   
+          <fieldset>
+          
+            <label>Starting bean count</label>
+            <input id="beancount"  class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.numberBeans">
 
+            <label>Number of rounds</label>
+            <input id="rounds" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.numberRounds">
+            <label>Number of rain events</label>
+            <input id="rainevents" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.numberRain">
+          
+          </fieldset>
+          </div>
       </form>   
-
+    </div>
 </div>
+
 <div class="modal-footer">
 
   <button class="btn btn-success" ng-click="parentController(dismiss)">Create competition</button>

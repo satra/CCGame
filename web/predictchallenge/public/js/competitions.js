@@ -6,23 +6,6 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
     $scope.referrer = '/';
   }
 
-  var query = location.search;
-  var compid = query.split('?id=')[1];
-
-  $rootScope.ownership = false;
-
-
-// populate modal with default strategy
-  var strategy = {'forecast_bid': 2,
-                'drr_bid': 2,
-                'rules': [],
-              }
-
-  $scope.modal = {
-    autogen: false,
-    strategy: strategy
-  }
-
 
   $scope.generateStrategy = function()
   {
@@ -82,55 +65,103 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
           aggregateCrises: [],
           createDate: createDate
         }, function (result, err) {
+
           if(err) 
           {
             return console.log(err);
           }
           else
           {
+
             // this branch assumes we've inserted into strategy table successful
             // now add to competition table
 
             $scope.competitionData.data.push([me.id, me.username, submitstrat, result.id, -1, -1, -1, -1]);
+            // $scope.teamlist.push([me.id, me.username, submitstrat, result.id, -1, -1, -1, -1]);
+            $scope.competitionData.teamCount += 1;
 
-            dpd.competitions.put($scope.competitionData,
+            dpd.competitions.put($scope.competitionData.id, $scope.competitionData,
               function(result, err) {
                 if(err) {
+                 
                   return console.log(err);
                 }
                 else
                 {
-                  $scope.competitionData = undefined;
-                  $scope.competitionData = result;
-                  dismiss();
+                  
+                  // $scope.details = result;      
+                  // $scope.teamlist = $scope.details.data;
 
+                  console.log(result);
+
+                  $scope.refreshCompetitionData();
                 }
-              
-
             });
+
+            dismiss();
+
+
           }
         });      
+
 
 
       });
   }
 
+  $scope.refreshCompetitionData = function()
+  {
+    $scope.compid = compid;
+
+    dpd.competitions.get(compid, function(result) {
+    
+      if(!result)
+      {
+        console.log('incorrect id, should redirect')    
+        location.href = "/";
+      }
+      else
+      {
+
+        $scope.competitionData = result;
+
+      }
+    });
 
 
+  }
 
-  $scope.competitionData = {
-    data: [],
-  };
+  $scope.competitionData = {}
 
-    $scope.competitionGridOptions = {
-      data: 'competitionData.data',
-      columnDefs: [
-          {field:'1', displayName:'Player / Team name'},
-          {field:'2', displayName:'Wins'}, 
-          {field:'3', displayName:'Beans'},
-          {field:'4', displayName:'Crises'}
-          ]
-      }    
+  var query = location.search;
+  var compid = query.split('?id=')[1];
+
+  $rootScope.ownership = false;
+
+  // $scope.$watch('competitionData', function(newVal) {
+  //       alert('columns changed');
+  // }, false);
+
+// populate modal with default strategy
+  var strategy = {'forecast_bid': 2,
+                'drr_bid': 2,
+                'rules': [],
+              }
+
+  $scope.modal = {
+    autogen: false,
+    strategy: strategy
+  }
+
+  $scope.competitionGridOptions = {
+    data: 'competitionData.data',
+    columnDefs: [
+        {field:'1', displayName:'Player / Team name'},
+        {field:'2', displayName:'Wins'}, 
+        {field:'3', displayName:'Beans'},
+        {field:'4', displayName:'Crises'}
+        ]
+    }    
 
   if (!compid) {
 
@@ -171,8 +202,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
         else
         {
 
-          $scope.competitionData = result;          
-
+          $scope.competitionData = result;
         }
       });
 

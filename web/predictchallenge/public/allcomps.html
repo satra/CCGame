@@ -3,13 +3,11 @@
 <head>
   <title>Paying for Predictions</title>
   <link rel="stylesheet" href="css/bootstrap.min.css" />
-  
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" type="text/css" href="css/ng-grid.css" />  
   <!-- Angular does some things with CSS so it's good to load this in the head -->
 
   <script type="text/javascript" src="/js/lib/angular.js"></script>
-
   <style type="text/css">
 
   .gridStyle {
@@ -18,38 +16,30 @@
     height: 300px;
   }
 
-  </style>
-  
-</head>
+  body {
+    padding-top: 40px;
+  }
 
+  </style>
+  <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+</head>
 <body>
+
+  <ng-include src="'partials/headerNavbar.html'"></ng-include>
+
   <div class="container">
-    
+
     <div class="page-header">
-      <span><h1>Open competitions</h1></span>
-      <span class="">
-        <div class="btn-group">
-          <a class="btn btn-link" href="/">Home</a>
-          <a class="btn btn-link" href="/allcomps.html">Competitions</a>
-          <a class="btn btn-link" href="#">Strategies</a>
-        </div>
-      </span>
+      <span><h1>Competitions</h1></span>
     </div>
 
     <div class="row" ng-show="currentUser" ng-controller='AllCompControl' >
-
       <div class="span12">
         <div class="gridStyle" ng-grid="gridOptions"></div>
       </div>
-
-        
-      </div>
-    
-
     </div>
+  </div>
 
-    <ng-include src="'partials/header.html'"></ng-include>
-      
   <script type="text/javascript" src="/js/lib/jquery-1.9.1.js"></script>
   <script type="text/javascript" src="/js/lib/jquery-ui-1.10.3.custom.min.js"></script>
   <script type="text/javascript" src="/js/lib/bootstrap.min.js"></script>
@@ -58,7 +48,6 @@
   <script type="text/javascript" src="/dpd.js"></script>
   <script type="text/javascript" src="/js/global.js"></script>
   <script type="text/javascript" src="/js/allcomps.js"></script>
-  
 
 </body>
 </html>

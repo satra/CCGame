@@ -6,6 +6,11 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
     $scope.referrer = '/';
   }
 
+  var query = location.search;
+  var status = query.split('?status=')[1];
+
+  $scope.statusq = status;
+
   $scope.selectedCompetition = {};
   $scope.showCompetitionDetail = false;
 
@@ -15,20 +20,35 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
 
     if($rootScope.currentUser)
     {
-
-
       console.log($rootScope.currentUser.competitions);
 
-      feed  = new CompetitionList(
+      if(!$scope.statusq)
       {
-        status: 'open'
-      });
-      feed.refresh();
+        console.log('searching for all');
+        feed  = new CompetitionList();
 
-      $scope.feed = feed;
-      $scope.updateList = feed.getList;
-      $scope.gdata = feed.competitions;
+        feed.refresh();
 
+        $scope.feed = feed;
+        $scope.updateList = feed.getList;
+        $scope.gdata = feed.competitions;
+
+      }
+      else
+      {
+        console.log('searching for ', $scope.statusq)
+
+        feed  = new CompetitionList(
+        {
+          simulateState: $scope.statusq
+        });  
+
+        feed.refresh();
+
+        $scope.feed = feed;
+        $scope.updateList = feed.getList;
+        $scope.gdata = feed.competitions;
+      }
     }
    });
 

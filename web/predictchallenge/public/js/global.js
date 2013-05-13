@@ -8,8 +8,9 @@ var app = angular.module('predictionApp', ['ngGrid', '$strap.directives']);
 // 
 app.controller('UserCtrl', function($scope, $rootScope) {
 
-
   $rootScope.userLoaded = false;
+
+  $scope.showLogin = true;
 
   function getMe() {
     dpd.users.me(function(user) {
@@ -56,7 +57,7 @@ app.controller('UserCtrl', function($scope, $rootScope) {
           password: $scope.supassword
         }, function() {
           
-          $scope.showSignUp(false);
+          // $scope.showSignUp(false);
 
           getMe();
 
@@ -66,21 +67,21 @@ app.controller('UserCtrl', function($scope, $rootScope) {
     });
   };
 
-  $scope.showLogin = function(val) {
-    $scope.loginVisible = val;
-    if (val) {
-      $scope.username = '';
-      $scope.password = '';
-    }
-  };
+  // $scope.showLogin = function(val) {
+  //   $scope.loginVisible = val;
+  //   if (val) {
+  //     $scope.username = '';
+  //     $scope.password = '';
+  //   }
+  // };
 
-  $scope.showSignUp = function(val) {
-    $scope.signUpVisible = val;
-    if (val) {
-      $scope.suusername = '';
-      $scope.supassword = '';
-    }
-  };
+  // $scope.showSignUp = function(val) {
+  //   $scope.signUpVisible = val;
+  //   if (val) {
+  //     $scope.suusername = '';
+  //     $scope.supassword = '';
+  //   }
+  // };
 
 
   $scope.login = function() {
@@ -91,7 +92,7 @@ app.controller('UserCtrl', function($scope, $rootScope) {
       if (error) {
         alert(error.message);
       } else {
-        $scope.showLogin(false);
+        // $scope.showLogin(false);
         getMe();
 
         $scope.$apply();
@@ -134,31 +135,7 @@ app.factory('CompetitionList', function($rootScope)
 
     dpd.competitions.get(query, function(result) {
 
-      if (result.length > PAGE_SIZE) {
-        result.pop();
-        _list.moreToLoad = true;
-      } else {
-        _list.moreToLoad = false;
-      }
-
-      if (result.length) _list.lastTime = result[result.length - 1].createDate;
-
-      Array.prototype.push.apply(_list.competitions, result);
-
-      $rootScope.$apply();
-
-    });
-  };
-
-  CompetitionList.prototype.getListForUser = function(user_id) {
-    var _list = this;
-
-    var query = angular.copy(this.query);
-    query.$limit = PAGE_SIZE + 1;
-    query.createDate = {$lt: this.lastTime};
-    query.$sort = {createDate: -1};
-
-    dpd.competitions.get(query, function(result) {
+      console.log(result);
 
       if (result.length > PAGE_SIZE) {
         result.pop();
@@ -174,7 +151,6 @@ app.factory('CompetitionList', function($rootScope)
       $rootScope.$apply();
 
     });
-
   };
 
   CompetitionList.prototype.refresh = function() {
