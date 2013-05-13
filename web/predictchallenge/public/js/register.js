@@ -16,6 +16,7 @@ app.controller('RegisterCtrl', function($scope) {
     dpd.users.post({
       username: $scope.username,
       password: $scope.password,
+      competitions: [],
       displayName: $scope.displayname
     }, 
       function(user, error) {

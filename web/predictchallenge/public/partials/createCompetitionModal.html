@@ -1,47 +1,45 @@
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  <h3 id="myModalLabel">Modal header</h3>
+  <h3 id="myModalLabel">Start a new competition</h3>
 </div>
+
 <div class="modal-body">
-
-
-        <form >
-
-          <h2>Create a competition here </h2>
-        
-          <label>Competition name</label>
-          <input type="text" class="input-xlarge" ng-model="compname" />
-          
-          <label>Minimum number of players</label>
-          <select ng-model="minPlayers">
-            <option selected="selected">1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
-
-          <label>Maximum number of players</label>
-          <select ng-model="maxPlayers">
-            <option selected="selected">1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
-          
-          <div>
-
-
-            <button class="btn btn-success" ng-click="register()">Create competition</button>
-            <a href="/" ng-href="{{referrer}}" class="btn btn-link">cancel</a>
+  <div class="row-fluid">
+    <form class="form-horizontal" >     
+          <div class="span6">   
+            <fieldset>
+              <label>Competition name</label>
+              <input type="text" class="input-xlarge" ng-model="modal.compname"/>
+            
+              <label>Minimum number of players (teams)</label>
+              <input id="minp" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.minPlayers">
+            
+              <label>Maximum number of players</label>
+              <input id="maxp" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.maxPlayers">
+            </fieldset>
           </div>
 
-        </form>   
+          <div class="span4">   
+          <fieldset>
+          
+            <label>Starting bean count</label>
+            <input id="beancount"  class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.numberBeans">
 
+            <label>Number of rounds</label>
+            <input id="rounds" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.numberRounds">
+            <label>Number of rain events</label>
+            <input id="rainevents" class="input-xlarge" type="number" value="4" min="1" max="20" ng-model="modal.numberRain">
+          
+          </fieldset>
+          </div>
+      </form>   
+    </div>
 </div>
+
 <div class="modal-footer">
-  <button class="btn" ng-click="dismiss()">Close</button>
-  <button class="btn btn-primary" ng-click="modal.saved=true;dismiss()">Save changes</button>
-  <button class="btn btn-primary" ng-click="parentController(dismiss)">Parent dismiss</button>
+
+  <button class="btn btn-success" ng-click="parentController(dismiss)">Create competition</button>
+  
+  <button class="btn btn-link" ng-click="dismiss()">cancel</button>
+  
 </div>

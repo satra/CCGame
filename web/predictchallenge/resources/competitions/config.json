@@ -41,13 +41,21 @@
 			"id": "owner",
 			"order": 4
 		},
+		"ownerName": {
+			"name": "ownerName",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "ownerName",
+			"order": 5
+		},
 		"competitionName": {
 			"name": "competitionName",
 			"type": "string",
 			"typeLabel": "string",
 			"required": false,
 			"id": "competitionName",
-			"order": 5
+			"order": 6
 		},
 		"createDate": {
 			"name": "createDate",
@@ -55,7 +63,7 @@
 			"typeLabel": "number",
 			"required": false,
 			"id": "createDate",
-			"order": 6
+			"order": 7
 		},
 		"data": {
 			"name": "data",
@@ -63,7 +71,7 @@
 			"typeLabel": "array",
 			"required": false,
 			"id": "data",
-			"order": 7
+			"order": 8
 		},
 		"teamCount": {
 			"name": "teamCount",
@@ -71,7 +79,31 @@
 			"typeLabel": "number",
 			"required": false,
 			"id": "teamCount",
-			"order": 8
+			"order": 9
+		},
+		"numberBeans": {
+			"name": "numberBeans",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "numberBeans",
+			"order": 10
+		},
+		"numberRain": {
+			"name": "numberRain",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "numberRain",
+			"order": 11
+		},
+		"numberRound": {
+			"name": "numberRound",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "numberRound",
+			"order": 12
 		}
 	}
 }

@@ -1,11 +1,8 @@
 <div class="header" ng-controller="UserCtrl">
     <div ng-show="userLoaded">
       <span  class="lead" ng-show="currentUser">
-        <p>Welcome, <b>@{{currentUser.username}}</b>!</p>
-        <div><a href ng-click="logout()">Logout</a></div>
-        <div><a href>Change my password</a></div>
-        <div><a href>View competition history</a></div>
-        <div><a href>Delete account</a></div>
+        <p>Signed in as <b>@{{currentUser.username}}</b></p>
+        <div><small><a href ng-click="logout()">Logout</a></small></div>
       </span>
       
       <span ng-hide="currentUser">
