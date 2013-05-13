@@ -1,8 +1,0 @@
-<div class="feed-list">
-  <div class="post" ng-repeat="comp in feed.competitions">
-    <div class="author"><a ng-href="/user.html?user={{comp.competitionName}}">@{{comp.competitionName}}</a></div>
-
-    <div dpd-message-for="comp"></div>
-  </div>
-</div>
-  <button class="btn btn-link load-more-btn" ng-show="feed.moreToLoad" ng-click="feed.getList()">Show more</button>
