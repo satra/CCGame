@@ -35,8 +35,8 @@
       <span><h1>Paying for Predictions</h1></span>
       <span class="">
         <div class="btn-group">
-          <a class="btn btn-link" href="#">Home</a>
-          <a class="btn btn-link" href="competition.html">Competitions</a>
+          <a class="btn btn-link" href="/">Home</a>
+          <a class="btn btn-link" href="/allcomps.html">Competitions</a>
           <a class="btn btn-link" href="#">Strategies</a>
         </div>
       </span>
@@ -68,44 +68,22 @@
 
       <br>
 
-      <div class="span7">
-        
-          <h3>Your competitions <small>competitions you're in</small></h3>          
-            <div class="gridStyle" ng-grid="gridOptions"></div>
-            <br>
-            <div class="btn-group">
+      <div class="span12">
+
+            <div class="">
 
               <button type="button" class="btn btn-success" bs-modal="'partials/createCompetitionModal.html'">Create a new competition</button>
               
               <a class="btn btn-primary" href="#">Find open competitions</a>
             </div>
         
+        
+          <h3>Your competitions <small>competitions you've created or are participating in</small></h3>          
+            <div class="gridStyle" ng-grid="gridOptions"></div>
+            <br>
+
       </div>
 
-      <div class="span5">
-        
-            <h3 ng-hide="showCompetitionDetail">Details</h3>       
-
-             <div class="competition-detail" ng-show="showCompetitionDetail">
-
-            <h3>&nbsp;{{selectedCompetition.competitionName}}</h3>
-            <div class="gridStyle" ng-grid="competitionGridOptions"></div>
-            <br>
-            <div>
-              <ul>
-                <li>Minimum team number: {{selectedCompetition.minTeams}}</li>
-                <li>Maximum team number: {{selectedCompetition.maxTeams}}</li>
-                <li>Current team count: {{selectedCompetition.teamCount}}</li>
-                <li>Owner: {{selectedCompetition.owner}}</li>
-                <li>Name: {{selectedCompetition.competitionName}}</li>
-                <li>State: {{selectedCompetition.simulateState}}</li>
-                <li>Sim date: {{selectedCompetition.simulationDate}}</li>
-                <li>Create date: {{selectedCompetition.createDate}}</li>
-                <li>Comp ID: {{selectedCompetition.id}}</li>
-              </ul>
-            </div>
-
-        </div>   
         
       </div>
     

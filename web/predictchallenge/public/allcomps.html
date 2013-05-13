@@ -26,75 +26,39 @@
   <div class="container">
     
     <div class="page-header">
-      <span><h1>Competition details</h1></span>
+      <span><h1>Open competitions</h1></span>
       <span class="">
         <div class="btn-group">
           <a class="btn btn-link" href="/">Home</a>
-          <a class="btn btn-link" href="/competition.html">Competitions</a>
+          <a class="btn btn-link" href="/allcomps.html">Competitions</a>
           <a class="btn btn-link" href="#">Strategies</a>
         </div>
       </span>
     </div>
 
-    <div class="row">
-
-      <div class="span8">
-
-
-        <div class="well">
-          <h3>Competition Statistics</h3>
-          <div>There are 49 users (teams) registered</div>
-          <div>Best user: John Doe, averaging bean count 3.4 beans</div>
-          <div>There have been 200 challenges run, with over 20000 simulations</div>
-          
-        </div>
-
-      </div>
-
-      <div class="span4">
-        
-        <ng-include src="'partials/header.html'"></ng-include>
-
-      </div>
-    </div>      
-
-    <div class="row" ng-controller='CompDetailsCtrl'>
+    <div class="row" ng-show="currentUser" ng-controller='AllCompControl' >
 
       <div class="span12">
-
-        <hr>
-
-        <div ng-show="ownership && !competitionCompleted">
-            <a class="btn btn-primary btn-large" href ng-click="showLogin(true)">Run competition</a>
-        </div>
-
-        <div ng-show="!ownership && !competitionCompleted">
-            <a class="btn btn-primary btn-large" href ng-click="showLogin(true)">Join this competition</a>
-        </div>
-
-
-
-        <div class="gridStyle" ng-show="mycompetition" ng-grid="competitionGridOptions"></div>
-
-
-
+        <div class="gridStyle" ng-grid="gridOptions"></div>
       </div>
+
+        
+      </div>
+    
 
     </div>
 
-  </div>
-
-
-
+    <ng-include src="'partials/header.html'"></ng-include>
       
-  <script type="text/javascript" src="/js/lib/jquery.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-
+  <script type="text/javascript" src="/js/lib/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="/js/lib/jquery-ui-1.10.3.custom.min.js"></script>
+  <script type="text/javascript" src="/js/lib/bootstrap.min.js"></script>
   <script type="text/javascript" src="/js/lib/ng-grid-2.0.5.min.js"></script>
-
-  <script type="text/javascript" src="https://raw.github.com/mgcrea/angular-strap/master/dist/angular-strap.min.js"></script>
+  <script type="text/javascript" src="/js/lib/angular-strap.min.js"></script>
   <script type="text/javascript" src="/dpd.js"></script>
   <script type="text/javascript" src="/js/global.js"></script>
-  <script type="text/javascript" src="/js/competitions.js"></script>
+  <script type="text/javascript" src="/js/allcomps.js"></script>
+  
+
 </body>
 </html>

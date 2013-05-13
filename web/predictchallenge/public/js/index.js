@@ -1,4 +1,4 @@
-app.controller('UserCompControl', function($scope, CompetitionList, $modal) {
+app.controller('UserCompControl', function($scope, CompetitionList, $modal, $rootScope) {
 
   if (document.referrer && document.referrer !== location.href) {
     $scope.referrer = document.referrer;
@@ -9,8 +9,30 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal) {
   $scope.selectedCompetition = {};
   $scope.showCompetitionDetail = false;
 
-  var feed = new CompetitionList();
-  feed.refresh();
+  var feed ={};
+
+  $rootScope.$watch('currentUser', function() {
+
+    if($rootScope.currentUser)
+    {
+      console.log($rootScope.currentUser.competitions);
+
+      feed  = new CompetitionList(
+      {
+        $or: [{
+          ownerName: $rootScope.currentUser.username
+        }, {
+          id: {$in: $rootScope.currentUser.competitions}
+        }]
+      });
+      feed.refresh();
+
+      $scope.feed = feed;
+      $scope.updateList = feed.getList;
+      $scope.gdata = feed.competitions;
+
+    }
+   });
 
   $scope.modal = {
     compname : '',
@@ -21,9 +43,6 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal) {
     numberRain  : 10
   }
 
-  $scope.feed = feed;
-  $scope.updateList = feed.getList;
-  $scope.gdata = feed.competitions;
 
   var customCellTemplate = '<div ng-click="selectCompetition(row.entity)" class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{row.getProperty(col.field)}}</span></div>';
   var openCompetitionTemplate = '<div ng-click="openCompetitionWindow(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Detailed View</a></div>';
@@ -31,22 +50,15 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal) {
   $scope.gridOptions = { 
         data: 'gdata',
         columnDefs: [
-        {field:'competitionName', displayName:'Title', width: 180, cellTemplate: customCellTemplate },
+        {field:'competitionName', displayName:'Title', cellTemplate: customCellTemplate },
         {field:'ownerName', displayName:'Owner'}, 
         {field:'simulateState', displayName:'State'}, 
-        {field:'id', displayName:'State',width: 100, cellTemplate: openCompetitionTemplate },
+        {field:'id', displayName:'State', cellTemplate: openCompetitionTemplate },
         ]
       };
 
-  $scope.competitionGridOptions = {
-    data: 'selectedCompetition.data',
-    columnDefs: [
-        {field:'0', displayName:'Rank'},
-        {field:'1', displayName:'Player'}, 
-        {field:'2', displayName:'Wins'},
-        {field:'3', displayName:'Beans'},
-        {field:'4', displayName:'Crises'}
-        ]
+  $scope.openCompetitionWindow = function(competition) {
+    window.location = '/competition.html?id=' + competition.id;
   }
 
   $scope.parentController = function(dismiss) {
@@ -68,7 +80,7 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal) {
         dpd.competitions.post(
         {  
           simulationDate: null,
-          simulateState: 'created',
+          simulateState: 'open',
           maxTeams: $scope.modal.maxPlayers,
           minTeams: $scope.modal.minPlayers,
           numberRain: $scope.modal.numberRain,
@@ -109,17 +121,6 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal) {
         });
       
       });
-  }
-
-  $scope.selectCompetition = function(entry_id) {
-
-    $scope.selectedCompetition = entry_id;
-    $scope.showCompetitionDetail = true;
-  }
-
-  $scope.openCompetitionWindow = function(competition) {
-
-    window.location = '/competition.html?id=' + competition.id;
   }
 
 

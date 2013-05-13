@@ -125,8 +125,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
     $scope.competitionGridOptions = {
       data: 'competitionData.data',
       columnDefs: [
-          {field:'0', displayName:'Team name'},
-          {field:'1', displayName:'Strategy'},
+          {field:'1', displayName:'Player / Team name'},
           {field:'2', displayName:'Wins'}, 
           {field:'3', displayName:'Beans'},
           {field:'4', displayName:'Crises'}
@@ -155,9 +154,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
         if (me.competitions.indexOf(compid) >= 0)
         {
           $scope.ownership = true;
-
-
-          
+          console.log("this is your competition");
         }
       }
 
