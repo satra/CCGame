@@ -37,10 +37,10 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal, $roo
   $scope.modal = {
     compname : '',
     minPlayers : 1,
-    maxPlayers  : 2,
+    maxPlayers  : 10,
     numberBeans  : 10,
     numberRounds  : 10,
-    numberRain  : 10
+    climateChangeRound  : 7
   }
 
 
@@ -83,7 +83,7 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal, $roo
           simulateState: 'open',
           maxTeams: $scope.modal.maxPlayers,
           minTeams: $scope.modal.minPlayers,
-          numberRain: $scope.modal.numberRain,
+          climateChangeRound: $scope.modal.climateChangeRound,
           numberBeans: $scope.modal.numberBeans,
           numberRounds: $scope.modal.numberRound,
           teamCount: 1,

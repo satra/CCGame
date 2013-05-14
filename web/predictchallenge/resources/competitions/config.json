@@ -89,20 +89,20 @@
 			"id": "numberBeans",
 			"order": 10
 		},
-		"numberRain": {
-			"name": "numberRain",
-			"type": "number",
-			"typeLabel": "number",
-			"required": false,
-			"id": "numberRain",
-			"order": 11
-		},
 		"numberRound": {
 			"name": "numberRound",
 			"type": "number",
 			"typeLabel": "number",
 			"required": false,
 			"id": "numberRound",
+			"order": 11
+		},
+		"climateChangeRound": {
+			"name": "climateChangeRound",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "climateChangeRound",
 			"order": 12
 		}
 	}

@@ -123,6 +123,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
       else
       {
 
+          console.log(result);
         $scope.competitionData = result;
 
       }
@@ -202,6 +203,8 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
         else
         {
 
+          console.log('Me: ');
+            console.log(result);
           $scope.competitionData = result;
         }
       });

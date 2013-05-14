@@ -55,10 +55,10 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
   $scope.modal = {
     compname : '',
     minPlayers : 1,
-    maxPlayers  : 2,
+    maxPlayers  : 10,
     numberBeans  : 10,
     numberRounds  : 10,
-    numberRain  : 10
+    climateChangeRound  : 7
   }
 
 
@@ -91,7 +91,7 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
 
         if(newname.length == 0)
         {
-          newname = 'Unnamed competition'; 
+          newname = 'Unnamed competition' + createDate;
         }
 
 
@@ -101,7 +101,7 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
           simulateState: 'created',
           maxTeams: $scope.modal.maxPlayers,
           minTeams: $scope.modal.minPlayers,
-          numberRain: $scope.modal.numberRain,
+          climateChangeRound: $scope.modal.climateChangeRound,
           numberBeans: $scope.modal.numberBeans,
           numberRounds: $scope.modal.numberRound,
           teamCount: 1,

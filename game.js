@@ -249,6 +249,7 @@ RainGame.prototype.simulateOnce = function(random_state){
 };
 
 RainGame.prototype.simulate = function(n_iters){
+    if (this.n_teams < this.teams.length) this.n_teams = this.teams.length;
     var crises = zeros([this.n_teams]);
     var total_beans = zeros([this.n_teams]);
     for(var i=0; i<n_iters; i++){
