@@ -111,10 +111,9 @@ function sortWithIndices(toSort) {
   return toSort;
 }
 
-function RainGame(n_teams, n_persons_per_team, n_beans,
-                  n_rounds, die_change_round){
+function RainGame(n_teams, n_beans, n_rounds, die_change_round){
         this.n_teams = n_teams
-        this.n_persons_per_team = n_persons_per_team
+        this.n_persons_per_team = 1
         this.n_beans = n_beans
         this.n_rounds = n_rounds
         this.n_die_change = die_change_round
@@ -288,7 +287,7 @@ console.log(zeros([4]));
 console.log(generateStrategy(10, 10, 7));
 
 debug = 0;
-var game = new RainGame(400, 1, 10, 10, 7);
+var game = new RainGame(400, 10, 10, 7);
 console.log('Simulating game');
 console.log(game);
 strategy = {'forecast_bid': 2,
