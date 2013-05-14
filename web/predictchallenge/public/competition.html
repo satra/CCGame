@@ -54,6 +54,9 @@
 
   <div class="container" ng-controller='CompDetailsCtrl' ng-cloak>
     
+    <br>
+    <div><img src="img/logo.gif"></div>
+
     <div class="page-header">
       <h2>{{competitionData.competitionName}}</h2>
     </div>
@@ -63,28 +66,29 @@
           <div ng-show="currentUser">
             <div ng-show="userLoaded" >
 
-              <button type="button" class="btn btn-success btn-small" bs-modal="'partials/joinCompetition.html'">Join this competition</button>
+              <button type="button" class="btn btn-primary btn-small" bs-modal="'partials/joinCompetition.html'">Join this competition</button>
               
-              <a class="btn btn-primary btn-small" href ng-click="showLogin(true)">Run competition</a>
+              <a class="btn btn-info btn-small" href ng-click="runCompetition()">Run competition</a>
             </div>
           </div>
 
           <h4>Teams</h4>
           <div class="gridStyle" ng-grid="competitionGridOptions"></div>
 
-          <div>
-            <ul>
-              <li>Minimum team number: {{competitionData.minTeams}}</li>
-              <li>Maximum team number: {{competitionData.maxTeams}}</li>
-              <li>Current team count: {{competitionData.teamCount}}</li>
-              <li>Owner: {{competitionData.owner}}</li>
-              <li>Name: {{competitionData.competitionName}}</li>
-              <li>Starting beans: {{competitionData.numberBeans}}</li>
-              <li>State: {{competitionData.simulateState}}</li>
-              <li>Sim date: {{competitionData.simulationDate}}</li>
-              <li>Create date: {{competitionData.createDate}}</li>
-              <li>Comp ID: {{competitionData.id}}</li>
-            </ul>
+          <br>
+          <div class="well">
+            <h4>Debug details</h4>            
+              <p>Minimum team number: {{competitionData.minTeams}}</p>
+              <p>Maximum team number: {{competitionData.maxTeams}}</p>
+              <p>Current team count: {{competitionData.teamCount}}</p>
+              <p>Owner: {{competitionData.owner}}</p>
+              <p>Name: {{competitionData.competitionName}}</p>
+              <p>Starting beans: {{competitionData.numberBeans}}</p>
+              <p>State: {{competitionData.simulateState}}</p>
+              <p>Sim date: {{competitionData.simulationDate}}</p>
+              <p>Create date: {{competitionData.createDate}}</p>
+              <p>Comp ID: {{competitionData.id}}</p>
+            
           </div>
 
       </div>

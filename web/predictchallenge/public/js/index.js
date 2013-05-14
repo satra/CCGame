@@ -85,7 +85,7 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal, $roo
           minTeams: $scope.modal.minPlayers,
           climateChangeRound: $scope.modal.climateChangeRound,
           numberBeans: $scope.modal.numberBeans,
-          numberRounds: $scope.modal.numberRound,
+          numberRounds: $scope.modal.numberRounds,
           teamCount: 1,
           owner: me.id,
           ownerName: me.username,

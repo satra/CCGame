@@ -9,14 +9,48 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 
   $scope.generateStrategy = function()
   {
-    var rules = [['neither', 'geq', 7, 1],
-                 ['F', 'geq', 1, 5],
-                 ['F+DRR', 'geq', 7, 7]
-                 ];
 
-    $scope.modal.strategy.rules = rules;
+    $.get('/randomstrategy', function(data)
+    {
+      // console.log(data);
+      $scope.modal.strategy = data;
+
+      $scope.$apply($scope.model);
+
+
+      // $scope.modal.strategy.rules = data.rules;
+    });
   }
 
+  $scope.runCompetition = function()
+  {
+
+    dpd.users.me(function(me) {
+      if(me)
+      {
+        if(me.id == $scope.competitionData.owner)
+        {
+          $.post("/simulate", { "compid": $scope.compid },
+
+            function(data){
+
+              console.log(data); // John
+              alert('comp run');
+
+          }, "json");
+
+        }
+        else
+        {
+          alert('you can only run competitions you\'ve created.');
+        }
+      }
+      else
+      {
+        alert('you can only run competitions you\'ve created.');
+      }
+    });
+  }
 
   $scope.addRule = function()
   {
@@ -100,6 +134,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 
             dismiss();
 
+            $scope.$apply($scope.model);
 
           }
         });      

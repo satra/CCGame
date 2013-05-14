@@ -11,8 +11,8 @@
 		},
 		"competitionID": {
 			"name": "competitionID",
-			"type": "array",
-			"typeLabel": "array",
+			"type": "string",
+			"typeLabel": "string",
 			"required": false,
 			"id": "competitionID",
 			"order": 1

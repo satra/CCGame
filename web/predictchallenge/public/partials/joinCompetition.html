@@ -12,15 +12,15 @@
           </div>
           
           <div>
-            <h4>Initial Bids</h4>
+            <h4>Initial Bid</h4>
 
             Forecast bid:
             
             <input id="minp" class="input-small" type="number" value="4" min="1" max="20" ng-model="modal.strategy.forecast_bid">
  
-            DRR bid:
+            <!-- DRR bid: -->
 
-            <input id="maxp" class="input-small" type="number" value="4" min="1" max="20" ng-model="modal.strategy.drr_bid">
+            <!-- <input id="maxp" class="input-small" type="number" value="4" min="1" max="20" ng-model="modal.strategy.drr_bid"> -->
             
           </div>
 
@@ -31,9 +31,9 @@
           
             <select class="input-small" id="fddropt">
               <option value="F" selected="selected">Forecast</option>
-              <option value="DDR">DDR</option>
-              <option value="F+DDR">Forecast + DDR</option>
-              <option value="neither">Neither</option>
+              <!-- <option value="DDR">DDR</option> -->
+              <!-- <option value="F+DDR">Forecast + DDR</option> -->
+              <!-- <option value="neither">Neither</option> -->
             </select>
 
             and Round
@@ -74,6 +74,7 @@
                   IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain < <b>{{rule[3]}} </b> <a class="btn btn-mini btn-link" ng-click="deleteRule( $index )">(delete)</a>
 
                 </li>
+
               </ol>
             </div>             
                         
@@ -84,7 +85,7 @@
 </div>
 <div class="modal-footer">
 
-  <button class="btn btn-success" ng-click="parentController(dismiss)">Submit strategy</button>
+  <button class="btn btn-primary" ng-click="parentController(dismiss)">Submit strategy</button>
   <button class="btn btn-link" ng-click="dismiss()">cancel</button>
   
 </div>
