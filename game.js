@@ -64,7 +64,7 @@ function randomSelect(x){
     return x[getRandom(0, x.length - 1, 1)];
 };
 
-function generateStrategy(max_beans, max_rounds, die_change_round){
+function generateStrategy(max_beans, max_rounds, die_change_round, with_drr){
     /*
     0+ - if [F and DRR/F/DRR/neither] and [round eeq/geq/leq (1,10)] and
          [regional forecast >= int(1, 6 or 8)] then take early action
@@ -74,7 +74,11 @@ function generateStrategy(max_beans, max_rounds, die_change_round){
     strategy['drr_bid'] =
         getRandom(0, Math.floor(max_beans/2 - strategy['forecast_bid']), 1);
     strategy['rules'] = [];
-    bid_conditions = ['F+DRR', 'F', 'DRR', 'neither'];
+    if (with_drr){
+        bid_conditions = ['F+DRR', 'F', 'DRR', 'none'];
+    }else{
+        bid_conditions = ['F', 'none'];
+    }
     round_condition = ['geq', 'eeq', 'leq'];
     for(var i=0; i < getRandom(0, 10, 1); i++){
         rule = [randomSelect(bid_conditions),
@@ -111,20 +115,21 @@ function sortWithIndices(toSort) {
   return toSort;
 }
 
-function RainGame(n_teams, n_beans, n_rounds, die_change_round){
-        this.n_teams = n_teams
-        this.n_persons_per_team = 1
-        this.n_beans = n_beans
-        this.n_rounds = n_rounds
-        this.n_die_change = die_change_round
-        this.target_rain = 10
-        this.penalty = 4
-        this.drr_penalty = 2
-        this.drr_round_start = 3
-        this.forecast_bids = zeros([n_teams]) // receive regional forecast
-        this.drr_bids = zeros([n_teams])  // have disaster risk reduction
-        this.strategies = {}
-        this.teams = []
+function RainGame(n_teams, n_beans, n_rounds, die_change_round, with_drr){
+        this.n_teams = n_teams;
+        this.n_persons_per_team = 1;
+        this.n_beans = n_beans;
+        this.n_rounds = n_rounds;
+        this.n_die_change = die_change_round;
+        this.target_rain = 10;
+        this.penalty = 4;
+        this.with_drr = with_drr;
+        this.drr_penalty = 2;
+        this.drr_round_start = 3;
+        this.forecast_bids = zeros([n_teams]); // receive regional forecast
+        this.drr_bids = zeros([n_teams]);  // have disaster risk reduction
+        this.strategies = {};
+        this.teams = [];
 };
 
 RainGame.prototype.get_team_index = function(team_id){
@@ -135,7 +140,8 @@ RainGame.prototype.get_team_index = function(team_id){
 RainGame.prototype.submitStrategy = function(team_id, strategy){
         this.strategies[team_id] = strategy;
         this.submit_forecast_bid(team_id, strategy['forecast_bid']);
-        this.submit_drr_bid(team_id, strategy['drr_bid']);
+        if (this.with_drr)
+            this.submit_drr_bid(team_id, strategy['drr_bid']);
         //if (debug) console.log(strategy);
 };
 
@@ -175,7 +181,7 @@ RainGame.prototype.getPayments = function(regional_rainfall, forecast_teams, drr
                 if (valid_round){
                     var forecast = ((rule[0].indexOf('F') != -1) & forecast_teams[team_index]);
                     var drr = ((rule[0].indexOf('DRR')) & drr_teams[team_index]);
-                    var neither = (rule[0].indexOf('neither') != -1);
+                    var neither = (rule[0].indexOf('none') != -1);
                     if ((forecast & drr) | forecast | drr | neither) paid = true;
                 };
             };
@@ -205,18 +211,18 @@ RainGame.prototype.simulateOnce = function(random_state){
     //# Winning teams pay their beans
     beans = numeric.sub(beans, numeric.mul(forecast_teams, this.forecast_bids));
 
-    if (debug) console.log('Getting winning drr bids');
-    //# perform drr bids
-    var drr_bids = this.drr_bids.slice(0);
-    sortWithIndices(drr_bids);
-    if (debug) console.log('d bids: ' + this.drr_bids);
-    if (debug) console.log(drr_bids.sortIndices);
     var drr_teams = zeros([this.n_teams]);
-    drr_teams[drr_bids.sortIndices[this.n_teams - 1]] = 1;
-
-    //# Winning teams pay their beans
-    beans = numeric.sub(beans, numeric.mul(drr_teams, this.drr_bids));
-
+    if (this.with_drr){
+        if (debug) console.log('Getting winning drr bids');
+        //# perform drr bids
+        var drr_bids = this.drr_bids.slice(0);
+        sortWithIndices(drr_bids);
+        if (debug) console.log('d bids: ' + this.drr_bids);
+        if (debug) console.log(drr_bids.sortIndices);
+        drr_teams[drr_bids.sortIndices[this.n_teams - 1]] = 1;
+        //# Winning teams pay their beans
+        beans = numeric.sub(beans, numeric.mul(drr_teams, this.drr_bids));
+    };
     if (debug){
         console.log('beans: ' + beans);
         console.log('forecast: ' + forecast_teams);
@@ -292,16 +298,18 @@ console.log('Simulating game');
 console.log(game);
 strategy = {'forecast_bid': 2,
             'drr_bid': 1,
-            'rules': [['neither', 'geq', 7, 1],
-                      ['F', 'geq', 1, 5],
-                      ['F+DRR', 'geq', 7, 7]
+            'rules': [['none', 'geq', 7, 1],
+                      ['F', 'geq', 1, 5]
                      ]
             };
+//,
+//                      ['F+DRR', 'geq', 7, 7]
 game.submitStrategy('T0', strategy)
 for(var team_id=1; team_id < game.n_teams; team_id++){
    game.submitStrategy('T' + team_id, generateStrategy(game.n_beans,
-                                                            game.n_rounds,
-                                                            game.n_die_change));
+                                                       game.n_rounds,
+                                                       game.n_die_change,
+                                                       false));
 };
 console.log(game.simulate(1000));
 };
