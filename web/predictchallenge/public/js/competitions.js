@@ -190,11 +190,12 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
     for(i=0;i<compdata.length;i++)
     {
       
-      beans_array.push([compdata[i][6] - 0.5, compdata[i][4]])
-      crises_array.push([compdata[i][6] - 0.5, compdata[i][5]])
+      beans_array.push([compdata[i][6]-0.2, compdata[i][4]])
+      crises_array.push([compdata[i][6]+0.2, compdata[i][5]])
     }
 
-    array_to_return = [beans_array, crises_array];
+    array_to_return = [{'label': 'Beans', 'data': beans_array},
+        {'label': 'Crises', 'data': crises_array}];
 
     return array_to_return;
   }
@@ -305,16 +306,18 @@ app.directive('chart', function(){
             {
                 var options = {
                     xaxis: {
-                      ticks: [0, 1, 2,3,4,5,6,7,8,9,10]
+                      ticks: [0, 1, 2,3,4,5,6,7,8,9,10],
+                        min: -0.5,
+                        max: 10.5
                     },
                     grid: {
                       show: true
                     },
                     series: {
-                      bars: { show: true },
                       lines: { show: false },
-                      points: { show: true }
-                    }
+                      points: { show: true}
+                    },
+                    colors: ["rgba(98, 139, 97, 0.8)", "rgba(255, 0, 0, 0.8)"]
                 };
 
               $.plot(elem, scope.data, options);
