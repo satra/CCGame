@@ -129,7 +129,7 @@ app.factory('CompetitionList', function($rootScope)
     var _list = this;
 
     var query = angular.copy(this.query);
-    query.$limit = PAGE_SIZE + 1;
+    // query.$limit = PAGE_SIZE + 1;
     query.createDate = {$lt: this.lastTime};
     query.$sort = {createDate: -1};
 
@@ -163,6 +163,60 @@ app.factory('CompetitionList', function($rootScope)
   };
 
   return CompetitionList;
+
+});
+
+app.factory('ResultList', function($rootScope) 
+{
+
+  var PAGE_SIZE = 10;
+
+  var ResultList = function CompetitionList(query)
+  {
+    this.query = query || {};
+    this.competitions = [];
+    this.lastTime = 0;
+    this.moreToLoad = false;
+  };
+
+  ResultList.prototype.getList = function() {
+    var _list = this;
+
+    var query = angular.copy(this.query);
+    // query.$limit = PAGE_SIZE + 1;
+    query.createDate = {$lt: this.lastTime};
+    query.$sort = {createDate: -1};
+
+    dpd.strategy.get(query, function(result) {
+
+      console.log(result);
+
+      if (result.length > PAGE_SIZE) {
+        result.pop();
+        _list.moreToLoad = true;
+      } else {
+        _list.moreToLoad = false;
+      }
+
+      if (result.length) _list.lastTime = result[result.length - 1].createDate;
+
+      Array.prototype.push.apply(_list.competitions, result);
+
+      $rootScope.$apply();
+
+    });
+  };
+
+  ResultList.prototype.refresh = function() {
+
+    this.lastTime = new Date().getTime();
+    this.competitions.length = 0;
+    this.getList();
+    this.moreToLoad = false;
+
+  };
+
+  return ResultList;
 
 });
 

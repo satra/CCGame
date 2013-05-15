@@ -105,6 +105,8 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
         dpd.strategy.post(
         {
           owner: me.id,
+          ownerName: me.username,
+          competitionName: $scope.competitionData.competitionName, 
           competitionID: $scope.competitionData.id,
           strategy: submitstrat, 
           aggregateBeans: [],

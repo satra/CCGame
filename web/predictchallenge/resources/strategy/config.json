@@ -48,6 +48,22 @@
 			"required": false,
 			"id": "createDate",
 			"order": 5
+		},
+		"ownerName": {
+			"name": "ownerName",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "ownerName",
+			"order": 6
+		},
+		"competitionName": {
+			"name": "competitionName",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "competitionName",
+			"order": 7
 		}
 	}
 }
