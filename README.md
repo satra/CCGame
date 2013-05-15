@@ -9,9 +9,13 @@ This game was developed with support from the American Red Cross and CDKN.org. I
 ## Software requirements
 The game is built on openly and freely available javascript software technologies and can be run on a local platform or configured to run on a remote web server. To run locally one only needs to download the game from XX.
 
-Frameworks used:
+### Frameworks used
+
 1. deployd.js (Website: http://deployd.com/ Source: https://github.com/deployd/deployd)
+
 2. angular.js (Website: http://angularjs.org/ Source: https://github.com/angular/angular.js)
+
 3. node.js (Website: http://nodejs.org/ Source: https://github.com/joyent/node)
+
 4. flot.js (Website: http://www.flotcharts.org/ Source: https://github.com/flot/flot)
 
