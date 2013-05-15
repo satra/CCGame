@@ -261,7 +261,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
         {field:'strat', displayName:'Strategy', cellTemplate: showStrategyTemplate, width: '*',  sortable: false }, 
         {field:'beans', displayName:'Beans', width: '*',  sortable: true}, 
         {field:'crises', displayName:'Crises', width: '*',  sortable: true},
-        {field:'bids', displayName:'Forecasts', width: '*',  sortable: true}
+        {field:'bids', displayName:'Forecast bids', width: '*',  sortable: true}
         ]
     }    
 
