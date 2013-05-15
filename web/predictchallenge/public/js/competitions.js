@@ -73,7 +73,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
           {
             if($scope.completed ==false)
             {
-              alert('this competitoin has already been run');
+              alert('this competition has already been run');
             }
           }
         }
