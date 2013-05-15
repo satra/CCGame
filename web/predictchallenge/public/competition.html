@@ -4,11 +4,19 @@
   <title>Paying for Predictions</title>
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="css/ng-grid.css" /> 
+  <link rel="stylesheet" type="text/css" href="css/dangle.css" /> 
   <link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.10.3.custom.min.css" />  
   <link rel="stylesheet" href="css/style.css" />
   <!-- Angular does some things with CSS so it's good to load this in the head -->
+  <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
   <script type="text/javascript" src="/js/lib/angular.js"></script>
   <style type="text/css">
+
+    .chart{
+        
+        width:400px;
+        height:200px;
+    }
 
     .embedGridStyle {
       /*border: 1px solid rgb(212,212,212);*/
@@ -63,22 +71,22 @@
       <p><small>Team count: {{competitionData.data.length }} of {{competitionData.maxTeams}}. Minimum of {{competitionData.minTeams}} needed to start this competition.<br>
       
 
-      <span ng-show="completed">This competition was run successfully on {{ runDate | date:'medium' }} </span> </small></p>
-      
-      
-
-
+      <span ng-show="completed">This competition was run successfully on {{ runDate | date:'medium' }} </span> </small></p>    
     </div>
 
     <div class="row" >
       <div class="span12">
+
+        <div ng-show="completed" class="chart pull-right" chart="" ng-model='data'>        
+        </div>
+        <div class="clearfix"></div>
+
           <div ng-show="currentUser">
             <div ng-show="userLoaded" >
 
               <button ng-hide="completed || competitionFull" type="button" class="btn btn-primary btn-small" bs-modal="'partials/joinCompetition.html'">Join this competition</button>
 
               <button ng-show="ownership && !completed" class="btn btn-primary btn-small" href ng-click="runCompetition()">Run competition</button>
-
             </div>
           </div>
 
@@ -115,7 +123,7 @@
   <script type="text/javascript" src="/js/lib/bootstrap.min.js"></script>
   <script type="text/javascript" src="/js/lib/ng-grid-2.0.5.min.js"></script>
   <script type="text/javascript" src="/js/lib/angular-strap.min.js"></script>
-
+  <script type="text/javascript" src="  https://raw.github.com/flot/flot/master/jquery.flot.js"></script>
   <script type="text/javascript" src="/dpd.js"></script>
   
   <script type="text/javascript" src="/js/global.js"></script>

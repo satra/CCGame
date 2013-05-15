@@ -7,12 +7,11 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   }
 
 
+  // $scope.data = [[[0, 1], [1, 5], [2, 2]]];
 
   $scope.clearRules = function()
   {
-
     $scope.modal.strategy.rules = [];
-
   }
 
   $scope.generateStrategy = function()
@@ -53,7 +52,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
                 
                 $scope.competitionData = data;
                 $scope.runDate = new Date($scope.competitionData.runtime);
-
+                $scope.data = getChartData($scope.competitionData.data);
                 // console.log(data); // John
                 // alert('comp run'); 
 
@@ -173,10 +172,31 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
       {
         // console.log(result);
         $scope.competitionData = result;
-        // console.log($scope.competitionData.runtime);
         $scope.runDate = new Date($scope.competitionData.runtime);
+        $scope.data = getChartData($scope.competitionData.data);
+
       }
     });
+  }
+
+  function getChartData(compdata)
+  {
+
+    var array_to_return = []
+    var beans_array = []
+    var crises_array = []
+
+
+    for(i=0;i<compdata.length;i++)
+    {
+      
+      beans_array.push([compdata[i][6] - 0.5, compdata[i][4]])
+      crises_array.push([compdata[i][6] - 0.5, compdata[i][5]])
+    }
+
+    array_to_return = [beans_array, crises_array];
+
+    return array_to_return;
   }
 
   $scope.runDate = ''
@@ -186,6 +206,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   $scope.competitionFull = false;
   $scope.ownership = false;
   $scope.showingStrategyDetails = false;
+  $scope.data = [];
 
   $scope.selectedStrategy = {};
 
@@ -255,10 +276,8 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
       else
       {
         $scope.competitionData = result;
-        
-        console.log($scope.competitionData);
-
         $scope.runDate = new Date($scope.competitionData.runtime);
+        $scope.data = getChartData($scope.competitionData.data);
 
         if($scope.competitionData.simulateState == 'completed')
         {
@@ -275,6 +294,34 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   }
 });
 
+
+app.directive('chart', function(){
+    return {
+        restrict: 'A',
+        replace: true,        
+        link: function(scope, elem, attrs) {
+
+            scope.$watch(attrs.ngModel, function changed(a,b)
+            {
+                var options = {
+                    xaxis: {
+                      ticks: [0, 1, 2,3,4,5,6,7,8,9,10]
+                    },
+                    grid: {
+                      show: true
+                    },
+                    series: {
+                      bars: { show: true },
+                      lines: { show: false },
+                      points: { show: true }
+                    }
+                };
+
+              $.plot(elem, scope.data, options);
+            }); 
+        }
+    };
+});
 
 // directive for a single list
 // based on code from 

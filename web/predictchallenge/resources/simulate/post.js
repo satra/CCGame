@@ -1,5 +1,8 @@
 // this needs to be mapped to site-specific location
-var numeric = require('/Users/stonerri/Documents/SatraPrediction/CCGame/web/predictchallenge/node_modules/numeric');
+//var numeric = require('/Users/stonerri/Documents/SatraPrediction/CCGame/web/predictchallenge/node_modules/numeric');
+
+// moved numeric to same path as post.js in the resources directory of the app
+var numeric = require('node_modules/numeric');
 var simulateID = '';
 
 var debug = 0;

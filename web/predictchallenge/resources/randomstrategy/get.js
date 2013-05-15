@@ -1,5 +1,9 @@
 // this needs to be mapped to site-specific location
-var numeric = require('/Users/stonerri/Documents/SatraPrediction/CCGame/web/predictchallenge/node_modules/numeric');
+//var numeric = require('/Users/stonerri/Documents/SatraPrediction/CCGame/web/predictchallenge/node_modules/numeric');
+var numeric = require('node_modules/numeric');
+
+console.log(context());
+
 var max_beans = 10
 var max_rounds = 10;
 var round_change = 6;
