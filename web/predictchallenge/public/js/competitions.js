@@ -27,7 +27,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   $scope.showStrategy = function(strategy_index)
   {
     $scope.showingStrategyDetails = true;
-    $scope.selectedStrategy = strategy_index[2];
+    $scope.selectedStrategy = strategy_index.strat;
   }
 
 
@@ -53,6 +53,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
                 $scope.competitionData = data;
                 $scope.runDate = new Date($scope.competitionData.runtime);
                 $scope.data = getChartData($scope.competitionData.data);
+                $scope.sortableData = getSortData($scope.competitionData.data);
                 // console.log(data); // John
                 // alert('comp run'); 
 
@@ -174,9 +175,29 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
         $scope.competitionData = result;
         $scope.runDate = new Date($scope.competitionData.runtime);
         $scope.data = getChartData($scope.competitionData.data);
+        $scope.sortableData = getSortData($scope.competitionData.data);
 
       }
     });
+  }
+
+  function getSortData(data_to_sort){
+
+    var array_to_return = []
+
+    for(i=0;i<data_to_sort.length;i++)
+    {
+      d = {
+        name: data_to_sort[i][1],
+        strat: data_to_sort[i][2],
+        beans: data_to_sort[i][4],
+        crises: data_to_sort[i][5],
+        bids: data_to_sort[i][6]
+        
+      };
+      array_to_return.push(d);
+    }
+    return array_to_return;
   }
 
   function getChartData(compdata)
@@ -207,6 +228,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   $scope.ownership = false;
   $scope.showingStrategyDetails = false;
   $scope.data = [];
+  $scope.sortableData = [];
 
   $scope.selectedStrategy = {};
 
@@ -226,16 +248,28 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   }
 
 
+
+
   var showStrategyTemplate = '<div ng-click="showStrategy(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Click for details</a></div>';
 
-  $scope.competitionGridOptions = {
-    data: 'competitionData.data',
+  // $scope.competitionGridOptions = {
+  //   data: 'sortableData',
+  //   columnDefs: [
+  //       {field:'1', displayName:'Player / Team name', width: '*',  sortable: true},
+  //       {field:'2', displayName:'Strategy', cellTemplate: showStrategyTemplate, width: '*',  sortable: false }, 
+  //       {field:'4', displayName:'Beans', width: '*',  sortable: true}, 
+  //       {field:'5', displayName:'Crises', width: '*',  sortable: true},
+  //       {field:'6', displayName:'Forecasts', width: '*',  sortable: true}
+  //       ]
+  //   }    
+    $scope.competitionGridOptions = {
+    data: 'sortableData',
     columnDefs: [
-        {field:'1', displayName:'Player / Team name'},
-        {field:'2', displayName:'Strategy', cellTemplate: showStrategyTemplate }, 
-        {field:'4', displayName:'Beans'}, 
-        {field:'5', displayName:'Crises'},
-        {field:'6', displayName:'Forecasts'}
+        {field:'name', displayName:'Player / Team name', width: '*',  sortable: true},
+        {field:'strat', displayName:'Strategy', cellTemplate: showStrategyTemplate, width: '*',  sortable: false }, 
+        {field:'beans', displayName:'Beans', width: '*',  sortable: true}, 
+        {field:'crises', displayName:'Crises', width: '*',  sortable: true},
+        {field:'bids', displayName:'Forecasts', width: '*',  sortable: true}
         ]
     }    
 
@@ -278,6 +312,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
         $scope.competitionData = result;
         $scope.runDate = new Date($scope.competitionData.runtime);
         $scope.data = getChartData($scope.competitionData.data);
+        $scope.sortableData = getSortData($scope.competitionData.data);
 
         if($scope.competitionData.simulateState == 'completed')
         {
@@ -304,13 +339,18 @@ app.directive('chart', function(){
             scope.$watch(attrs.ngModel, function changed(a,b)
             {
                 var options = {
-                    xaxis: {
-                      ticks: [0, 1, 2,3,4,5,6,7,8,9,10]
-                    },
+                  xaxis: {
+                        ticks: [0, 1, 2,3,4,5,6,7,8,9,10],
+                        label: "Number of bids",
+                        min: -1,
+                        max: 10,
+                        show: true
+                      },
                     grid: {
                       show: true
                     },
                     series: {
+                      xaxis: 1,             
                       bars: { show: true },
                       lines: { show: false },
                       points: { show: true }
