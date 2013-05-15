@@ -276,8 +276,10 @@ RainGame.prototype.simulate = function(n_iters){
         if (debug>1) console.log('Simulating iteration: ' + i);
         var beans = this.simulateOnce(0);
         for(var j=0; j<this.n_teams; j++){
-            total_beans[j] += beans[j];
-            if (beans[j]<0) crises[j] += beans[j];
+            if (beans[j]<0) 
+                crises[j] += beans[j];
+            else
+                total_beans[j] += beans[j];
         }
         if (debug>2) console.log('crises: ' + crises);
     }
