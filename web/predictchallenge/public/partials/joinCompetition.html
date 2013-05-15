@@ -7,7 +7,8 @@
         <form class="form-horizontal">     
 
           <div>   
-            <div>Would you like the computer to generate a strategy for you? <button class="btn btn-info pull-right" ng-click="generateStrategy()">Generate strategy</button></div>
+            <div>Would you like the computer to generate a strategy for you?
+             <button class="btn btn-inverse pull-right" ng-click="clearRules()">Clear rules</button>&nbsp;<button class="btn btn-info pull-right" ng-click="generateStrategy()">Generate strategy</button>  </div>
             <hr>
           </div>
           
@@ -25,7 +26,7 @@
           </div>
 
           <div>
-            <h4>Add rules</h4>
+            <h4>Add rules for early action</h4>
 
             <div>IF 
           
@@ -33,15 +34,15 @@
               <option value="F" selected="selected">Forecast</option>
               <!-- <option value="DDR">DDR</option> -->
               <!-- <option value="F+DDR">Forecast + DDR</option> -->
-              <!-- <option value="neither">Neither</option> -->
+              <option value="neither">None</option>
             </select>
 
             and Round
 
-            <select class="input-small" id="equalopt">
-              <option value="geq" selected="selected">>=</option>
-              <option value="leq"><=</option>
-              <option value="eq">==</option>
+            <select class="input" id="equalopt">
+              <option value="geq" selected="selected">greater than or equal to</option>
+              <option value="leq">less than or equal to</option>
+              <option value="eq">equal to</option>
             </select>
 
             <input id="roundopt" class="input-small" type="number" value="4" min="1" max="20">
@@ -57,7 +58,7 @@
               <option>6</option>
             </select>     
 
-            <button class="btn pull-right" ng-click="addRule()">Add rule <i class="icon-ok"></i></button>
+            <button class="btn pull-right" ng-click="addRule()">Add rules <i class="icon-ok"></i></button>
 
             </div>
           </div>      

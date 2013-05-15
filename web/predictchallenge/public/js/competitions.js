@@ -8,6 +8,12 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 
 
 
+  $scope.clearRules = function()
+  {
+
+    $scope.modal.strategy.rules = [];
+
+  }
 
   $scope.generateStrategy = function()
   {
@@ -59,7 +65,9 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
             }
             else
             {
-              alert('This competition needs more players/teams before it can be run');
+              var needed = $scope.competitionData.minTeams - $scope.competitionData.data.length;
+
+              alert('This competition needs ' + needed + ' more players/teams before it can be run');
             }
           }
           else
@@ -99,7 +107,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
     // do something
      dpd.users.me(function(me) {
 
-        var createDate = new Date().getDate();
+        var createDate = new Date().getTime();
         var submitstrat = $scope.modal.strategy;
 
         dpd.strategy.post(

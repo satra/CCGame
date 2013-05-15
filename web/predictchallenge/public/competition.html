@@ -58,9 +58,16 @@
     <div><img src="img/logo.gif"></div>
 
     <div class="page-header">
+
       <h2>{{competitionData.competitionName}} <small>Created by {{competitionData.ownerName}}</small></h2>
       <p><small>Team count: {{competitionData.data.length }} of {{competitionData.maxTeams}}. Minimum of {{competitionData.minTeams}} needed to start this competition.<br>
+      
+
       <span ng-show="completed">This competition was run successfully on {{ runDate | date:'medium' }} </span> </small></p>
+      
+      
+
+
     </div>
 
     <div class="row" >
@@ -79,6 +86,8 @@
           <div class="gridStyle" ng-grid="competitionGridOptions"></div>
 
           <br>
+
+
           <div ng-show="showingStrategyDetails">
             <div class="well">
 
@@ -93,6 +102,8 @@
 
             </div>
           </div>
+
+
 
       </div>
     </div>

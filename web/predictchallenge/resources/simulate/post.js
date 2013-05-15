@@ -323,6 +323,7 @@ dpd.competitions.get(body.compid,
         var simresult = rg.simulate(1000);
 
         var createDate = new Date().getTime();
+        
         competition_data.runtime = createDate;
         competition_data.simulateState = 'completed';
 
@@ -332,7 +333,6 @@ dpd.competitions.get(body.compid,
             dpd.strategy.get(outcome.team, function(r, e)
             {
                 // console.log(r);
-
                 r.competitionID = body.compid;
                 r.aggregateBeans.push(outcome.beans);
                 r.aggregateCrises.push(outcome.crises);
