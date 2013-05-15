@@ -1,64 +1,17 @@
-A web for the Red Cross Climate Center game.
+# LICENSE
+    				
+World rights to all products generated under this contract are available under a Creative Commons Attribution-NonCommercial (CC BY-NC) License, held jointly by the Red Cross/Red Crescent Climate Centre and Tank Think Labs, LLC.
 
+# Disclaimer
 
-Team id [enter/randomly assigned]
-1 - bid X beans for forecast (F)
-1 - bid Y beans for DRR
-0+ - if [F and DRR/F/DRR/neither] and [round </>/=/>=/<= (1,10)] and [regional forecast > int] then take early action
+This game was developed with support from the American Red Cross and CDKN.org. It was part of a research grant to The Red Cross/Red Crescent Climate Centre from the Climate and Development Knowledge Network (CDKN Action Lab Innovation Fund). As such, it is an output from a project funded by the UK Department for International Development (DFID) and the Netherlands Directorate-General for International Cooperation (DGIS) for the benefit of developing countries. However, the views expressed and information contained in it are not necessarily those of or endorsed by DFID, DGIS or the entities managing the delivery of the Climate and Development Knowledge Network, which can accept no responsibility or liability for such views, completeness or accuracy of the information or for any reliance placed on them. 
 
-0+ = 0 or more statements
+## Software requirements
+The game is built on openly and freely available javascript software technologies and can be run on a local platform or configured to run on a remote web server. To run locally one only needs to download the game from XX.
 
-once these are entered, across all participants then the backend will simulate the game and display the final bean count for each person as well as a visualization of this across the individuals over time (an updating d3 graph would work fine).
+Frameworks used:
+1. deployd.js (Website: http://deployd.com/ Source: https://github.com/deployd/deployd)
+2. angular.js (Website: http://angularjs.org/ Source: https://github.com/angular/angular.js)
+3. node.js (Website: http://nodejs.org/ Source: https://github.com/joyent/node)
+4. flot.js (Website: http://www.flotcharts.org/ Source: https://github.com/flot/flot)
 
-I am running the game, go to this website
-
-    each client gets an unique ID associated with that client
-
-
-
-
-
-Tables needed
-
-    Users 
-
-        id
-        username
-        password
-        displayName
-        competitions (list of comp_ids)
-
-    Competition 
-
-        id
-        date created
-        date simulated
-        owner
-
-        minTeams
-        maxTeams
-
-        simulationState
-
-        individual_result
-            [user_id, strategy_id, number of wins, number of crises]
-
-
-    Stategy
-
-        id
-        owner (user_id)
-        date created
-        competition_id
-
-        s_forecast_bid
-        s_drr_bid
-        s_rules
-            ['neighter', geq', 7, 1]
-            ['F', 'geq', 1, 5]
-            ['FDDR', 'geq', 7, 7]
-
-        aggregate_beans
-        aggregate_crises
-
-        
