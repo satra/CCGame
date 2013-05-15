@@ -58,7 +58,9 @@
     <div><img src="img/logo.gif"></div>
 
     <div class="page-header">
-      <h2>{{competitionData.competitionName}}</h2>
+      <h2>{{competitionData.competitionName}} <small>Created by {{competitionData.ownerName}}</small></h2>
+      <p><small>Team count: {{competitionData.data.length }} of {{competitionData.maxTeams}}. Minimum of {{competitionData.minTeams}} needed to start this competition.<br>
+      <span ng-show="completed">This competition was run successfully on {{ runDate | date:'medium' }} </span> </small></p>
     </div>
 
     <div class="row" >
@@ -66,9 +68,10 @@
           <div ng-show="currentUser">
             <div ng-show="userLoaded" >
 
-              <button type="button" class="btn btn-primary btn-small" bs-modal="'partials/joinCompetition.html'">Join this competition</button>
-              
-              <a class="btn btn-info btn-small" href ng-click="runCompetition()">Run competition</a>
+              <button ng-hide="completed || competitionFull" type="button" class="btn btn-primary btn-small" bs-modal="'partials/joinCompetition.html'">Join this competition</button>
+
+              <button ng-show="ownership && !completed" class="btn btn-primary btn-small" href ng-click="runCompetition()">Run competition</button>
+
             </div>
           </div>
 
@@ -76,19 +79,19 @@
           <div class="gridStyle" ng-grid="competitionGridOptions"></div>
 
           <br>
-          <div class="well">
-            <h4>Debug details</h4>            
-              <p>Minimum team number: {{competitionData.minTeams}}</p>
-              <p>Maximum team number: {{competitionData.maxTeams}}</p>
-              <p>Current team count: {{competitionData.teamCount}}</p>
-              <p>Owner: {{competitionData.owner}}</p>
-              <p>Name: {{competitionData.competitionName}}</p>
-              <p>Starting beans: {{competitionData.numberBeans}}</p>
-              <p>State: {{competitionData.simulateState}}</p>
-              <p>Sim date: {{competitionData.simulationDate}}</p>
-              <p>Create date: {{competitionData.createDate}}</p>
-              <p>Comp ID: {{competitionData.id}}</p>
-            
+          <div ng-show="showingStrategyDetails">
+            <div class="well">
+
+              <p><strong>Forecast bid: {{ selectedStrategy.forecast_bid }}</strong></p>
+              <ol>
+                <li ng-repeat="rule in selectedStrategy.rules">
+                  
+                  IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain < <b>{{rule[3]}} </b>
+
+                </li>
+              </ol>
+
+            </div>
           </div>
 
       </div>

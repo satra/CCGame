@@ -61,7 +61,6 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
     climateChangeRound  : 7
   }
 
-
   var customCellTemplate = '<div ng-click="selectCompetition(row.entity)" class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{row.getProperty(col.field)}}</span></div>';
   var openCompetitionTemplate = '<div ng-click="openCompetitionWindow(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Detailed View</a></div>';
 
@@ -86,7 +85,6 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
      dpd.users.me(function(me) {
 
         var createDate = new Date().getTime();
-
         var newname = $scope.modal.compname;        
 
         if(newname.length == 0)
@@ -97,8 +95,8 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
 
         dpd.competitions.post(
         {  
-          simulationDate: null,
           simulateState: 'created',
+          runtime: 0,
           maxTeams: $scope.modal.maxPlayers,
           minTeams: $scope.modal.minPlayers,
           climateChangeRound: $scope.modal.climateChangeRound,
@@ -130,8 +128,10 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
               console.log(result, result.id);
             });
 
+
             dismiss();
 
+            // uncomment to redirect to competition page after creation
             // window.location = '/competition.html?id=' + result.id;
 
 

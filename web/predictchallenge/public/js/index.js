@@ -79,7 +79,7 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal, $roo
 
         dpd.competitions.post(
         {  
-          simulationDate: null,
+          runtime: 0,
           simulateState: 'open',
           maxTeams: $scope.modal.maxPlayers,
           minTeams: $scope.modal.minPlayers,

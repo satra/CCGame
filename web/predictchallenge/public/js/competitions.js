@@ -7,20 +7,24 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   }
 
 
+
+
   $scope.generateStrategy = function()
   {
 
     $.get('/randomstrategy', function(data)
     {
-      // console.log(data);
       $scope.modal.strategy = data;
-
       $scope.$apply($scope.model);
-
-
-      // $scope.modal.strategy.rules = data.rules;
     });
   }
+
+  $scope.showStrategy = function(strategy_index)
+  {
+    $scope.showingStrategyDetails = true;
+    $scope.selectedStrategy = strategy_index[2];
+  }
+
 
   $scope.runCompetition = function()
   {
@@ -30,15 +34,41 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
       {
         if(me.id == $scope.competitionData.owner)
         {
-          $.post("/simulate", { "compid": $scope.compid },
 
-            function(data){
+          if($scope.competitionData.simulateState != 'completed')
+          {
 
-              console.log(data); // John
-              alert('comp run');
+            if($scope.competitionData.data.length >= $scope.competitionData.minTeams)
+            {
 
-          }, "json");
+              $.post("/simulate", { "compid": $scope.compid },
 
+              function(data){
+                
+                $scope.competitionData = data;
+                $scope.runDate = new Date($scope.competitionData.runtime);
+
+                // console.log(data); // John
+                // alert('comp run'); 
+
+                $scope.completed = true;
+
+                $scope.$apply();
+
+              }, "json");
+            }
+            else
+            {
+              alert('This competition needs more players/teams before it can be run');
+            }
+          }
+          else
+          {
+            if($scope.completed ==false)
+            {
+              alert('this competitoin has already been run');
+            }
+          }
         }
         else
         {
@@ -58,37 +88,19 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
     $scope.modal.strategy.rules[$scope.modal.strategy.rules.length] = rule_to_add;
   }
 
-  // could add code to generate random rule and add it
-  $scope.generateRandomRule = function()
-  {
-
-  }
-
-
   $scope.deleteRule = function(ruleIndex)
   {
     $scope.modal.strategy.rules.splice(ruleIndex,1);
-
-  }
-
-  $scope.submitStrategy = function()
-  {
-
   }
 
   // this is the callback from the modal to try to register a strategy
   $scope.parentController = function(dismiss) {
-    // console.log(dismiss);
+
     // do something
      dpd.users.me(function(me) {
 
-        var createDate = new Date().getTime();
-
+        var createDate = new Date().getDate();
         var submitstrat = $scope.modal.strategy;
-
-        // after we have a strategy,
-        // 1) add it to the strategy table
-        // 2) add it + user information to the competition data
 
         dpd.strategy.post(
         {
@@ -99,35 +111,30 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
           aggregateCrises: [],
           createDate: createDate
         }, function (result, err) {
-
           if(err) 
           {
             return console.log(err);
           }
           else
           {
-
             // this branch assumes we've inserted into strategy table successful
             // now add to competition table
-
             $scope.competitionData.data.push([me.id, me.username, submitstrat, result.id, -1, -1, -1, -1]);
-            // $scope.teamlist.push([me.id, me.username, submitstrat, result.id, -1, -1, -1, -1]);
-            $scope.competitionData.teamCount += 1;
+
+            if($scope.competitionData.data.length == $scope.competitionData.maxTeams)
+            {
+              $scope.competitionFull = true;
+            }
 
             dpd.competitions.put($scope.competitionData.id, $scope.competitionData,
               function(result, err) {
                 if(err) {
-                 
                   return console.log(err);
                 }
                 else
-                {
-                  
-                  // $scope.details = result;      
-                  // $scope.teamlist = $scope.details.data;
-
-                  console.log(result);
-
+                {                  
+                  // $scope.details = result;    
+                  // $scope.apply($scope.modal);  
                   $scope.refreshCompetitionData();
                 }
             });
@@ -138,18 +145,15 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 
           }
         });      
-
-
-
       });
   }
 
+  // this may be uncessary
   $scope.refreshCompetitionData = function()
   {
     $scope.compid = compid;
 
     dpd.competitions.get(compid, function(result) {
-    
       if(!result)
       {
         console.log('incorrect id, should redirect')    
@@ -157,26 +161,27 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
       }
       else
       {
-
-          console.log(result);
+        // console.log(result);
         $scope.competitionData = result;
-
+        // console.log($scope.competitionData.runtime);
+        $scope.runDate = new Date($scope.competitionData.runtime);
       }
     });
-
-
   }
 
+  $scope.runDate = ''
+
   $scope.competitionData = {}
+  $scope.completed = false;
+  $scope.competitionFull = false;
+  $scope.ownership = false;
+  $scope.showingStrategyDetails = false;
+
+  $scope.selectedStrategy = {};
 
   var query = location.search;
   var compid = query.split('?id=')[1];
 
-  $rootScope.ownership = false;
-
-  // $scope.$watch('competitionData', function(newVal) {
-  //       alert('columns changed');
-  // }, false);
 
 // populate modal with default strategy
   var strategy = {'forecast_bid': 2,
@@ -189,13 +194,17 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
     strategy: strategy
   }
 
+
+  var showStrategyTemplate = '<div ng-click="showStrategy(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Click for details</a></div>';
+
   $scope.competitionGridOptions = {
     data: 'competitionData.data',
     columnDefs: [
         {field:'1', displayName:'Player / Team name'},
-        {field:'2', displayName:'Wins'}, 
-        {field:'3', displayName:'Beans'},
-        {field:'4', displayName:'Crises'}
+        {field:'2', displayName:'Strategy', cellTemplate: showStrategyTemplate }, 
+        {field:'4', displayName:'Beans'}, 
+        {field:'5', displayName:'Crises'},
+        {field:'6', displayName:'Forecasts'}
         ]
     }    
 
@@ -207,13 +216,11 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   }
   else
   {
-
     $scope.compid = compid;
 
     console.log('loading compid:' + compid);
 
     dpd.users.me(function(me) {
-
       if(me)
       {
         console.log(me);
@@ -222,29 +229,38 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
         {
           $scope.ownership = true;
           console.log("this is your competition");
+
+
         }
       }
-
-
     });
 
-      dpd.competitions.get(compid, function(result) {
-      
-        if(!result)
+    dpd.competitions.get(compid, function(result) {
+    
+      if(!result)
+      {
+        console.log('incorrect id, should redirect')    
+        location.href = "/";
+      }
+      else
+      {
+        $scope.competitionData = result;
+        
+        console.log($scope.competitionData);
+
+        $scope.runDate = new Date($scope.competitionData.runtime);
+
+        if($scope.competitionData.simulateState == 'completed')
         {
-          console.log('incorrect id, should redirect')    
-          location.href = "/";
+          $scope.completed = true;
         }
-        else
+
+        if($scope.competitionData.data.length == $scope.competitionData.maxTeams)
         {
-
-          console.log('Me: ');
-            console.log(result);
-          $scope.competitionData = result;
+          $scope.competitionFull = true;
         }
-      });
-
-
+      }
+    });
 
   }
 });

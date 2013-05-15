@@ -299,37 +299,39 @@ RainGame.prototype.simulate = function(n_iters){
 
 
 dpd.competitions.get(body.compid, 
-    function(results, error) {
+    function(competition_data, error) {
 
-        var n_teams = results.data.length;
-        var n_beans = results.numberBeans;
-        var n_rounds = results.numberRounds;
-        var die_change_round = results.climateChangeRound;
+        var n_teams = competition_data.data.length;
+        var n_beans = competition_data.numberBeans;
+        var n_rounds = competition_data.numberRounds;
+        var die_change_round = competition_data.climateChangeRound;
         var with_drr = false;
 
         var rg = new RainGame(n_teams, n_beans, n_rounds, die_change_round, with_drr);
 
         for(i=0;i<n_teams;i++)
         {
-            var playerid = results.data[i][0];
+            var playerid = competition_data.data[i][0];
 
             // using strategy ID to enable multiple strategies per user in same competition
-            var strategyID = results.data[i][3];
-            var playerstrategy = results.data[i][2];
+            var strategyID = competition_data.data[i][3];
+            var playerstrategy = competition_data.data[i][2];
 
             rg.submitStrategy(strategyID, playerstrategy);
         }
 
         var simresult = rg.simulate(1000);
 
+        var createDate = new Date().getTime();
+        competition_data.runtime = createDate;
+        competition_data.simulateState = 'completed';
+
         for(j=0;j<simresult.length;j++)
         {
-
             var outcome = simresult[j];
-
             dpd.strategy.get(outcome.team, function(r, e)
             {
-                console.log(r);
+                // console.log(r);
 
                 r.competitionID = body.compid;
                 r.aggregateBeans.push(outcome.beans);
@@ -339,13 +341,28 @@ dpd.competitions.get(body.compid,
             });
         }
 
-        // after simulation has been run ->
+        // update competition data
+        for(k=0;k<simresult.length;k++)
+        {
+            var outcome = simresult[k];
 
-            // I need to update the strategy data
-            // I need to update the competition data
+            for(m=0;m<competition_data.data.length;m++)
+            {
+                if(competition_data.data[m][3] == outcome.team)
+                {
+                    // matched
+                    competition_data.data[m][4] = outcome.beans;
+                    competition_data.data[m][5] = outcome.crises;
+                    competition_data.data[m][6] = outcome.forecast;
+                    competition_data.data[m][7] = outcome.drr;
 
+                }
+            }            
+        }
 
-      setResult(simresult);
+        dpd.competitions.put(competition_data.id, competition_data);
+
+        setResult(competition_data);
 });
 
 

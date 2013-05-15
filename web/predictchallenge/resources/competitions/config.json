@@ -1,21 +1,13 @@
 {
 	"type": "Collection",
 	"properties": {
-		"simulationDate": {
-			"name": "simulationDate",
-			"type": "string",
-			"typeLabel": "string",
-			"required": false,
-			"id": "simulationDate",
-			"order": 0
-		},
 		"simulateState": {
 			"name": "simulateState",
 			"type": "string",
 			"typeLabel": "string",
 			"required": false,
 			"id": "simulateState",
-			"order": 1
+			"order": 0
 		},
 		"maxTeams": {
 			"name": "maxTeams",
@@ -23,7 +15,7 @@
 			"typeLabel": "number",
 			"required": true,
 			"id": "maxTeams",
-			"order": 2
+			"order": 1
 		},
 		"minTeams": {
 			"name": "minTeams",
@@ -31,7 +23,7 @@
 			"typeLabel": "number",
 			"required": true,
 			"id": "minTeams",
-			"order": 3
+			"order": 2
 		},
 		"owner": {
 			"name": "owner",
@@ -39,7 +31,7 @@
 			"typeLabel": "string",
 			"required": true,
 			"id": "owner",
-			"order": 4
+			"order": 3
 		},
 		"ownerName": {
 			"name": "ownerName",
@@ -47,7 +39,7 @@
 			"typeLabel": "string",
 			"required": false,
 			"id": "ownerName",
-			"order": 5
+			"order": 4
 		},
 		"competitionName": {
 			"name": "competitionName",
@@ -55,7 +47,7 @@
 			"typeLabel": "string",
 			"required": false,
 			"id": "competitionName",
-			"order": 6
+			"order": 5
 		},
 		"createDate": {
 			"name": "createDate",
@@ -63,7 +55,7 @@
 			"typeLabel": "number",
 			"required": false,
 			"id": "createDate",
-			"order": 7
+			"order": 6
 		},
 		"data": {
 			"name": "data",
@@ -71,7 +63,7 @@
 			"typeLabel": "array",
 			"required": false,
 			"id": "data",
-			"order": 8
+			"order": 7
 		},
 		"teamCount": {
 			"name": "teamCount",
@@ -79,7 +71,7 @@
 			"typeLabel": "number",
 			"required": false,
 			"id": "teamCount",
-			"order": 9
+			"order": 8
 		},
 		"numberBeans": {
 			"name": "numberBeans",
@@ -87,7 +79,7 @@
 			"typeLabel": "number",
 			"required": false,
 			"id": "numberBeans",
-			"order": 10
+			"order": 9
 		},
 		"numberRounds": {
 			"name": "numberRounds",
@@ -95,7 +87,7 @@
 			"typeLabel": "number",
 			"required": false,
 			"id": "numberRounds",
-			"order": 11
+			"order": 10
 		},
 		"climateChangeRound": {
 			"name": "climateChangeRound",
@@ -103,7 +95,23 @@
 			"typeLabel": "number",
 			"required": false,
 			"id": "climateChangeRound",
+			"order": 11
+		},
+		"runtime": {
+			"name": "runtime",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "runtime",
 			"order": 12
+		},
+		"results": {
+			"name": "results",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "results",
+			"order": 13
 		}
 	}
 }
