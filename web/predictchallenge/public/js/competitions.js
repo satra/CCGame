@@ -27,7 +27,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   $scope.showStrategy = function(strategy_index)
   {
     $scope.showingStrategyDetails = true;
-    $scope.selectedStrategy = strategy_index[2];
+    $scope.selectedStrategy = strategy_index.strat;
   }
 
 
@@ -128,7 +128,17 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
           {
             // this branch assumes we've inserted into strategy table successful
             // now add to competition table
-            $scope.competitionData.data.push([me.id, me.username, submitstrat, result.id, -1, -1, -1, -1]);
+            $scope.competitionData.data.push(
+              {
+                id:me.id, 
+                name: me.username, 
+                strat: submitstrat, 
+                stratid: result.id,
+                beans: -1,
+                crises: -1,
+                bids: -1,
+                ddr:-1
+              });
 
             if($scope.competitionData.data.length == $scope.competitionData.maxTeams)
             {
@@ -192,8 +202,8 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
       
       // beans_array.push([compdata[i][6] - 0.5, compdata[i][4]])
       // crises_array.push([compdata[i][6] - 0.5, compdata[i][5]])
-      beans_array.push([compdata[i][6]-0.2, compdata[i][4]])
-      crises_array.push([compdata[i][6]+0.2, compdata[i][5]])
+      beans_array.push([compdata[i].bids-0.2, compdata[i].beans])
+      crises_array.push([compdata[i].bids+0.2, compdata[i].crises])
     }
 
     // array_to_return = [beans_array, crises_array];
@@ -233,16 +243,28 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 
   var showStrategyTemplate = '<div ng-click="showStrategy(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Click for details</a></div>';
 
-  $scope.competitionGridOptions = {
+  // $scope.competitionGridOptions = {
+  //   data: 'competitionData.data',
+  //   columnDefs: [
+  //       {field:'1', displayName:'Player / Team name'},
+  //       {field:'2', displayName:'Strategy', cellTemplate: showStrategyTemplate }, 
+  //       {field:'4', displayName:'Beans'}, 
+  //       {field:'5', displayName:'Crises'},
+  //       {field:'6', displayName:'Forecasts'}
+  //       ]
+  //   }    
+
+        $scope.competitionGridOptions = {
     data: 'competitionData.data',
     columnDefs: [
-        {field:'1', displayName:'Player / Team name'},
-        {field:'2', displayName:'Strategy', cellTemplate: showStrategyTemplate }, 
-        {field:'4', displayName:'Beans'}, 
-        {field:'5', displayName:'Crises'},
-        {field:'6', displayName:'Forecasts'}
+        {field:'name', displayName:'Player / Team name', width: '*',  sortable: true},
+        {field:'strat', displayName:'Strategy', cellTemplate: showStrategyTemplate, width: '*',  sortable: false }, 
+        {field:'beans', displayName:'Beans', width: '*',  sortable: true}, 
+        {field:'crises', displayName:'Crises', width: '*',  sortable: true},
+        {field:'bids', displayName:'Forecasts', width: '*',  sortable: true}
         ]
     }    
+
 
   if (!compid) {
 

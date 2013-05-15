@@ -316,11 +316,11 @@ dpd.competitions.get(body.compid,
 
         for(i=0;i<n_teams;i++)
         {
-            var playerid = competition_data.data[i][0];
+            var playerid = competition_data.data[i].id;
 
             // using strategy ID to enable multiple strategies per user in same competition
-            var strategyID = competition_data.data[i][3];
-            var playerstrategy = competition_data.data[i][2];
+            var strategyID = competition_data.data[i].stratid;
+            var playerstrategy = competition_data.data[i].strat;
 
             rg.submitStrategy(strategyID, playerstrategy);
         }
@@ -353,13 +353,13 @@ dpd.competitions.get(body.compid,
 
             for(m=0;m<competition_data.data.length;m++)
             {
-                if(competition_data.data[m][3] == outcome.team)
+                if(competition_data.data[m].stratid == outcome.team)
                 {
                     // matched
-                    competition_data.data[m][4] = outcome.beans;
-                    competition_data.data[m][5] = outcome.crises;
-                    competition_data.data[m][6] = outcome.forecast;
-                    competition_data.data[m][7] = outcome.drr;
+                    competition_data.data[m].beans = outcome.beans;
+                    competition_data.data[m].crises = outcome.crises;
+                    competition_data.data[m].bids = outcome.forecast;
+                    competition_data.data[m].ddr = outcome.drr;
 
                 }
             }            
