@@ -246,9 +246,12 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   });
 
   dpd.on('SimulationDone', function(simulation){
+      console.log('sim complete');
       $scope.refreshCompetitionData();
       $scope.completed = true;
-      $scope.$apply($scope.model);
+      $scope.data = getChartData($scope.competitionData.data);
+      $scope.$apply();
+      console.log('update done');
   });
 
   var showStrategyTemplate = '<div ng-click="showStrategy(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Click for details</a></div>';
@@ -335,25 +338,11 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 app.directive('chart', function(){
     return {
         restrict: 'A',
-        replace: true,        
+        replace: true,
         link: function(scope, elem, attrs) {
 
             scope.$watch(attrs.ngModel, function changed(a,b)
             {
-                // var options = {
-                //     xaxis: {
-                //       ticks: [0, 1, 2,3,4,5,6,7,8,9,10]
-                //     },
-                //     grid: {
-                //       show: true
-                //     },
-                //     series: {
-                //       bars: { show: true },
-                //       lines: { show: false },
-                //       points: { show: true }
-                //     }
-                // };
-
                 var options = {
                     xaxis: {
                       ticks: [0, 1, 2,3,4,5,6,7,8,9,10],
@@ -368,8 +357,7 @@ app.directive('chart', function(){
                       points: { show: true}
                     },
                     colors: ["rgba(98, 139, 97, 0.8)", "rgba(255, 0, 0, 0.8)"]
-                };
-
+                }
               $.plot(elem, scope.data, options);
             }); 
         }
