@@ -370,7 +370,7 @@ dpd.competitions.get(body.compid,
         setResult(competition_data);
 });
 
-
+emit('SimulationDone', this);
 
 
 

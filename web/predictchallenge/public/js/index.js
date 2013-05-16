@@ -43,7 +43,6 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal, $roo
     climateChangeRound  : 7
   }
 
-
   var customCellTemplate = '<div ng-click="selectCompetition(row.entity)" class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{row.getProperty(col.field)}}</span></div>';
   var openCompetitionTemplate = '<div ng-click="openCompetitionWindow(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Detailed View</a></div>';
 

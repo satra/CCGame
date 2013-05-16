@@ -61,6 +61,12 @@ app.controller('AllCompControl', function($scope, CompetitionList, $modal, $root
     climateChangeRound  : 7
   }
 
+    dpd.on('CompetitionPosted', function(post){
+        console.log('allcomps competition posted')
+        console.log(feed.competitions);
+        feed.refresh();
+    });
+
   var customCellTemplate = '<div ng-click="selectCompetition(row.entity)" class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{row.getProperty(col.field)}}</span></div>';
   var openCompetitionTemplate = '<div ng-click="openCompetitionWindow(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Detailed View</a></div>';
 

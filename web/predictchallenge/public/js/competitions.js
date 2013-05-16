@@ -240,6 +240,16 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
     strategy: strategy
   }
 
+  dpd.on('StrategyPosted', function(competition){
+      $scope.competitionData['data'] = competition.data;
+      $scope.$apply($scope.model);
+  });
+
+  dpd.on('SimulationDone', function(simulation){
+      $scope.refreshCompetitionData();
+      $scope.completed = true;
+      $scope.$apply($scope.model);
+  });
 
   var showStrategyTemplate = '<div ng-click="showStrategy(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Click for details</a></div>';
 
