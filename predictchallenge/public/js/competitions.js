@@ -158,6 +158,10 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
                 }
             });
 
+            if ($scope.competitionData.minTeams <= $scope.competitionData.data.length)
+                $scope.enoughPlayers = true;
+            console.log($scope);
+
             dismiss();
 
             $scope.$apply($scope.model);
@@ -218,6 +222,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 
   $scope.competitionData = {}
   $scope.completed = false;
+  $scope.enoughPlayers = false;
   $scope.competitionFull = false;
   $scope.ownership = false;
   $scope.showingStrategyDetails = false;
@@ -254,7 +259,7 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
       console.log('update done');
   });
 
-  var showStrategyTemplate = '<div ng-click="showStrategy(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Click for details</a></div>';
+  var showStrategyTemplate = '<div ng-click="showStrategy(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Show strategy</a></div>';
 
   // $scope.competitionGridOptions = {
   //   data: 'competitionData.data',
@@ -328,9 +333,10 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
         {
           $scope.competitionFull = true;
         }
+      if ($scope.competitionData.minTeams <= $scope.competitionData.data.length)
+                $scope.enoughPlayers = true;
       }
     });
-
   }
 });
 

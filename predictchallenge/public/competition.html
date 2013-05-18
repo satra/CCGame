@@ -85,9 +85,9 @@
           <div ng-show="currentUser">
             <div ng-show="userLoaded" >
 
-              <button ng-hide="completed || competitionFull" type="button" class="btn btn-primary btn-small" bs-modal="'partials/joinCompetition.html'">Join this competition</button>
+              <button ng-hide="completed || competitionFull" type="button" class="btn btn-primary btn-small" bs-modal="'partials/joinCompetition.html'">Submit a strategy</button>
 
-              <button ng-show="ownership && !completed" class="btn btn-primary btn-small" href ng-click="runCompetition()">Run competition</button>
+              <button ng-show="ownership && !completed && enoughPlayers" class="btn btn-primary btn-small" href ng-click="runCompetition()">Run competition</button>
             </div>
           </div>
 

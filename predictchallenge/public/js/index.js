@@ -44,15 +44,15 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal, $roo
   }
 
   var customCellTemplate = '<div ng-click="selectCompetition(row.entity)" class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{row.getProperty(col.field)}}</span></div>';
-  var openCompetitionTemplate = '<div ng-click="openCompetitionWindow(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Detailed View</a></div>';
+  var openCompetitionTemplate = '<div ng-click="openCompetitionWindow(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Open competition page</a></div>';
 
   $scope.gridOptions = { 
         data: 'gdata',
         columnDefs: [
-        {field:'competitionName', displayName:'Title', cellTemplate: customCellTemplate },
+        {field:'competitionName', displayName:'Name', cellTemplate: customCellTemplate },
         {field:'ownerName', displayName:'Owner'}, 
-        {field:'simulateState', displayName:'State'}, 
-        {field:'id', displayName:'State', cellTemplate: openCompetitionTemplate },
+        {field:'simulateState', displayName:'Status'},
+        {field:'id', displayName:'Actions', cellTemplate: openCompetitionTemplate },
         ]
       };
 
