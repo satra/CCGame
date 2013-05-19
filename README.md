@@ -19,3 +19,70 @@ The game is built on openly and freely available javascript software technologie
 
 4. flot.js (Website: http://www.flotcharts.org/ Source: https://github.com/flot/flot)
 
+### For developers
+
+Install Deployd to your system following instructions on official site: http://deployd.com/download.html
+
+Clone this repository into a development directory
+
+    git clone https://github.com/satra/CCGame.git
+    
+Navigate to the CCGame/predictchallenge directory and run deployd
+
+    cd CCGame/predictchallenge; dpd;
+    
+    
+### For production use
+
+*Steps based on a working Ubuntu 12.04 installation*
+    
+Install node.js via PPA (https://launchpad.net/~chris-lea/+archive/node.js/) 
+
+    sudo add-apt-repository ppa:chris-lea/node.js
+    sudo apt-get update
+    sudo apt-get install nodejs npm
+
+Install nginx
+
+    sudo apt-get install nginx
+
+Install deployd, numeric, and forever 
+
+    sudo npm install -g deployd numeric forever
+
+Start the deployd app as a service
+
+    forever start production.js
+
+Update nginx config (/etc/nginx/nginx.conf) to forward port 2403 to 80 
+    
+        server {
+    
+                listen       80;
+                server_name  *YOURHOSTNAMEHERE*;
+                root          /home/ubuntu/predict/CCGame/predictchallenge/public/;
+    
+                location / {
+                    proxy_pass http://localhost:2403;
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade $http_upgrade;
+                    proxy_set_header Connection "upgrade";
+                    proxy_set_header Host $host;
+                }
+    
+                location /partials {
+                    root         /home/ubuntu/predict/CCGame/predictchallenge/public;
+                }
+            }
+
+Restart nginx
+
+    sudo /etc/init.d/nginx restart
+    
+
+    
+
+
+
+    
+    
