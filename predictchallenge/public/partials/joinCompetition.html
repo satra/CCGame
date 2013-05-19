@@ -17,7 +17,7 @@
 
             Forecast bid:
             
-            <input id="minp" class="input-small" type="number" value="4" min="0" max="20" ng-model="modal.strategy.forecast_bid">
+            <input id="minp" class="input-small span1" type="number" value="4" min="0" max="{{competitionData.numberBeans}}" ng-model="modal.strategy.forecast_bid">
  
             <!-- DRR bid: -->
 
@@ -26,12 +26,12 @@
           </div>
 
           <div>
-            <h4>Add rules for early action</h4>
+            <h4>Take early action</h4>
 
             <div>IF 
           
-            <select class="input-small" id="fddropt">
-              <option value="F" selected="selected">Forecast</option>
+            <select class="input-small span3" id="fddropt">
+              <option value="F" selected="selected">Forecast available</option>
               <!-- <option value="DDR">DDR</option> -->
               <!-- <option value="F+DDR">Forecast + DDR</option> -->
               <option value="none">None</option>
@@ -45,20 +45,13 @@
               <option value="eq">equal to</option>
             </select>
 
-            <input id="roundopt" class="input-small" type="number" value="4" min="1" max="20">
+            <input id="roundopt" class="input-small span1" type="number" value="4" min="1" max="{{competitionData.numberRounds}}">
 
-            and Regional rainfail > 
+            and Regional rainfall >
 
-            <select class="input-small" id="rainopt">
-              <option selected="selected">1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-            </select>     
+            <input class="input-small span1" id="rainopt" type="number" min="0" max="6" value="0">
 
-            <button class="btn pull-right" ng-click="addRule()">Add rules <i class="icon-ok"></i></button>
+            <button class="btn pull-right" ng-click="addRule()">Add rule <i class="icon-ok"></i></button>
 
             </div>
           </div>      
