@@ -48,17 +48,30 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 
               $.post("/simulate", { "compid": $scope.compid },
 
-              function(data){
-                
-                $scope.competitionData = data;
-                $scope.runDate = new Date($scope.competitionData.runtime);
-                $scope.data = getChartData($scope.competitionData.data);
-                // console.log(data); // John
-                // alert('comp run'); 
+                function(result){
 
-                $scope.completed = true;
+                    $scope.competitionData = result;
+                    $scope.runDate = new Date($scope.competitionData.runtime);
+                    $scope.data = getChartData($scope.competitionData.data);
 
-                $scope.$apply();
+                    if(result.simulateState == "completed")
+                    {
+                      $scope.completed = true;
+                      console.log('completed');
+                    }
+
+                    if(result.data.length == $scope.competitionData.maxTeams)
+                    {
+                      $scope.competitionFull = true;
+                    }
+                    
+                    if ($scope.competitionData.minTeams <= $scope.competitionData.data.length)
+                    {   
+                      $scope.enoughPlayers = true;
+                    }
+                    
+
+                    $scope.$apply();
 
               }, "json");
             }
@@ -152,46 +165,26 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
                 }
                 else
                 {                  
-                  // $scope.details = result;    
-                  // $scope.apply($scope.modal);  
-                  $scope.refreshCompetitionData();
+                  console.log('strategy added successfully');
                 }
             });
 
             if ($scope.competitionData.minTeams <= $scope.competitionData.data.length)
+            {
                 $scope.enoughPlayers = true;
-            console.log($scope);
-
+            }
+            
             dismiss();
-
-            $scope.$apply($scope.model);
-
           }
         });      
       });
   }
 
   // this may be uncessary
-  $scope.refreshCompetitionData = function()
-  {
-    $scope.compid = compid;
+  // $scope.refreshCompetitionData = function()
+  // {
 
-    dpd.competitions.get(compid, function(result) {
-      if(!result)
-      {
-        console.log('incorrect id, should redirect')    
-        location.href = "/";
-      }
-      else
-      {
-        // console.log(result);
-        $scope.competitionData = result;
-        $scope.runDate = new Date($scope.competitionData.runtime);
-        $scope.data = getChartData($scope.competitionData.data);
-
-      }
-    });
-  }
+  // }
 
   function getChartData(compdata)
   {
@@ -203,36 +196,31 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 
     for(i=0;i<compdata.length;i++)
     {
-      
-      // beans_array.push([compdata[i][6] - 0.5, compdata[i][4]])
-      // crises_array.push([compdata[i][6] - 0.5, compdata[i][5]])
       beans_array.push([compdata[i].bids-0.2, compdata[i].beans])
       crises_array.push([compdata[i].bids+0.2, compdata[i].crises])
     }
 
-    // array_to_return = [beans_array, crises_array];
-        array_to_return = [{'label': 'Beans', 'data': beans_array},
-        {'label': 'Crises', 'data': crises_array}];
-
+    array_to_return = [
+        {'label': 'Beans', 'data': beans_array},
+        {'label': 'Crises', 'data': crises_array}
+        ];
 
     return array_to_return;
   }
 
   $scope.runDate = ''
-
   $scope.competitionData = {}
   $scope.completed = false;
   $scope.enoughPlayers = false;
   $scope.competitionFull = false;
   $scope.ownership = false;
   $scope.showingStrategyDetails = false;
-  $scope.data = [];
 
+  $scope.data = [];
   $scope.selectedStrategy = {};
 
   var query = location.search;
   var compid = query.split('?id=')[1];
-
 
 // populate modal with default strategy
   var strategy = {'forecast_bid': 2,
@@ -250,31 +238,41 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
       $scope.$apply($scope.model);
   });
 
-  dpd.on('SimulationDone', function(simulation){
-      console.log('sim complete');
-      $scope.refreshCompetitionData();
-      $scope.completed = true;
+  dpd.on('SimulationDone', function(simulationData){
+      
+      $scope.competitionData = simulationData;
+      
+      $scope.runDate = new Date($scope.competitionData.runtime);
       $scope.data = getChartData($scope.competitionData.data);
+
+      if(simulationData.simulateState == "completed")
+      {
+        $scope.completed = true;
+        console.log('completed');
+      }
+
+      if(simulationData.data.length == $scope.competitionData.maxTeams)
+      {
+        $scope.competitionFull = true;
+      }
+      
+      if ($scope.competitionData.minTeams <= $scope.competitionData.data.length)
+      {   
+        $scope.enoughPlayers = true;
+      }
+      
+
       $scope.$apply();
-      console.log('update done');
+
   });
+
+
 
   var showStrategyTemplate = '<div ng-click="showStrategy(row.entity)" class="ngCellText" ng-class="col.colIndex()"><a class="" ng-cell-text>Show strategy</a></div>';
 
-  // $scope.competitionGridOptions = {
-  //   data: 'competitionData.data',
-  //   columnDefs: [
-  //       {field:'1', displayName:'Player / Team name'},
-  //       {field:'2', displayName:'Strategy', cellTemplate: showStrategyTemplate }, 
-  //       {field:'4', displayName:'Beans'}, 
-  //       {field:'5', displayName:'Crises'},
-  //       {field:'6', displayName:'Forecasts'}
-  //       ]
-  //   }    
-
-        $scope.competitionGridOptions = {
-    data: 'competitionData.data',
-    columnDefs: [
+    $scope.competitionGridOptions = {
+      data: 'competitionData.data',
+      columnDefs: [
         {field:'name', displayName:'Player / Team name', width: '*',  sortable: true},
         {field:'strat', displayName:'Strategy', cellTemplate: showStrategyTemplate, width: '*',  sortable: false }, 
         {field:'beans', displayName:'Beans', width: '*',  sortable: true}, 
@@ -299,19 +297,18 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
     dpd.users.me(function(me) {
       if(me)
       {
-        console.log(me);
-        
+        // console.log(me);
+
         if (me.competitions.indexOf(compid) >= 0)
         {
           $scope.ownership = true;
           console.log("this is your competition");
-
-
         }
       }
     });
 
-    dpd.competitions.get(compid, function(result) {
+
+    dpd.competitions.get($scope.compid, function(result) {
     
       if(!result)
       {
@@ -320,23 +317,33 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
       }
       else
       {
+
+        console.log('refreshed comp data', result);
         $scope.competitionData = result;
         $scope.runDate = new Date($scope.competitionData.runtime);
         $scope.data = getChartData($scope.competitionData.data);
 
-        if($scope.competitionData.simulateState == 'completed')
+        if(result.simulateState == "completed")
         {
           $scope.completed = true;
+          console.log('completed');
         }
 
-        if($scope.competitionData.data.length == $scope.competitionData.maxTeams)
+        if(result.data.length == $scope.competitionData.maxTeams)
         {
           $scope.competitionFull = true;
         }
-      if ($scope.competitionData.minTeams <= $scope.competitionData.data.length)
-                $scope.enoughPlayers = true;
+        
+        if ($scope.competitionData.minTeams <= $scope.competitionData.data.length)
+        {   
+          $scope.enoughPlayers = true;
+        } 
       }
     });
+
+
+
+
   }
 });
 
@@ -347,7 +354,7 @@ app.directive('chart', function(){
         replace: true,
         link: function(scope, elem, attrs) {
 
-            scope.$watch(attrs.ngModel, function changed(a,b)
+            scope.$watch(attrs.ngModel, function changed(new_data, old_data)
             {
                 var options = {
                     xaxis: {
@@ -364,7 +371,10 @@ app.directive('chart', function(){
                     },
                     colors: ["rgba(98, 139, 97, 0.8)", "rgba(255, 0, 0, 0.8)"]
                 }
-              $.plot(elem, scope.data, options);
+
+              console.log('flot plot called', new_data);
+
+              $.plot(elem, new_data, options);
             }); 
         }
     };

@@ -2,7 +2,9 @@
 //var numeric = require('/Users/stonerri/Documents/SatraPrediction/CCGame/web/predictchallenge/node_modules/numeric');
 
 // moved numeric to same path as post.js in the resources directory of the app
-var numeric = require('node_modules/numeric');
+//var numeric = require('node_modules/numeric');
+
+var numeric = require('numeric');
 var simulateID = '';
 
 var debug = 0;
@@ -367,10 +369,15 @@ dpd.competitions.get(body.compid,
 
         dpd.competitions.put(competition_data.id, competition_data);
 
+        
+        emit('SimulationDone', competition_data);
+
+
         setResult(competition_data);
 });
 
-emit('SimulationDone', this);
+
+
 
 
 
