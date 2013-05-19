@@ -4,7 +4,7 @@
 </div>
 <div class="modal-body">
 
-        <form class="form-horizontal">     
+        <form class="form-horizontal">
 
           <div>   
             <div>Would you like the computer to generate a strategy for you?
@@ -45,12 +45,11 @@
               <option value="eq">equal to</option>
             </select>
 
-            <input id="roundopt" class="input-small span1" type="number" value="4" min="1" max="{{competitionData.numberRounds}}">
+            <input id="roundopt" class="input-small span1" type="number" value="4" min="1" max="{{competitionData.numberRounds}}" ng-model="modal.round">
 
             and Regional rainfall >
 
-            <input class="input-small span1" id="rainopt" type="number" min="0" max="8" value="0">
-
+            <input class="input-small span1" id="rainopt" type="number" min="0" max="{{modal.maxDie}}" value="0" max-change="modal.round" ng-model="modal.rain">
             <button class="btn pull-right" ng-click="addRule()">Add rule <i class="icon-ok"></i></button>
 
             </div>

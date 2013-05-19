@@ -105,7 +105,8 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
   $scope.addRule = function()
   {
     rule_to_add = [$("#fddropt").val(), $("#equalopt").val(), $("#roundopt").val(), $("#rainopt").val()];
-    $scope.modal.strategy.rules[$scope.modal.strategy.rules.length] = rule_to_add;
+    if ($scope.modal.rain <= $scope.modal.maxDie)
+        $scope.modal.strategy.rules[$scope.modal.strategy.rules.length] = rule_to_add;
   }
 
   $scope.deleteRule = function(ruleIndex)
@@ -230,7 +231,11 @@ app.controller('CompDetailsCtrl', function($scope, CompetitionList,$modal, $root
 
   $scope.modal = {
     autogen: false,
-    strategy: strategy
+    strategy: strategy,
+    round: 1,
+    maxDie: 6,
+    rain: 1,
+    validrule: true
   }
 
   dpd.on('StrategyPosted', function(competition){
@@ -420,5 +425,22 @@ app.directive('dndList', function() {
             },
             axis:'y'
         })
+    }
+});
+
+app.directive('maxChange', function() {
+
+    return function(scope, element, attrs) {
+
+        // watch the model, so we always know what element
+        // is at a specific position
+        scope.$watch(attrs.maxChange, function(value) {
+            if (value >= scope.$parent.competitionData.climateChangeRound)
+                 scope.$parent.modal.maxDie = 8;
+            else
+                 scope.$parent.modal.maxDie = 6;
+            if (scope.$parent.modal.rain > scope.$parent.modal.maxDie)
+                element[0].focus();
+        }, true);
     }
 });
