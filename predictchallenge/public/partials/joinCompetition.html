@@ -45,11 +45,11 @@
               <option value="eq">equal to</option>
             </select>
 
-            <input id="roundopt" class="input-small span1" type="number" value="4" min="1" max="{{competitionData.numberRounds}}" ng-model="modal.round">
+            <input id="roundopt" class="input-small span1" type="number" value="4" min="1" max="{{competitionData.numberRounds}}">
 
             and Regional rainfall >
 
-            <input class="input-small span1" id="rainopt" type="number" min="0" max="{{modal.maxDie}}" value="0" max-change="modal.round" ng-model="modal.rain">
+            <input class="input-small span1" id="rainopt" type="number" min="0" max="8" value="0">
             <button class="btn pull-right" ng-click="addRule()">Add rule <i class="icon-ok"></i></button>
 
             </div>
@@ -64,7 +64,7 @@
               <ol dnd-list="modal.strategy.rules">
                 <li ng-repeat="rule in modal.strategy.rules">
                   
-                  IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain < <b>{{rule[3]}} </b> <a class="btn btn-mini btn-link" ng-click="deleteRule( $index )">(delete)</a>
+                  IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain > <b>{{rule[3]}} </b> <a class="btn btn-mini btn-link" ng-click="deleteRule( $index )">(delete)</a>
 
                 </li>
 
