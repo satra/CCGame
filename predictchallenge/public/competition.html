@@ -12,43 +12,39 @@
   <script type="text/javascript" src="/js/lib/angular.js"></script>
   <style type="text/css">
 
-    .chart{
-        
-        width:400px;
-        height:200px;
-    }
+  .chart{
 
-    .embedGridStyle {
-      /*border: 1px solid rgb(212,212,212);*/
-      width: 100%; 
-      height: 100px;
-    }
+    width:400px;
+    height:200px;
+  }
 
-    .gridStyle {
-      border: 1px solid rgb(212,212,212);
-      width: 100%; 
-      height: 300px;
-    }
+  .embedGridStyle {
+    /*border: 1px solid rgb(212,212,212);*/
+    width: 100%; 
+    height: 100px;
+  }
 
-    .modal {
-      width: 900px; /* SET THE WIDTH OF THE MODAL */
-      margin: 050px 0 0 -450px; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
-    }
+  .gridStyle {
+    border: 0px solid rgb(212,212,212);
+    width: 99%; 
+    height: 300px;
+  }
 
-    .item, .placeholder {
-      padding: 2px;
-      width: 50px;
-      height: 20px;
-      border: 1px solid #333;
-      background: #EEE;
-    }
 
-    .placeholder {
-        background: #AEF;
-    }
-    body {
-      padding-top: 40px;
-    }
+  .item, .placeholder {
+    padding: 2px;
+    width: 50px;
+    height: 20px;
+    border: 1px solid #333;
+    background: #EEE;
+  }
+
+  .placeholder {
+    background: #AEF;
+  }
+  body {
+    padding-top: 40px;
+  }
 
   </style>
   <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
@@ -56,86 +52,261 @@
   
 </head>
 
-<body>
+<body ng-show="userLoaded" ng-cloak>
 
   <ng-include src="'partials/headerNavbar.html'"></ng-include>
 
   <div class="container" ng-controller='CompDetailsCtrl' ng-cloak>
-    
-    <br>
-    <div><img src="img/logo.gif"></div>
 
-    <div class="page-header">
-
-      <h2>{{competitionData.competitionName}} <small>Created by {{competitionData.ownerName}}</small></h2>
-      <p><small>Team count: {{competitionData.data.length }} of {{competitionData.maxTeams}}. Minimum of {{competitionData.minTeams}} needed to start this competition.<br>
-      
-
-      <span ng-show="completed">This competition was run successfully on {{ runDate | date:'medium' }} </span> </small></p>    
-    </div>
 
     <div class="row" >
       <div class="span12">
 
-        <div ng-show="completed" class="chart span4 offset4" chart="" ng-model='data'>
+        <br>
+
+        <div class="tabbable tabs">
+          <ul class="nav nav-pills"  id="myTab">
+            <li class="active"><a href="#0" data-toggle="tab">About this competition</a></li>
+            <li class=""><a href="#1" data-toggle="tab">Join this competition</a></li>
+            <li><a href="#2" data-toggle="tab">View current players</a></li>
+            <li></li>
+
+          </ul>
+          
+          <div class="tab-content">
+            <div class="tab-pane active" id="0">
+              <!-- <h3>Competition details <small>{{competitionData.competitionName}}</small></h3> -->
+              <div class="lead">
+                This competition was organized by <b>{{competitionData.organizerName}}</b> on <b>{{ competitionData.createDate | date:'medium'}}</b>.<br><br> 
+
+                The URL for this competition is<br><b> {{windowurl}}</b>
+
+                <br><br>
+
+                Each player will start with <b>{{ competitionData.settings.numberBeans }}</b> beans initially. Game play will last <b>{{competitionData.settings.numberRounds }}</b> rounds. Climate change <b>will</b> occur during this competition and disaster risk reduction <b>is</b> enabled to bid on. Forecasting will follow a <b>simple</b> model.<br><br>
+
+
+                <span ng-show="hasPlayers">There are <b>{{competitionData.data.length}}</b> players in this competition.</span>
+                <span ng-hide="hasPlayers">No one has joined yet.</span>
+
+                <div>
+                  <span ng-show="completed">This competition was run successfully on <b>{{ runDate | date:'medium' }}</b></span>     
+                </div>
+
+
+                
+
+              </div>
+
+
+              
+              <div>
+                <a class="btn btn-success btn-large" ng-click="runCompetition()" ng-show="currentUser &&ownership && !completed" >Run Competition!</a>
+              </div>
+
+
+            </div>
+
+            <div class="tab-pane" id="1">
+
+              <form class="form-horizontal" >     
+                <fieldset>
+
+                  <div id="legend">
+                    <legend class="">About yourself</legend>
+                  </div>   
+
+                  <div class="control-group">
+                    <!-- Username -->
+                    <label class="control-label"  for="username">Team and player name</label>
+                    <div class="controls">
+                      <input id="minp" class="input-xlarge" ng-model="playername" placeholder="1-John-Doe">
+                      <p><small>Please enter using the following format: TeamNumber-FirstName-LastName</small></p>  
+                    </div>
+
+                    <label class="control-label"  for="username">Last forecast</label>
+                    <div class="controls">
+                      <input id="minp" class="input-xlarge" ng-model="lastforecast" placeholder="Optional">
+                      <p><small>How many beans did you individually contribute to the forecast bid in the previous game?</small></p>  
+                    </div>
+
+                    <label class="control-label"  for="username">Last beans</label>
+                    <div class="controls">
+                      <input id="minp" class="input-xlarge" ng-model="lastbeans" placeholder="Optional">
+                      <p><small>How many beans did you have at the end of the game?</small></p>  
+                    </div>
+                    
+                    <label class="control-label"  for="username">Last crises</label>
+                    <div class="controls">
+                      <input id="minp" class="input-xlarge" ng-model="lastcrises" placeholder="Optional">
+                      <p><small>How many Humanitarian crises did you have at the end of the game?</small></p>  
+                    </div>
+                    
+
+                  </div>
+                  <div id="legend">
+                    <legend class="">Initial bids</legend>
+                  </div>   
+
+                  <div class="control-group">
+                    <!-- Username -->
+                    <label class="control-label"  for="username">Forecast bid</label>
+                    <div class="controls">
+
+                      <input  class="input-small" type="number" value="4" min="0" max="20" ng-model="strategy.forecast_bid" class="input-xlarge">
+
+                      <p><small>How many beans will you contribute towards your team's forecast bid?</small></p>  
+                    </div>
+
+                  </div>
+
+                  <div class="control-group">
+                    <!-- Username -->
+                    <label class="control-label"  for="username">Disaster Reduction bid</label>
+                    <div class="controls">
+
+                      <input id="maxp" class="input-small" type="number" value="0" min="0" max="20" ng-model="strategy.drr_bid">
+                      <p><small>How many beans will you contribute towards your team's DRR bid?</small></p>
+                    </div>
+
+                  </div>   
+                </fieldset>
+
+                <fieldset>
+
+                  <div id="legend">
+                    <legend class="">Strategy</legend>
+                  </div>                                                                
+
+                  <div>
+                   <h4>To construct your strategy, please add one or more rules using the tool below:</h4><br>
+                   <blockquote>
+                    <strong>Example:</strong> Using 2 six-sided die, you could have values ranging from 2 to 12 on any given roll. If we use a fixed threshold of 0.833 (10/12), then any time we roll a 10, 11, or 12, a disaster occurs.
+                  </blockquote>
+                  <br>
+                </div>
+
+
+                <div class="control-group">
+
+                  <label class="control-label"  for="username">Take early action if</label>
+                  <div class="controls">
+
+                    <select class="input-large" id="fddropt">
+                      <option value="F" selected="selected">Forecast available</option>
+                      <option value="DDR">Disaster Risk Reduction avaialble</option>
+                      <option value="F+DDR">Both Forecast and DDR available</option>
+                      <option value="none">Neither Forecast or DRR are available</option>
+                    </select>
+                    <p><small>Forecast and/or DRR will be factored into the flood costs should they occur</small></p>
+                  </div>
+
+                  <label class="control-label"  for="username">When the round # is</label>
+                  <div class="controls">
+
+                    <select class="input-large" id="equalopt">
+                      <option value="geq" selected="selected">greater than or equal to</option>
+                      <option value="leq">less than or equal to</option>
+                      <option value="eq">equal to</option>
+                    </select>
+
+                    <input id="roundopt" class="input-small" type="number" value="4" min="1" max="{{competitionData.numberRounds}}">
+                    <p><small>Climate change may occur at some point in this game. Please plan accordingly.</small></p>
+                  </div>
+
+                  <label class="control-label"  for="username">And regional rainful is > </label>
+                  <div class="controls">
+                    <input class="input-small" id="rainopt" type="number" min="0" max="8" value="0">
+                    <p><small>This is your local rain fall indicator.</small></p>
+                  </div>
+                  <div class="controls">
+
+                    <button class="btn btn-success" ng-click="addRule()">Add rule <i class="icon-ok"></i></button>
+
+                  </div>
+                </div>
+
+
+                <div>                    
+                  <div><small>Drag and drop to reorder list.<span class="pull-right"><a href ng-click="generateStrategy()">Autogenerate strategy</a> | <a href ng-click="clearRules()">Clear all rules</a></span></small></div>
+                  <div class="well" style="min-height:100px;">
+                    <ol dnd-list="strategy.rules">
+                      <li ng-repeat="rule in strategy.rules">
+                        IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain > <b>{{rule[3]}} </b> <a class="btn btn-mini btn-link" ng-click="deleteRule( $index )">(delete)</a>
+                      </li>
+                    </ol>
+
+                  </div> 
+
+
+                </div>
+              </fieldset>
+
+              <div class="">
+
+                <button class="btn btn-success btn-large" ng-click="submitStrategy()">Submit strategy</button>
+
+              </div>
+
+              <br><br>
+
+
+
+
+            </form> 
+
+          </div>
+
+
+          <div class="tab-pane" id="2">
+
+            <div class="gridStyle" ng-grid="competitionGridOptions"></div>
+
+            <div ng-show="completed" class="chart span4 offset4" chart="" ng-model='data'></div>
+            <div class="clearfix"></div>
+
+            <br><br>
+            <div ng-show="showingStrategyDetails && currentUser">
+              <div class="well">
+
+                <p><strong>Forecast bid: {{ selectedStrategy.forecast_bid }}</strong></p>
+                <p><strong>DRR bid: {{ selectedStrategy.drr_bid }}</strong></p>
+                <ol>
+                  <li ng-repeat="rule in selectedStrategy.rules">
+
+                    IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain > <b>{{rule[3]}} </b>
+
+                  </li>
+                </ol>
+
+              </div>
+            </div>
+
+          </div>
+
         </div>
-        <div ng-show="completed" class="span4 offset4 text-center">Forecast bids</div>
-        <div class="clearfix"></div>
-
-          <div ng-show="currentUser">
-            <div ng-show="userLoaded" >
-
-              <button ng-hide="completed || competitionFull" type="button" class="btn btn-primary btn-small" bs-modal="'partials/joinCompetition.html'">Submit a strategy</button>
-
-              <button ng-show="ownership && !completed && enoughPlayers" class="btn btn-primary btn-small" href ng-click="runCompetition()">Run competition</button>
-            </div>
-          </div>
-
-          <h4>Teams</h4>
-          <div class="gridStyle" ng-grid="competitionGridOptions"></div>
-
-          <br>
-
-
-          <div ng-show="showingStrategyDetails">
-            <div class="well">
-
-              <p><strong>Forecast bid: {{ selectedStrategy.forecast_bid }}</strong></p>
-              <ol>
-                <li ng-repeat="rule in selectedStrategy.rules">
-                  
-                  IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain > <b>{{rule[3]}} </b>
-
-                </li>
-              </ol>
-
-            </div>
-          </div>
-
-
-
       </div>
-      <br>      
-         <div class="span12">
-          <p><small>This game was produced through a research grant to the Red Cross/Red Crescent Climate Centre from the Climate and Development Knowledge Network (CDKN Action Lab Innovation Fund).
-      As such, it is an output from a project funded by the UK Department for International Development (DFID) and the Netherlands Directorate-General for International Cooperation (DGIS) for the benefit of developing countries. However, the views expressed and information contained in it are not necessarily those of or endorsed by DFID, DGIS or the entities managing the delivery of the Climate and Development Knowledge Network, which can accept no responsibility or liability for such views, completeness or accuracy of the information or for any reliance placed on them.</small></p>
 
 
-      </div>
+
+
+
+
     </div>
   </div>
+</div>
 
 
-      
-  <script type="text/javascript" src="/js/lib/jquery-1.9.1.js"></script>
-  <script type="text/javascript" src="/js/lib/jquery-ui-1.10.3.custom.min.js"></script>
-  <script type="text/javascript" src="/js/lib/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/js/lib/ng-grid-2.0.5.min.js"></script>
-  <script type="text/javascript" src="/js/lib/angular-strap.min.js"></script>
-  <script type="text/javascript" src="/js/jquery.flot.js"></script>
-  <script type="text/javascript" src="/dpd.js"></script>
-  
-  <script type="text/javascript" src="/js/global.js"></script>
-  <script type="text/javascript" src="/js/competitions.js"></script>
+
+<script type="text/javascript" src="/js/lib/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/js/lib/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript" src="/js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/lib/ng-grid-2.0.5.min.js"></script>
+<script type="text/javascript" src="/js/lib/angular-strap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.flot.js"></script>
+<script type="text/javascript" src="/dpd.js"></script>
+
+<script type="text/javascript" src="/js/global.js"></script>
+<script type="text/javascript" src="/js/competitions.js"></script>
 </body>
 </html>

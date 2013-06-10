@@ -14,7 +14,7 @@
   <style type="text/css">
 
   .gridStyle {
-    border: 1px solid rgb(212,212,212);
+    border: 0px solid rgb(212,212,212);
     width: 100%; 
     height: 300px;
   }
@@ -23,6 +23,19 @@
   width: 800px; /* SET THE WIDTH OF THE MODAL */
   /*margin: 50px 0 0 -450px;  CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
 }
+
+  .heroback {
+    background: #000;
+    background-image:url('/img/herobackbig.jpg');
+    border: 2px solid black;
+  }
+
+  .hero-unit h1{
+
+    color: #fff !important;
+    font-size: 3.3em;
+    text-shadow: 2px 1px 2px #000;
+  }
 
   body {
     padding-top: 40px;
@@ -34,7 +47,7 @@
   
 </head>
 
-<body>
+<body ng-show="userLoaded" ng-cloak>
 
   <ng-include src="'partials/headerNavbar.html'"></ng-include>
 
@@ -44,57 +57,40 @@
     <br>
     <div><img src="img/logo.gif"></div>
 
-    
-    <div class="page-header">
-      <span><h1>Paying for Predictions <small>A small-world competition</small></h1></span>
-    </div>
+      <br>
+
+      <div class="hero-unit heroback">
+        <h1 class="herotitle">Paying for Predictions</h1>
+        
+        <p class="pull-right"><br>
+          <a href="/find.html" class="btn btn-success btn-large">Submit your strategy</a>
+          <a href="http://www.climatecentre.org/site/paying-for-predictions" target="_blnak" class="btn btn-info btn-large">Learn more</a>
+        </p>
+        <div class="clearfix"></div>
+      </div>
 
     <div class="row">
 
-      <div class="span12">
-        <p>What is the best strategy to reduce the risk of disaster as a humanitarian worker? Red Cross Red Crescent workers must balance their time and resources between long-term programming such as hygiene promotion, preparing right before a disaster happens, and responding to disasters when they happen. Fortunately, there are many tools to help with this, including science-based forecasts that can help people anticipate a disaster. While forecasts can be confusing, making a strategy for how to act based on a forecast can help humanitarian workers best manage their time and resources.
-        </p>
 
-        <p>links to original challenge <a href="http://www.climatecentre.org/site/paying-for-predictions" target="_blank">http://www.climatecentre.org/site/paying-for-predictions</a></p>
+         <div class="span12">
+          <p class=""><span class="lead">This game was designed by Pablo Suarez and Janot Mendler de Suarez for the Climate Centre, with support from the American Red Cross and CDKN.</span><br><br><small>
+            The development process was part of a research grant to the Red Cross/Red Crescent Climate Centre from the Climate and Development Knowledge Network (CDKN Action Lab Innovation Fund). As such, it is an output from a project funded by the UK Department for International Development (DFID) and the Netherlands Directorate-General for International Cooperation (DGIS) for the benefit of developing countries. However, the views expressed and information contained in it are not necessarily those of or endorsed by DFID, DGIS or the entities managing the delivery of the Climate and Development Knowledge Network, which can accept no responsibility or liability for such views, completeness or accuracy of the information or for any reliance placed on them.<br>
 
+          <br /><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a>&nbsp;&nbsp;
+
+          This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.en_US">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.<br><br>
+          
+          </small></p>
       </div>
+
+
+
+
+
 
     </div>      
 
-    <div class="row" ng-show="currentUser" ng-controller='UserCompControl' >
-
-
-      <div class="span12">
-        <hr>
-      </div>
-
-      <br>
-
-      <div class="span12">
-
-            <div class="">
-
-              <button type="button" class="btn btn-primary" bs-modal="'partials/createCompetitionModal.html'">Create a new competition</button>
-              
-              <a class="btn btn-inverse" href="/browse.html?status=open">Find open competitions</a>
-            </div>
-        
-        
-          <h3>Your competitions <small>competitions you've created or are participating in</small></h3>          
-            <div class="gridStyle" ng-grid="gridOptions"></div>
-            <br>
-
-      </div>
-
-         <div class="span12">
-          <p><small>This game was produced through a research grant to the Red Cross/Red Crescent Climate Centre from the Climate and Development Knowledge Network (CDKN Action Lab Innovation Fund).
-      As such, it is an output from a project funded by the UK Department for International Development (DFID) and the Netherlands Directorate-General for International Cooperation (DGIS) for the benefit of developing countries. However, the views expressed and information contained in it are not necessarily those of or endorsed by DFID, DGIS or the entities managing the delivery of the Climate and Development Knowledge Network, which can accept no responsibility or liability for such views, completeness or accuracy of the information or for any reliance placed on them.</small></p>
-
-
-      </div>
-    
-     
-        </div>
+  
     </div>
   </div>
 

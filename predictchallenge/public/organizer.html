@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html ng-app="predictionApp">
+<head>
+  <title>Paying for Predictions</title>
+  
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" type="text/css" href="css/ng-grid.css" />
+
+  
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+  <!-- Angular does some things with CSS so it's good to load this in the head -->
+
+  <script type="text/javascript" src="/js/lib/angular.js"></script>
+
+  <style type="text/css">
+
+  .gridStyle {
+    border: 0px solid rgb(212,212,212);
+    width: 99%; 
+    height:400px;
+  }
+
+  .ngColMenu {
+    background-color: #fff;
+  }
+
+  body {
+    padding-top: 40px;
+  }
+
+  </style>
+  <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+  
+  
+</head>
+
+<body ng-show="userLoaded">
+
+  <ng-include src="'partials/headerNavbar.html'"></ng-include>
+
+  <div class="container"  ng-cloak>
+    <br>
+
+    <div><img src="img/logo.gif"></div>
+  
+    <div class="row" ng-show="currentUser" ng-controller='UserCompControl' ng-cloak>
+
+      <br>
+      <div class="span12">
+
+        <div class="tabbable tabs">
+          <ul class="nav nav-pills"  id="myTab">
+            <li class="active"><a href="#1" data-toggle="tab">Your competitions</a></li>
+            <li><a href="#2" data-toggle="tab">Create a competition</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="1">
+
+              
+              <div class="gridStyle" ng-grid="gridOptions"></div>
+            </div>
+            <div class="tab-pane" id="2"> 
+
+                <form class="form-horizontal" >     
+                    <fieldset>
+
+                      <div id="legend">
+                        <legend class="">Competition Details</legend>
+                      </div>   
+                    
+                      <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label"  for="username">Name</label>
+                        <div class="controls">
+                          <div class="input-append">
+                            <input type="text" id="compname" ng-model="competitionSettings.name" name="username" placeholder="" class="input-xlarge">
+  
+                          <button class="btn btn-primary" ng-click="getRandom()" type="button"><i class="icon-star-empty"></i> Generate random</button>                            
+                          
+                        </div>
+                        <p>
+                          <small>This name is how players will find your game.</small></p>
+                      </div>
+                
+                      <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label"  for="username">Passcode</label>
+                        <div class="controls">
+                          <input type="text" id="comppass" ng-model="competitionSettings.pass" name="username" placeholder="Optional" class="input-xlarge"><p>
+                          <small>Enter a passcode here to make the game private</small></p>
+                        </div>
+
+                      </div>  
+
+                      <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label"  for="username">Site Location</label>
+                        <div class="controls">
+                          <div class="input-append">
+  
+                          <input type="text" id="complocation" ng-model="competitionSettings.positionString" name="username" placeholder="Optional" class="input-xlarge">
+  
+                          <button class="btn btn-primary" ng-click="getGeo()" type="button"><i class="icon-globe"></i> Locate me </button>
+                          </div>
+                        </div>
+                      </div>                                            
+
+                     <div id="legend">
+                        <legend class="">Basic settings</legend>
+                      </div>   
+
+                      <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label"  for="username">Starting bean count</label>
+                        <div class="controls">
+                          <input id="beancount"  class="input-xlarge" type="number" value="4" min="1" max="200" ng-model="competitionSettings.numberBeans">
+                          <p><small>The number of beans each player starts with.</small></p>
+                        </div>
+
+                      </div>
+
+                      <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label"  for="username">Number of rounds</label>
+                        <div class="controls">
+                          <input id="beancount"  class="input-xlarge" type="number" value="4" min="1" max="200" ng-model="competitionSettings.numberRounds">
+                        </div>
+                      </div>
+
+
+                      
+                        
+                      
+                  
+                      <div id="accordion2">
+                        
+                          <div id="">
+                            
+                              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                              <legend class="">Advanced settings <small> (click to expand) </small></legend>
+                            </a>
+                          </div>   
+
+                          <div id="collapseOne" class="collapse">
+                            <div class="">
+                               
+                               <div class="control-group">
+                                <!-- Username -->
+                                <label class="control-label"  for="username">Climate change</label>
+                                <div class="controls">
+                                  <input id="beancount"  class="input-xlarge" type="number" value="4" min="1" max="200" ng-model="competitionSettings.climateChangeRound">
+                                  <p>
+                                    <small>This is the round when climate change is triggered. By default, this swaps the 6-sided global die for an 8-sided global die.</small></p>
+                                </div>
+                              </div>
+
+
+                               <div class="control-group">
+                                <!-- Username -->
+                                <label class="control-label"  for="username">DRR Option</label>
+                                <div class="controls">
+                                  <label class="checkbox">
+
+
+
+                                    <input type="checkbox" ng-model="competitionSettings.drrEnabled"> Enable DRR
+                                  </label>
+                                  <input id="beancount"  class="input-xlarge" type="number" value="4" min="1" max="200" ng-model="competitionSettings.drrRound">
+    
+                                  <p>
+                                    <small>If enabled, trees are planted in this round which reduces the later impact of floods for teams that successfully win the DRR bid.</small></p>
+                                </div>
+                              </div>
+
+                              <hr>
+                              <div>
+
+                               <h4>
+                                  Rain fall probabilities are calculated using the following generators.</h4><br>
+                                <blockquote>
+                                <strong>Example:</strong> Using 2 six-sided die, you could have values ranging from 2 to 12 on any given roll. If we use a fixed threshold of 0.833 (10/12), then any time we roll a 10, 11, or 12, a disaster occurs.
+                              </blockquote>
+                              <br>
+
+                              </div>
+
+                              <div class="control-group">
+                                <!-- Username -->
+                                <label class="control-label"  for="username">Probility  <i>before</i></label>
+                                <div class="controls">
+                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.probbefore">
+                                    <option value="0">Coin flip (50-50 chance)</option>
+                                    <option value="1">Single six-sided die (1 to 6)</option>
+                                    <option value="2">Two six-sided dice (2 to 12)</option>
+                                    <option value="3">One six-sided and one 8-sided die  (2 to 14) </option>
+                                    <option value="4">20-sided icosahedron (1 to 20)</option>
+                                    <option value="5">Roulette (1 to 100)</option>
+                                    <option value="6">Desk of cards (Ace to ten)</option>
+                                    <option value="7">Custom fraction </option>
+                                  </select>
+
+                                  <div class="input-append" ng-show="customBefore">
+
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.beforeNumerator"><span class="add-on">/</span>
+
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.beforeDenominator">
+
+                                  </div>
+
+                                  <p>
+                                  <small>The probability generator BEFORE climate change.</small></p>
+                                </div>
+                              </div>
+
+                              <div class="control-group">
+                                <!-- Username -->
+                                <label class="control-label"  for="username">Disaster model <i>before</i></label>
+                                <div class="controls">
+                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.modelbefore">
+                                    <option value="0">Fixed threshold</option>
+                                    <option value="1">Three-step threshold</option>
+                                    <option value="2">Other threshold (TBD)</option>
+
+                                  </select>
+
+                                  <input id="beancount"  class="input-mini" ng-model="competitionSettings.beforeThreshold">
+
+                               
+                                  <p>
+                                  <small>How a disaster response is triggered BEFORE climate change.</small></p>
+                                </div>
+                              </div>   
+
+                              <hr>
+
+                              <div class="control-group">
+                                <!-- Username -->
+                                <label class="control-label"  for="username">Probility <i>after</i></label>
+                                <div class="controls">
+                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.probafter">                                  
+                                    <option value="0">Coin flip (50-50 chance)</option>
+                                    <option value="1">Single six-sided die (1 to 6)</option>
+                                    <option value="2">Two six-sided dice (2 to 12)</option>
+                                    <option value="3">One six-sided and one 8-sided die  (2 to 14) </option>
+                                    <option value="4">20-sided icosahedron (1 to 20)</option>
+                                    <option value="5">Roulette (1 to 100)</option>
+                                    <option value="6">Desk of cards (Ace to ten)</option>
+                                    <option value="7">Custom fraction </option>
+                                  </select>
+
+                                    <div class="input-append" ng-show="customAfter">
+
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.afterNumerator"><span class="add-on">/</span>
+
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.afterDenominator">
+
+                                  </div>
+                                  <p>
+                                  <small>The probability generator AFTER climate change.</small></p>
+                                </div>
+                              </div>   
+
+                              <div class="control-group">
+                                <!-- Username -->
+                                <label class="control-label"  for="username">Disaster model <i>after</i></label>
+                                <div class="controls">
+                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.modelafter">
+                                    <option value="0">Fixed threshold</option>
+                                    <option value="1">Three-step threshold</option>
+                                    <option value="2">Other threshold (TBD)</option>
+
+                                  </select>
+
+                                    <input id="beancount"  class="input-mini"  ng-model="competitionSettings.afterThreshold">
+                                  <p>
+                                  <small>How a disaster response is triggered AFTER climate change.</small></p>
+                                </div>
+                              </div> 
+
+                            </div>
+                          </div>
+                        
+                        
+                      </div>
+
+                  <hr>
+
+                  </fieldset>
+                  <div class="well">
+                    <button class="btn btn-success" ng-click="createCompetition()">Create competition</button>
+  
+                  <button class="btn btn-link" ng-click="clearForm()">cancel</button>
+                </div>
+  
+                  
+              </form>   
+
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      
+      </div>
+
+
+
+    <div class="row" ng-hide="currentUser"  ng-controller="UserCtrl" ng-cloak>
+
+      <div class="span12"  ng-cloak>
+
+        <h3>Pay for Predictions Organizer page</h3>
+
+              <ul class="nav nav-pills">
+                <li class="active"><a href="#login" data-toggle="tab">Login</a></li>
+                <li><a href="#create" data-toggle="tab">Create Account</a></li>
+              </ul>
+
+              <div id="myTabContent" class="tab-content">
+                <div class="tab-pane active in" id="login">
+                  <form class="form-horizontal">
+                    <fieldset>
+                
+                      <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label"  for="username">Username</label>
+                        <div class="controls">
+                          <input type="text" id="username" ng-model="username" name="username" placeholder="" class="input-xlarge">
+                        </div>
+                      </div>
+ 
+                      <div class="control-group">
+                        <!-- Password-->
+                        <label class="control-label" for="password">Password</label>
+                        <div class="controls">
+                          <input type="password"  ng-model="password" id="password" name="password" placeholder="" class="input-xlarge">
+                        </div>
+                      </div>
+ 
+ 
+                      <div class="control-group">
+                        <!-- Button -->
+                        <div class="controls">
+                          <button class="btn btn-success" ng-click="login()">Log in</button>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </form>                
+                </div>
+
+                <div class="tab-pane fade" id="create">
+                  <form class="form-horizontal">
+
+                    <fieldset>
+
+                      <div id="legend">
+                        <legend class="">Basic Information</legend>
+                      </div>    
+
+                      <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label" for="username">Full name</label>
+                        <div class="controls">
+                          <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <!-- Username -->
+                        <label class="control-label" for="username">Username</label>
+                        <div class="controls">
+                          <input type="text" class="input" ng-model="suusername" placeholder="" class="input-xlarge">
+                        </div>
+                      </div>
+ 
+                      <div class="control-group">
+                        <!-- Password-->
+                        <label class="control-label" for="password">Password</label>
+                        <div class="controls">
+                          <input type="password" ng-model="supassword" id="password" name="password" placeholder="" class="input-xlarge">
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <!-- Password-->
+                        <label class="control-label" for="password">Confirm Password</label>
+                        <div class="controls">
+                          <input type="password"  ng-model="suconfirmPassword" id="password" name="password" placeholder="" class="input-xlarge">
+                        </div>
+                      </div>
+
+                      <div id="legend">
+                        <legend class="">Demographic data</legend>
+                      </div>    
+
+                      <div class="control-group">
+                        <!-- Password-->
+                        <label class="control-label" for="location">Location</label>
+                        <div class="controls">
+                          <input type="text" id="location" name="location" placeholder="" class="input-xlarge">
+                        </div>
+                      </div>                      
+ 
+ 
+                      <div class="control-group">
+                        <!-- Button -->
+                        <div class="controls">
+                            <button class="btn btn-success" ng-click="register()">Create Account</button>                        
+                          </div>
+                      </div>
+                    </fieldset>
+                  </form>                
+                </div>
+            </div>
+        </div>
+
+        </div>    
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+
+
+      
+  <script type="text/javascript" src="/js/lib/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="/js/lib/jquery-ui-1.10.3.custom.min.js"></script>
+  <script type="text/javascript" src="/js/lib/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/js/lib/ng-grid-2.0.5.min.js"></script>
+  <script type="text/javascript" src="/js/lib/angular-strap.min.js"></script>
+  <script type="text/javascript" src="/dpd.js"></script>
+  <script type="text/javascript" src="/js/global.js"></script>
+  <script type="text/javascript" src="/js/organizer.js"></script>
+  
+
+</body>
+</html>

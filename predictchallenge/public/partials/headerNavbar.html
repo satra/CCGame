@@ -1,100 +1,40 @@
-<div class="navbar  navbar-fixed-top" ng-controller="UserCtrl">
+<div class="navbar navbar-fixed-top" ng-controller="UserCtrl">
   <div class="navbar-inner">
-    <div class="container">
+    <div class="container-fluid">
 
-      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
- 
-      <!-- Be sure to leave the brand out there if you want it shown -->
-      <a class="brand" href="#">Pay for Predictions</a>
+        <ul class="nav"><li>
+          <a href="/"><i class="icon-home"></i></a></li>
+          <!-- <li><a data-toggle="tooltip" title="Rules" data-placement="bottom" target="_blank" href="http://www.climatecentre.org/site/paying-for-predictions"><i class="icon-info-sign"></i></a></li> -->
 
-      <ul class="nav"> 
-        <li><a href="/">Home</a></li>
-        <li><a href="/browse.html">Competitions</a></li>
-        <!-- <li><a href="/results.html">Results</a></li>  -->
-      </ul>
+          <li><a href="/find.html">Play</a></li>
+          
+        </ul>
 
-      <ul class="nav pull-right" ng-hide="currentUser" ng-cloak>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Register
-            <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            
-             <form>
-                <input type="text" class="input" ng-model="suusername" placeholder="username" />
-                
-                <input type="text" class="input" ng-model="sudisplayname" placeholder="full name"/>
-                
-                <input type="password" class="input" ng-model="supassword" placeholder="password" />
-            
-                <input type="password" class="input" ng-model="suconfirmPassword" placeholder="confirm password" />
-                <div>
-                  <button class="btn btn-primary" ng-click="register()">Sign up</button>
-                  <button class="btn-link" ng-click="">Cancel</button>
-                </div>
-              </form>  
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Login
-            <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <form>
-              <label>Username</label>
-              <input type="text" ng-model="username" />
-              <label>Password</label>
-              <input type="password" ng-model="password" />
-              <div>
-                <button class="btn btn-primary" ng-click="login()">Log in</button>
-                <button class="btn-link" ng-click="">Cancel</button>
-              </div>
-            </form>
-          </ul>
-        </li>
-      </ul>
 
       <ul class="nav pull-right" ng-show="currentUser" ng-cloak>
 
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Signed in as <b>@{{currentUser.username}}</b>
+            <b>{{currentUser.username}}</b> is signed in as the organizer.
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            
+            <li><a href="/organizer.html">Manage competitions</a></li>
+            <li><a href="#"></i> Results</a></li>
             <li><a href ng-click="logout()">Logout</a></li>
           </ul>
         </li>
 
       </ul>
+
+      <ul class="nav pull-right" ng-hide="currentUser" ng-cloak>
+        <li><a href="/organizer.html">Organizers click here</a></li>
+      </ul>
       
     </div>
-
-
-
-      <!-- Everything you want hidden at 940px or less, place within here -->
-
-      <div class="nav-collapse collapse">
-        <!-- .nav, .navbar-search, .navbar-form, etc -->
-      </div>
-
-
-
  
     </div>
   </div>
-</div>
-
 
 
 

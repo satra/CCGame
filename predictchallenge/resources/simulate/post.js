@@ -18,7 +18,6 @@ else
     setResult([]);
 }
 
-
 function getRandom(min, max, n_samples){
     /* Generate a random number between min and max inclusive
      */
@@ -305,20 +304,23 @@ RainGame.prototype.simulate = function(n_iters){
 
 
 
-dpd.competitions.get(body.compid, 
+dpd.game.get(body.compname, 
+
     function(competition_data, error) {
 
+//        console.log(competition_data);
+
         var n_teams = competition_data.data.length;
-        var n_beans = competition_data.numberBeans;
-        var n_rounds = competition_data.numberRounds;
-        var die_change_round = competition_data.climateChangeRound;
-        var with_drr = false;
+        var n_beans = competition_data.settings.numberBeans;
+        var n_rounds = competition_data.settings.numberRounds;
+        var die_change_round = competition_data.settings.climateChangeRound;
+        var with_drr = competition_data.settings.drrEnabled;
 
         var rg = new RainGame(n_teams, n_beans, n_rounds, die_change_round, with_drr);
 
         for(i=0;i<n_teams;i++)
         {
-            var playerid = competition_data.data[i].id;
+            var playerid = competition_data.data[i].name;
 
             // using strategy ID to enable multiple strategies per user in same competition
             var strategyID = competition_data.data[i].stratid;
@@ -329,24 +331,31 @@ dpd.competitions.get(body.compid,
 
         var simresult = rg.simulate(1000);
 
+//        console.log(simresult);
+        
         var createDate = new Date().getTime();
         
-        competition_data.runtime = createDate;
-        competition_data.simulateState = 'completed';
+        competition_data.runDate = createDate;
+        competition_data.state = 'completed';
 
         for(j=0;j<simresult.length;j++)
         {
             var outcome = simresult[j];
+            
             dpd.strategy.get(outcome.team, function(r, e)
             {
-                // console.log(r);
+                // we now hoave a single strategy
+                
                 r.competitionID = body.compid;
                 r.aggregateBeans.push(outcome.beans);
                 r.aggregateCrises.push(outcome.crises);
 
-                dpd.strategy.put(r);
+                dpd.strategy.put(r.id, r);
+                
             });
         }
+        
+//        console.log('weve saved the strategy');
 
         // update competition data
         for(k=0;k<simresult.length;k++)
@@ -358,6 +367,7 @@ dpd.competitions.get(body.compid,
                 if(competition_data.data[m].stratid == outcome.team)
                 {
                     // matched
+//                    console.log('matched');
                     competition_data.data[m].beans = outcome.beans;
                     competition_data.data[m].crises = outcome.crises;
                     competition_data.data[m].bids = outcome.forecast;
@@ -367,11 +377,9 @@ dpd.competitions.get(body.compid,
             }            
         }
 
-        dpd.competitions.put(competition_data.id, competition_data);
+        dpd.game.put(competition_data.id, competition_data);
 
-        
         emit('SimulationDone', competition_data);
-
 
         setResult(competition_data);
 });

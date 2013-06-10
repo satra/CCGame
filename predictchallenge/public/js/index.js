@@ -48,6 +48,7 @@ app.controller('UserCompControl', function($scope, CompetitionList, $modal, $roo
 
   $scope.gridOptions = { 
         data: 'gdata',
+        showFilter: true,
         columnDefs: [
         {field:'competitionName', displayName:'Name', cellTemplate: customCellTemplate },
         {field:'ownerName', displayName:'Owner'}, 

@@ -1,61 +1,13 @@
 {
 	"type": "Collection",
 	"properties": {
-		"owner": {
-			"name": "owner",
+		"playerName": {
+			"name": "playerName",
 			"type": "string",
 			"typeLabel": "string",
 			"required": true,
-			"id": "owner",
+			"id": "playerName",
 			"order": 0
-		},
-		"competitionID": {
-			"name": "competitionID",
-			"type": "string",
-			"typeLabel": "string",
-			"required": false,
-			"id": "competitionID",
-			"order": 1
-		},
-		"strategy": {
-			"name": "strategy",
-			"type": "object",
-			"typeLabel": "object",
-			"required": false,
-			"id": "strategy",
-			"order": 2
-		},
-		"aggregateBeans": {
-			"name": "aggregateBeans",
-			"type": "array",
-			"typeLabel": "array",
-			"required": false,
-			"id": "aggregateBeans",
-			"order": 3
-		},
-		"aggregateCrises": {
-			"name": "aggregateCrises",
-			"type": "array",
-			"typeLabel": "array",
-			"required": false,
-			"id": "aggregateCrises",
-			"order": 4
-		},
-		"createDate": {
-			"name": "createDate",
-			"type": "number",
-			"typeLabel": "number",
-			"required": false,
-			"id": "createDate",
-			"order": 5
-		},
-		"ownerName": {
-			"name": "ownerName",
-			"type": "string",
-			"typeLabel": "string",
-			"required": false,
-			"id": "ownerName",
-			"order": 6
 		},
 		"competitionName": {
 			"name": "competitionName",
@@ -63,7 +15,47 @@
 			"typeLabel": "string",
 			"required": false,
 			"id": "competitionName",
-			"order": 7
+			"order": 1
+		},
+		"competitionID": {
+			"name": "competitionID",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "competitionID",
+			"order": 2
+		},
+		"createDate": {
+			"name": "createDate",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "createDate",
+			"order": 3
+		},
+		"strategy": {
+			"name": "strategy",
+			"type": "object",
+			"typeLabel": "object",
+			"required": false,
+			"id": "strategy",
+			"order": 4
+		},
+		"aggregateBeans": {
+			"name": "aggregateBeans",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "aggregateBeans",
+			"order": 5
+		},
+		"aggregateCrises": {
+			"name": "aggregateCrises",
+			"type": "array",
+			"typeLabel": "array",
+			"required": false,
+			"id": "aggregateCrises",
+			"order": 6
 		}
 	}
 }

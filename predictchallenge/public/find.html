@@ -10,10 +10,14 @@
   <script type="text/javascript" src="/js/lib/angular.js"></script>
   <style type="text/css">
 
-  .gridStyle {
-    border: 1px solid rgb(212,212,212);
-    width: 100%; 
-    height: 300px;
+    .gridStyle {
+    border: 0px solid rgb(212,212,212);
+    width: 99%; 
+    height:400px;
+  }
+
+  .ngColMenu {
+    background-color: #fff;
   }
 
   body {
@@ -23,32 +27,41 @@
   </style>
   <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 </head>
-<body>
+<body ng-show="userLoaded" ng-cloak>
 
   <ng-include src="'partials/headerNavbar.html'"></ng-include>
 
-  <div class="container">
+  <div class="container" ng-controller='AllCompControl' >
+    <div class="row">
+         <div class="span12">
 
-    <br>
-    <div><img src="img/logo.gif"></div>
+          <p class=""><h3>To play <a>Pay For Predictions</a>, you need to join an open competition</h3><span class="lead">If you know the name of your competition, enter it here: 
+          </span>
+          
+          <span class="input-append">
+            <input type="text" id="quickjoin" ng-model="quickjoinname" name="quickjoin" placeholder="Competition name" class="input-large">
 
-    <div class="page-header">
-      <span><h1>Competitions</h1></span>
-    </div>
+            <button class="btn btn-primary" ng-click="quickJoin()" type="button">Go!</button>
+          </span>
+          
+                      <br><br>
 
-    <div class="row" ng-show="currentUser" ng-controller='AllCompControl' >
-      <div class="span12">
-        <div class="gridStyle" ng-grid="gridOptions"></div>
+          
       </div>
 
-    </div>
 
-    <div class="row">
+    
+                
+
       <div class="span12">
-        <br>
-          <p><small>This game was produced through a research grant to the Red Cross/Red Crescent Climate Centre from the Climate and Development Knowledge Network (CDKN Action Lab Innovation Fund).
-      As such, it is an output from a project funded by the UK Department for International Development (DFID) and the Netherlands Directorate-General for International Cooperation (DGIS) for the benefit of developing countries. However, the views expressed and information contained in it are not necessarily those of or endorsed by DFID, DGIS or the entities managing the delivery of the Climate and Development Knowledge Network, which can accept no responsibility or liability for such views, completeness or accuracy of the information or for any reliance placed on them.</small></p>
-    </div>
+        <h3>If you don't know the name, browse the list of open competitions below</h3>
+          
+        <div class="pull-right"><small>Click on the black triangle to search</small></div>
+        <div class="clearfix"></div>
+
+        
+        <div class="gridStyle" ng-grid="gridOptions"></div>
+      </div>
     </div>
   </div>
 
@@ -59,7 +72,7 @@
   <script type="text/javascript" src="/js/lib/angular-strap.min.js"></script>
   <script type="text/javascript" src="/dpd.js"></script>
   <script type="text/javascript" src="/js/global.js"></script>
-  <script type="text/javascript" src="/js/allcomps.js"></script>
+  <script type="text/javascript" src="/js/game.js"></script>
 
 </body>
 </html>
