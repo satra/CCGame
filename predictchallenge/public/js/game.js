@@ -26,7 +26,10 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
       if(!$scope.statusq)
       {
         console.log('searching for all');
-        feed  = new GameList();
+        feed  = new GameList(
+                  {
+          state: "open"
+        });  
 
         feed.refresh();
 

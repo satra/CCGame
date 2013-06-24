@@ -185,32 +185,61 @@
 
                               </div>
 
+
                               <div class="control-group">
-                                <!-- Username -->
-                                <label class="control-label"  for="username">Probility  <i>before</i></label>
+                                
+
                                 <div class="controls">
-                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.probbefore">
-                                    <option value="0">Coin flip (50-50 chance)</option>
+                                  <p><strong>The probability generator(s) used BEFORE climate change occurs.</strong></p>
+                                </div>
+
+                                <label class="control-label"  for="username">Player rainfall</label>
+
+                                <div class="controls">
+                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.probbefore1">
+                                    <option value="0">Coin flip (50-50 chance, 1 to 2)</option>
                                     <option value="1">Single six-sided die (1 to 6)</option>
-                                    <option value="2">Two six-sided dice (2 to 12)</option>
-                                    <option value="3">One six-sided and one 8-sided die  (2 to 14) </option>
-                                    <option value="4">20-sided icosahedron (1 to 20)</option>
-                                    <option value="5">Roulette (1 to 100)</option>
-                                    <option value="6">Desk of cards (Ace to ten)</option>
-                                    <option value="7">Custom fraction </option>
+                                    <option value="2">Single eight-sided die (1 to 8) </option>
+                                    <option value="3">20-sided icosahedron (1 to 20)</option>
+                                    <option value="4">Roulette (1 to 100)</option>
+                                    <option value="5">Desk of cards (Ace to ten)</option>
+                                    <option value="6">Custom fraction </option>
                                   </select>
 
-                                  <div class="input-append" ng-show="customBefore">
+                                  <div class="input-append" ng-show="customBefore1">
 
-                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.beforeNumerator"><span class="add-on">/</span>
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.beforeNumerator1"><span class="add-on">/</span>
 
-                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.beforeDenominator">
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.beforeDenominator1">
 
                                   </div>
-
-                                  <p>
-                                  <small>The probability generator BEFORE climate change.</small></p>
                                 </div>
+
+                                <br>
+
+
+                              
+                                <label class="control-label"  for="username">Regional rainfall</label>
+                                <div class="controls">
+                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.probbefore2">
+                                    <option value="0">Coin flip (50-50 chance, 1 to 2)</option>
+                                    <option value="1">Single six-sided die (1 to 6)</option>
+                                    <option value="2">Single eight-sided die (1 to 8) </option>
+                                    <option value="3">20-sided icosahedron (1 to 20)</option>
+                                    <option value="4">Roulette (1 to 100)</option>
+                                    <option value="5">Desk of cards (Ace to ten)</option>
+                                    <option value="6">Custom fraction </option>
+                                  </select>
+
+                                  <div class="input-append" ng-show="customBefore2">
+
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.beforeNumerator2"><span class="add-on">/</span>
+
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.beforeDenominator2">
+
+                                  </div>
+                                </div>
+
                               </div>
 
                               <div class="control-group">
@@ -219,8 +248,8 @@
                                 <div class="controls">
                                   <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.modelbefore">
                                     <option value="0">Fixed threshold</option>
-                                    <option value="1">Three-step threshold</option>
-                                    <option value="2">Other threshold (TBD)</option>
+                                    <!-- <option value="1">Three-step threshold</option> -->
+                                    <!-- <option value="2">Other threshold (TBD)</option> -->
 
                                   </select>
 
@@ -234,26 +263,56 @@
 
                               <hr>
 
+
+
+
+
+
+
                               <div class="control-group">
-                                <!-- Username -->
-                                <label class="control-label"  for="username">Probility <i>after</i></label>
+                                  <div class="controls">
+                                    <p><strong>The probability generator(s) used BEFORE climate change occurs.</strong></p>
+                                  </div>
+
+                                <label class="control-label"  for="username">Player rainfall</label>
                                 <div class="controls">
-                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.probafter">                                  
-                                    <option value="0">Coin flip (50-50 chance)</option>
+                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.probafter1">                                  
+                                    <option value="0">Coin flip (50-50 chance, 1 to 2)</option>
                                     <option value="1">Single six-sided die (1 to 6)</option>
-                                    <option value="2">Two six-sided dice (2 to 12)</option>
-                                    <option value="3">One six-sided and one 8-sided die  (2 to 14) </option>
-                                    <option value="4">20-sided icosahedron (1 to 20)</option>
-                                    <option value="5">Roulette (1 to 100)</option>
-                                    <option value="6">Desk of cards (Ace to ten)</option>
-                                    <option value="7">Custom fraction </option>
+                                    <option value="2">Single eight-sided die (1 to 8) </option>
+                                    <option value="3">20-sided icosahedron (1 to 20)</option>
+                                    <option value="4">Roulette (1 to 100)</option>
+                                    <option value="5">Desk of cards (Ace to ten)</option>
+                                    <option value="6">Custom fraction </option>
                                   </select>
 
-                                    <div class="input-append" ng-show="customAfter">
+                                    <div class="input-append" ng-show="customAfter1">
 
-                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.afterNumerator"><span class="add-on">/</span>
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.afterNumerator1"><span class="add-on">/</span>
 
-                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.afterDenominator">
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.afterDenominator1">
+                                  </div>
+                                </div>
+
+                                <br>
+
+                                <label class="control-label"  for="username">Regional rainfall</label>
+                                <div class="controls">
+                                  <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.probafter2">                                  
+                                    <option value="0">Coin flip (50-50 chance, 1 to 2)</option>
+                                    <option value="1">Single six-sided die (1 to 6)</option>
+                                    <option value="2">Single eight-sided die (1 to 8) </option>
+                                    <option value="3">20-sided icosahedron (1 to 20)</option>
+                                    <option value="4">Roulette (1 to 100)</option>
+                                    <option value="5">Desk of cards (Ace to ten)</option>
+                                    <option value="6">Custom fraction </option>
+                                  </select>
+
+                                    <div class="input-append" ng-show="customAfter2">
+
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.afterNumerator2"><span class="add-on">/</span>
+
+                                    <input id="beancount"  class="input-mini" type="number" value="4" min="1" max="100" ng-model="competitionSettings.afterDenominator2">
 
                                   </div>
                                   <p>
@@ -267,8 +326,8 @@
                                 <div class="controls">
                                   <select id="probbefore" class="input-xlarge" ng-model="competitionSettings.modelafter">
                                     <option value="0">Fixed threshold</option>
-                                    <option value="1">Three-step threshold</option>
-                                    <option value="2">Other threshold (TBD)</option>
+                                    <!-- <option value="1">Three-step threshold</option> -->
+                                    <!-- <option value="2">Other threshold (TBD)</option> -->
 
                                   </select>
 
@@ -290,7 +349,7 @@
                   <div class="well">
                     <button class="btn btn-success" ng-click="createCompetition()">Create competition</button>
   
-                  <button class="btn btn-link" ng-click="clearForm()">cancel</button>
+                  <!-- <button class="btn btn-link" ng-click="clearForm()">cancel</button> -->
                 </div>
   
                   

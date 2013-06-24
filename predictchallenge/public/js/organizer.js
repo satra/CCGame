@@ -26,18 +26,24 @@ app.controller('UserCompControl', function($scope, GameList, $modal, $rootScope,
     numberBeans  : 10,
     numberRounds  : 10,
     climateChangeRound  : 7,
-    probbefore: '2',
-    probafter: '3',
+    probbefore1: '1',
+    probbefore2: '1',
+    probafter1: '1',
+    probafter2: '2',
     modelbefore: '0',
     modelafter: '0',
     drrRound: 2,
     drrEnabled: true,
     beforeThreshold: 0.833,
-    beforeNumerator: 1,
-    beforeDenominator: 4,
+    beforeNumerator1: 1,
+    beforeNumerator2: 1,
+    beforeDenominator1: 4,
+    beforeDenominator2: 4,
     afterThreshold: 0.714,
-    afterNumerator: 1,
-    afterDenominator: 6
+    afterNumerator1: 1,
+    afterNumerator2: 1,
+    afterDenominator1: 6,
+    afterDenominator2: 6
   }
   
   var feed ={};
@@ -85,8 +91,10 @@ app.controller('UserCompControl', function($scope, GameList, $modal, $rootScope,
   {
     // perform form validation here
 
-    $scope.customBefore = $scope.competitionSettings.probbefore == '7';
-    $scope.customAfter = $scope.competitionSettings.probafter == '7';
+    $scope.customBefore1 = $scope.competitionSettings.probbefore1 == '6';
+    $scope.customBefore2 = $scope.competitionSettings.probbefore2 == '6';
+    $scope.customAfter1 = $scope.competitionSettings.probafter1 == '6'
+    $scope.customAfter2 = $scope.competitionSettings.probafter2 == '6';
 
 
 
