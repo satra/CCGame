@@ -4,7 +4,7 @@
   <title>Paying for Predictions</title>
   <link rel="stylesheet" href="css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="css/ng-grid.css" /> 
-  <link rel="stylesheet" type="text/css" href="css/dangle.css" /> 
+
   <link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.10.3.custom.min.css" />  
   <link rel="stylesheet" href="css/style.css" />
   <!-- Angular does some things with CSS so it's good to load this in the head -->
@@ -30,6 +30,9 @@
     height: 300px;
   }
 
+  .ngColMenu {
+    background-color: #fff;
+  }
 
   .item, .placeholder {
     padding: 2px;
@@ -67,8 +70,9 @@
         <div class="tabbable tabs">
           <ul class="nav nav-pills"  id="myTab">
             <li class="active"><a href="#0" data-toggle="tab">About this competition</a></li>
-            <li class=""><a href="#1" data-toggle="tab">Join this competition</a></li>
-            <li><a href="#2" data-toggle="tab">View current players</a></li>
+            <li ng-hide="completed" class=""><a href="#1" data-toggle="tab">Join this competition</a></li>
+            <li ng-hide="completed" ><a href="#2" data-toggle="tab">View current players</a></li>
+            <li ng-show="completed" ><a href="#2" data-toggle="tab">Results</a></li>
             <li></li>
 
           </ul>
@@ -93,15 +97,11 @@
                   <span ng-show="completed">This competition was run successfully on <b>{{ runDate | date:'medium' }}</b></span>     
                 </div>
 
-
-                
-
               </div>
 
-
-              
               <div>
-                <a class="btn btn-success btn-large" ng-click="runCompetition()" ng-show="currentUser &&ownership && !completed" >Run Competition!</a>
+                <a class="btn btn-success btn-large" ng-click="runCompetition()" ng-show="currentUser && ownership && !completed" >Run Competition!</a>
+
               </div>
 
 
@@ -118,25 +118,25 @@
 
                   <div class="control-group">
                     <!-- Username -->
-                    <label class="control-label"  for="username">Team and player name</label>
+                    <label class="control-label">Team and player name</label>
                     <div class="controls">
-                      <input id="minp" class="input-xlarge" ng-model="playername" placeholder="1-John-Doe">
-                      <p><small>Please enter using the following format: TeamNumber-FirstName-LastName</small></p>  
+                      <input id="minp" class="input-xlarge" ng-model="playername" placeholder="John-Doe">
+                      <p><small>Please enter using the following format: FirstName-LastName <b>or</b> TeamNumber-FirstName-LastName</small></p>
                     </div>
 
-                    <label class="control-label"  for="username">Last forecast</label>
+                    <label class="control-label">Last forecast</label>
                     <div class="controls">
                       <input id="minp" class="input-xlarge" ng-model="lastforecast" placeholder="Optional">
                       <p><small>How many beans did you individually contribute to the forecast bid in the previous game?</small></p>  
                     </div>
 
-                    <label class="control-label"  for="username">Last beans</label>
+                    <label class="control-label">Last beans</label>
                     <div class="controls">
                       <input id="minp" class="input-xlarge" ng-model="lastbeans" placeholder="Optional">
                       <p><small>How many beans did you have at the end of the game?</small></p>  
                     </div>
                     
-                    <label class="control-label"  for="username">Last crises</label>
+                    <label class="control-label">Last crises</label>
                     <div class="controls">
                       <input id="minp" class="input-xlarge" ng-model="lastcrises" placeholder="Optional">
                       <p><small>How many Humanitarian crises did you have at the end of the game?</small></p>  
@@ -150,7 +150,7 @@
 
                   <div class="control-group">
                     <!-- Username -->
-                    <label class="control-label"  for="username">Forecast bid</label>
+                    <label class="control-label">Forecast bid</label>
                     <div class="controls">
 
                       <input  class="input-small" type="number" value="4" min="0" max="20" ng-model="strategy.forecast_bid" class="input-xlarge">
@@ -162,10 +162,10 @@
 
                   <div class="control-group">
                     <!-- Username -->
-                    <label class="control-label"  for="username">Disaster Reduction bid</label>
+                    <label class="control-label">Disaster Risk Red. bid</label>
                     <div class="controls">
 
-                      <input id="maxp" class="input-small" type="number" value="0" min="0" max="20" ng-model="strategy.drr_bid">
+                      <input id="maxp" class="input-small" type="number" value="0" min="0" max="{{competitionData.numberBeans }}" ng-model="strategy.drr_bid">
                       <p><small>How many beans will you contribute towards your team's DRR bid?</small></p>
                     </div>
 
@@ -181,7 +181,7 @@
                   <div>
                    <h4>To construct your strategy, please add one or more rules using the tool below:</h4><br>
                    <blockquote>
-                    <strong>Example:</strong> Using 2 six-sided die, you could have values ranging from 2 to 12 on any given roll. If we use a fixed threshold of 0.833 (10/12), then any time we roll a 10, 11, or 12, a disaster occurs.
+                     Each rule will be evaluated in order on each turn. You can reorder the rules by dragging and dropping them. If you're unsure or just want to experiment, clicking on 'autogenerate strategy' will generate a random set of rules.
                   </blockquote>
                   <br>
                 </div>
@@ -189,7 +189,7 @@
 
                 <div class="control-group">
 
-                  <label class="control-label"  for="username">Take early action if</label>
+                  <label class="control-label">Take early action if</label>
                   <div class="controls">
 
                     <select class="input-large" id="fddropt">
@@ -201,7 +201,7 @@
                     <p><small>Forecast and/or DRR will be factored into the flood costs should they occur</small></p>
                   </div>
 
-                  <label class="control-label"  for="username">When the round # is</label>
+                  <label class="control-label">When the round # is</label>
                   <div class="controls">
 
                     <select class="input-large" id="equalopt">
@@ -214,10 +214,10 @@
                     <p><small>Climate change may occur at some point in this game. Please plan accordingly.</small></p>
                   </div>
 
-                  <label class="control-label"  for="username">And regional rainful is > </label>
+                  <label class="control-label">And regional rainful is > </label>
                   <div class="controls">
                     <input class="input-small" id="rainopt" type="number" min="0" max="8" value="0">
-                    <p><small>This is your local rain fall indicator.</small></p>
+                    <p><small>Regional rain fall indicator.</small></p>
                   </div>
                   <div class="controls">
 
@@ -259,6 +259,11 @@
 
 
           <div class="tab-pane" id="2">
+            <div>
+                <span ng-show="hasPlayers">There are <b>{{competitionData.data.length}}</b> players in this competition.</span>
+                <a class="btn btn-inverse btn-link" ng-click="addFakePlayer()" ng-show="currentUser && ownership && !completed" >Add a fake player</a>
+            </div>
+
 
             <div class="gridStyle" ng-grid="competitionGridOptions"></div>
 
@@ -274,7 +279,7 @@
                 <ol>
                   <li ng-repeat="rule in selectedStrategy.rules">
 
-                    IF <b>{{rule[0]}}</b> and Round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and Reg. Rain > <b>{{rule[3]}} </b>
+                    If <b>{{rule[0]}}</b> and round <b>{{rule[1]}}</b> <b>{{rule[2]}}</b> and regional rainfall > <b>{{rule[3]}} </b>
 
                   </li>
                 </ol>

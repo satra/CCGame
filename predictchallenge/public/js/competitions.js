@@ -7,7 +7,7 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
   }
 
 
-  
+
 
 
   $scope.clearRules = function()
@@ -36,7 +36,7 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
 
           $scope.showingStrategyDetails = true;
           $scope.selectedStrategy = strategy_index.strat;
-          
+
         }
         else
         {
@@ -47,7 +47,7 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
 
         alert('Only organizers can see individual strategies');
 
-      }   
+      }
     });
   }
 
@@ -123,6 +123,33 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
     $scope.strategy.rules.splice(ruleIndex,1);
   }
 
+  $scope.addFakePlayer = function()
+  {
+       $.post("/randomplayer", { "compname": $scope.competitionData.id },
+
+                function(result){
+
+                    console.log(result);
+
+//                  $scope.competitionData = result;
+//                  $scope.runDate = new Date($scope.competitionData.runtime);
+//                  $scope.data = getChartData($scope.competitionData.data);
+//
+//                  if(result.state == "completed")
+//                  {
+//                    $scope.completed = true;
+//                    console.log('completed');
+//                  }
+
+                  $scope.$apply();
+
+                }, "json");
+
+  }
+
+
+
+  // validate that hte username is either in first-last or number-first-last format
   var validateUsername = function(username)
   {
     console.log(username);
@@ -130,7 +157,7 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
     if (username) {
       var splitname = username.split('-')
       console.log(splitname);
-      if(splitname.length == 3)
+      if(splitname.length == 3 || splitname.length == 2)
       {
         return true;
       }
@@ -143,7 +170,7 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
     {
       return false;
     }
-    
+
   }
 
 
@@ -157,15 +184,15 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
       dpd.strategy.post(
       {
         playerName: $scope.playername,
-        competitionName: $scope.competitionData.name, 
+        competitionName: $scope.competitionData.name,
         competitionID: $scope.competitionData.id,
         createDate: createDate,
-        strategy: submitstrat, 
+        strategy: submitstrat,
         aggregateBeans: [],
         aggregateCrises: []
 
       }, function (result, err) {
-        if(err) 
+        if(err)
         {
           return console.log('error', err);
         }
@@ -175,8 +202,8 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
           // now add to competition table
           $scope.competitionData.data.push(
           {
-            name: $scope.playername, 
-            strat: submitstrat, 
+            name: $scope.playername,
+            strat: submitstrat,
             stratid: result.id,
             beans: -1,
             crises: -1,
@@ -195,17 +222,17 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
                 return console.log(err);
               }
               else
-              {                  
+              {
                 console.log('strategy added successfully');
-      
-               $('#myTab a:last').tab('show'); 
+
+               $('#myTab a:last').tab('show');
 
                 $scope.$apply();
 
               }
-            });          
+            });
         }
-      }); 
+      });
     }
     else
     {
@@ -232,7 +259,7 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
       {'label': 'Beans', 'data': beans_array},
       {'label': 'Crises', 'data': crises_array}
       ];
-      return array_to_return;  
+      return array_to_return;
     }
 
   };
@@ -295,19 +322,21 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
 
   $scope.competitionGridOptions = {
     data: 'competitionData.data',
+    jqueryUITheme: false,
+    showFilter: true,
     columnDefs: [
     {field:'name', displayName:'Team-Player', width: '*',  sortable: true},
-    {field:'strat', displayName:'Strategy', cellTemplate: showStrategyTemplate, width: '*',  sortable: false }, 
-    {field:'beans', displayName:'Beans', width: '*',  sortable: true}, 
+    {field:'strat', displayName:'Strategy', cellTemplate: showStrategyTemplate, width: '*',  sortable: false },
+    {field:'beans', displayName:'Beans', width: '*',  sortable: true},
     {field:'crises', displayName:'Crises', width: '*',  sortable: true},
     {field:'bids', displayName:'Forecast bids', width: '*',  sortable: true}
     ]
-  }    
+  }
 
 
   if (!compname) {
 
-    console.log('no id provided, should redirect')    
+    console.log('no id provided, should redirect')
     location.href = "/";
 
     }
@@ -319,7 +348,7 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
 
         if(!results)
         {
-          console.log('incorrect id, should redirect')    
+          console.log('incorrect id, should redirect')
           location.href = "/";
         }
         else
@@ -335,7 +364,7 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
 
               console.log('ownership:', $scope.ownership)
               $scope.$apply();
-              
+
             }
             else
             {
@@ -343,8 +372,9 @@ app.controller('CompDetailsCtrl', function($scope, GameList ,$modal, $rootScope)
             }
           });
 
-          
+
           $scope.competitionData = result;
+          console.log(result);
           $scope.runDate = new Date($scope.competitionData.runDate);
           $scope.data = getChartData($scope.competitionData.data);
 

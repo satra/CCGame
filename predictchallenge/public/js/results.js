@@ -71,7 +71,7 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
   });
 
   var customCellTemplate = '<div ng-click="selectCompetition(row.entity)" class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{row.getProperty(col.field)}}</span></div>';
-  var openCompetitionTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><button class="btn btn-mini btn-primary btn-block" ng-click="openCompetitionWindow(row.entity)" ng-cell-text>Join this competition</button></div>';
+  var openCompetitionTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><button class="btn btn-mini btn-primary btn-block" ng-click="openCompetitionWindow(row.entity)" ng-cell-text>View competition result</button></div>';
   var dateTemplate = '<div class="ngCellText" ng-class="col.colIndex()">{{row.getProperty(col.field) | date:"medium"}}</div>';  
 
   $scope.gridOptions = { 
@@ -82,8 +82,8 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
           {field:'createDate', displayName:'Date created', cellTemplate: dateTemplate},
           {field:'name', displayName:'Name', cellTemplate: customCellTemplate },
           {field:'organizerName', displayName:'Organizer', width:'100px'},
-          {field:'state', displayName:'Status', width: '100px'}
-          // {field:'name', displayName:'Actions', cellTemplate: openCompetitionTemplate },
+          {field:'state', displayName:'Status', width: '100px'},
+          {field:'name', displayName:'Actions', cellTemplate: openCompetitionTemplate }
         ]
       };
 

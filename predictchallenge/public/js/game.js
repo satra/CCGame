@@ -12,7 +12,6 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
   $scope.statusq = status;
   $scope.selectedCompetition = {};
   $scope.showCompetitionDetail = false;
-
   $scope.quickjoinname = '';
 
   var feed ={};
@@ -21,11 +20,13 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
 
     if($rootScope.currentUser)
     {
-      console.log($rootScope.currentUser.competitions);
+
+//      console.log($rootScope.currentUser.competitions);
 
       if(!$scope.statusq)
       {
-        console.log('searching for all');
+        console.log('searching for open games');
+
         feed  = new GameList(
                   {
           state: "open"
@@ -38,21 +39,21 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
         $scope.gdata = feed.competitions;
 
       }
-      else
-      {
-        console.log('searching for ', $scope.statusq)
-
-        feed  = new GameList(
-        {
-          state: $scope.statusq
-        });  
-
-        feed.refresh();
-
-        $scope.feed = feed;
-        $scope.updateList = feed.getList;
-        $scope.gdata = feed.competitions;
-      }
+//      else
+//      {
+//        console.log('searching for ', $scope.statusq)
+//
+//        feed  = new GameList(
+//        {
+//          state: $scope.statusq
+//        });
+//
+//        feed.refresh();
+//
+//        $scope.feed = feed;
+//        $scope.updateList = feed.getList;
+//        $scope.gdata = feed.competitions;
+//      }
     }
    });
 
@@ -65,8 +66,8 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
   $scope.gdata = feed.competitions;
 
   dpd.on('CompetitionPosted', function(post){
-      console.log('allcomps competition posted')
-      console.log(feed.competitions);
+//      console.log('allcomps competition posted')
+//      console.log(feed.competitions);
       feed.refresh();
   });
 
@@ -93,11 +94,15 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
 
   $scope.quickJoin = function()
   {
-
-    if( $scope.quickjoinname.length == 8)
+    if( $scope.quickjoinname.length > 3)
     {
       window.location = '/competition.html?name=' + $scope.quickjoinname;
     }
+    else
+    {
+        alert('invalid game name')
+    }
+
   }
 
 

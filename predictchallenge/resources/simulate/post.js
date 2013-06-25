@@ -1,22 +1,11 @@
 // this needs to be mapped to site-specific location
 //var numeric = require('/Users/stonerri/Documents/SatraPrediction/CCGame/web/predictchallenge/node_modules/numeric');
 
-// moved numeric to same path as post.js in the resources directory of the app
-//var numeric = require('node_modules/numeric');
-
 var numeric = require('numeric');
-var simulateID = '';
+if(!numeric)
+    var numeric = require('node_modules/numeric');
 
 var debug = 0;
-
-if(Object.keys(parts).length == 1)
-{
-    simulateID = parts[0];
-}
-else
-{
-    setResult([]);
-}
 
 function getUniformRandom(min, max, n_samples){
     /* Generate a random number between min and max inclusive
@@ -27,60 +16,104 @@ function getUniformRandom(min, max, n_samples){
     return arr;
 };
 
-function getRandomModel(settings, dieChanged, n_teams){
-    if (dieChanged){
-        if (settings.probafter == '0'){
-            min = 1;
-            max = 2;
-        } else if (settings.probafter == '1'){
-            min = 1;
-            max = 6;
-        } else if (settings.probafter == '2'){
-            min = 2;
-            max = 12;
-        } else if (settings.probafter == '3'){
-            min = 2;
-            max = 14;
-        } else if (settings.probafter == '4'){
-            min = 1;
-            max = 20;
-        } else if (settings.probafter == '5'){
-            min = 1;
-            max = 100;
-        } else if (settings.probafter == '6'){
-            min = 1;
-            max = 10;
-        } else if (settings.probafter == '7'){
-            min = settings.afterNumerator;
-            max = settings.afterDenominator;
-        }
-    } else {
-        if (settings.probbefore == '0'){
-            min = 1;
-            max = 2;
-        } else if (settings.probbefore == '1'){
-            min = 1;
-            max = 6;
-        } else if (settings.probbefore == '2'){
-            min = 2;
-            max = 12;
-        } else if (settings.probbefore == '3'){
-            min = 2;
-            max = 14;
-        } else if (settings.probbefore == '4'){
-            min = 1;
-            max = 20;
-        } else if (settings.probbefore == '5'){
-            min = 1;
-            max = 100;
-        } else if (settings.probbefore == '6'){
-            min = 1;
-            max = 10;
-        } else if (settings.probbefore == '7'){
-            min = settings.beforeNumerator;
-            max = settings.beforeDenominator;
-        }        
+function probabilityGenerator(type)
+{
+    var min, max;
+    if (type == '0'){
+        min = 1;
+        max = 2;
+    } else if (type=='1'){
+        min = 1;
+        max = 6;
+    } else if (type=='2'){
+        min = 1;
+        max = 8;
+    } else if (type=='3'){
+        min = 1;
+        max = 20;
+    } else if (type=='4'){
+        min = 1;
+        max = 100;
+    } else if (type=='5'){
+        min = 1;
+        max = 10;
     }
+    return {min:min, max:max};
+}
+
+function getRandomModel(settings, dieChanged, n_teams){
+
+    console.log(settings);
+
+    var probafterplayer, probbeforeplayer;
+    var probafterregion, probbeforeregion;
+    var min,max;
+
+    // player generator, before climate change
+    if(settings.probbefore1 != '6')
+    {
+        probbeforeplayer = probabilityGenerator(settings.probbefore1);
+    }
+    else
+    {
+        probbeforeplayer = {
+            min:settings.beforeNumerator1,
+            max:settings.beforeDenominator1
+        }
+    }
+
+    // regional generator, before climate change
+    if(settings.probbefore2 != '6')
+    {
+        probbeforeregion = probabilityGenerator(settings.probbefore2);
+    }
+    else
+    {
+        probbeforeregion = {
+            min:settings.beforeNumerator2,
+            max: settings.beforeDenominator2
+        }
+    }
+
+
+    // player generator after climate change
+    if (settings.probafter1 != '6'){
+        // not custom
+        probafterplayer = probabilityGenerator(settings.probafter1);
+    }
+    else
+    {
+        probafterplayer = {
+            min:settings.afterNumerator1,
+            max: settings.afterDenominator1
+        }
+    }
+
+    // regional generator after climate change
+
+    if (settings.probafter2 != '6')
+    {
+        probafterregion = probabilityGenerator(settings.probafter2);
+    }
+    else
+    {
+        probafterregion = {
+            min:settings.afterNumerator2,
+            max:settings.afterDenominator2
+        }
+    }
+
+    if(dieChanged)
+    {
+        min = probafterplayer.min + probafterregion.min;
+        max = probafterplayer.max + probafterregion.max;
+    }
+    else
+    {
+        min = probbeforeplayer.min + probbeforeregion.min;
+        max = probbeforeplayer.max + probbeforeregion.max;
+    }
+
     return {'sequence': getUniformRandom(min, max, n_teams),
             'max': max}
 }
@@ -374,7 +407,7 @@ dpd.game.get(body.compname,
 
     function(competition_data, error) {
 
-        console.log(competition_data);
+//        console.log(competition_data);
 
         var n_teams = competition_data.data.length;
         var rg = new RainGame(n_teams, competition_data.settings);

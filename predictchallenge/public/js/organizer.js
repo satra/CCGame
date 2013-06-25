@@ -25,6 +25,7 @@ app.controller('UserCompControl', function($scope, GameList, $modal, $rootScope,
     maxPlayers  : 10,
     numberBeans  : 10,
     numberRounds  : 10,
+    climateChangeEnabled: true,
     climateChangeRound  : 7,
     probbefore1: '1',
     probbefore2: '1',
@@ -95,6 +96,10 @@ app.controller('UserCompControl', function($scope, GameList, $modal, $rootScope,
     $scope.customBefore2 = $scope.competitionSettings.probbefore2 == '6';
     $scope.customAfter1 = $scope.competitionSettings.probafter1 == '6'
     $scope.customAfter2 = $scope.competitionSettings.probafter2 == '6';
+
+
+    console.log('change');
+
 
 
 

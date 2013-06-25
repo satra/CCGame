@@ -149,9 +149,12 @@
                                 <!-- Username -->
                                 <label class="control-label"  for="username">Climate change</label>
                                 <div class="controls">
+                                    <label class="checkbox">
+                                    <input type="checkbox" ng-model="competitionSettings.climateChangeEnabled">Climate change option enabled
+                                  </label>
                                   <input id="beancount"  class="input-xlarge" type="number" value="4" min="1" max="200" ng-model="competitionSettings.climateChangeRound">
                                   <p>
-                                    <small>This is the round when climate change is triggered. By default, this swaps the 6-sided global die for an 8-sided global die.</small></p>
+                                    <small>This is the round when climate change is triggered. By default, this swaps the 6-sided regional rainfall die for an 8-sided die.</small></p>
                                 </div>
                               </div>
 
@@ -164,7 +167,7 @@
 
 
 
-                                    <input type="checkbox" ng-model="competitionSettings.drrEnabled"> Enable DRR
+                                    <input type="checkbox" ng-model="competitionSettings.drrEnabled">Disaster Risk Reduction option enabled
                                   </label>
                                   <input id="beancount"  class="input-xlarge" type="number" value="4" min="1" max="200" ng-model="competitionSettings.drrRound">
     
