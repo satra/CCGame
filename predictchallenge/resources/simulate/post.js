@@ -18,7 +18,7 @@ else
     setResult([]);
 }
 
-function getRandom(min, max, n_samples){
+function getUniformRandom(min, max, n_samples){
     /* Generate a random number between min and max inclusive
      */
     var arr = numeric.random([n_samples]);
@@ -27,13 +27,79 @@ function getRandom(min, max, n_samples){
     return arr;
 };
 
-function generateRainfall(n_sides_regional, n_sides_local, n_teams, target_rain){
+function getRandomModel(settings, dieChanged, n_teams){
+    if (dieChanged){
+        if (settings.probafter == '0'){
+            min = 1;
+            max = 2;
+        } else if (settings.probafter == '1'){
+            min = 1;
+            max = 6;
+        } else if (settings.probafter == '2'){
+            min = 2;
+            max = 12;
+        } else if (settings.probafter == '3'){
+            min = 2;
+            max = 14;
+        } else if (settings.probafter == '4'){
+            min = 1;
+            max = 20;
+        } else if (settings.probafter == '5'){
+            min = 1;
+            max = 100;
+        } else if (settings.probafter == '6'){
+            min = 1;
+            max = 10;
+        } else if (settings.probafter == '7'){
+            min = settings.afterNumerator;
+            max = settings.afterDenominator;
+        }
+    } else {
+        if (settings.probbefore == '0'){
+            min = 1;
+            max = 2;
+        } else if (settings.probbefore == '1'){
+            min = 1;
+            max = 6;
+        } else if (settings.probbefore == '2'){
+            min = 2;
+            max = 12;
+        } else if (settings.probbefore == '3'){
+            min = 2;
+            max = 14;
+        } else if (settings.probbefore == '4'){
+            min = 1;
+            max = 20;
+        } else if (settings.probbefore == '5'){
+            min = 1;
+            max = 100;
+        } else if (settings.probbefore == '6'){
+            min = 1;
+            max = 10;
+        } else if (settings.probbefore == '7'){
+            min = settings.beforeNumerator;
+            max = settings.beforeDenominator;
+        }        
+    }
+    return {'sequence': getUniformRandom(min, max, n_teams),
+            'max': max}
+}
+
+function generateRainfall(settings, die_changed, n_teams){
     /*Randomly generate local and regional rainfall and determine flooding
      */
-    var regional_rainfall = getRandom(1, n_sides_regional, n_teams);
-    var local_rainfall = getRandom(1, n_sides_local, n_teams);
+    var result = getRandomModel(settings, die_changed, n_teams)
+    var max_rain = result['max']
+    if (die_changed)
+        var target_rain_prob = settings.afterThreshold;
+    else
+        var target_rain_prob = settings.beforeThreshold;
+    var regional_rainfall = result['sequence']
+    var result = getRandomModel(settings, die_changed, n_teams)
+    max_rain += result['max']
+    var local_rainfall = result['sequence'];
     var total_rainfall = numeric.add(local_rainfall, regional_rainfall);
-    var flooded = numeric.geq(total_rainfall, target_rain);
+    var flooded = numeric.geq(total_rainfall, target_rain_prob * max_rain);
     return {'regional': regional_rainfall,
             'local': local_rainfall,
             'flood': flooded}
@@ -131,17 +197,17 @@ function sortWithIndices(toSort) {
   return toSort;
 }
 
-function RainGame(n_teams, n_beans, n_rounds, die_change_round, with_drr){
+function RainGame(n_teams, settings){
+        this.settings = settings;
         this.n_teams = n_teams;
         this.n_persons_per_team = 1;
-        this.n_beans = n_beans;
-        this.n_rounds = n_rounds;
-        this.n_die_change = die_change_round;
-        this.target_rain = 10;
+        this.n_beans = settings.numberBeans;
+        this.n_rounds = settings.numberRounds;
+        this.n_die_change = settings.climateChangeRound;
         this.penalty = 4;
-        this.with_drr = with_drr;
+        this.with_drr = settings.drrEnabled;
         this.drr_penalty = 2;
-        this.drr_round_start = 3;
+        this.drr_round_start = settings.drrRound;
         this.forecast_bids = zeros([n_teams]); // receive regional forecast
         this.drr_bids = zeros([n_teams]);  // have disaster risk reduction
         this.strategies = {};
@@ -248,12 +314,12 @@ RainGame.prototype.simulateOnce = function(random_state){
 
     for(var turn=1; turn <= this.n_rounds; turn++){
         if (debug>2) console.log('Turn: ' + turn);
-        var n_sides = 6;
-        if (turn == this.n_die_change) n_sides = 8;
-        rain = generateRainfall(n_sides,
-                                6,
-                                this.n_teams,
-                                this.target_rain);
+        var die_changed = false;
+        if (turn >= this.n_die_change) 
+            die_changed = true;
+        rain = generateRainfall(this.settings,
+                                die_changed,
+                                this.n_teams);
         payments = this.getPayments(rain['regional'],
                                     forecast_teams, drr_teams,
                                     turn);
@@ -308,15 +374,11 @@ dpd.game.get(body.compname,
 
     function(competition_data, error) {
 
-//        console.log(competition_data);
+        console.log(competition_data);
 
         var n_teams = competition_data.data.length;
-        var n_beans = competition_data.settings.numberBeans;
-        var n_rounds = competition_data.settings.numberRounds;
-        var die_change_round = competition_data.settings.climateChangeRound;
-        var with_drr = competition_data.settings.drrEnabled;
-
-        var rg = new RainGame(n_teams, n_beans, n_rounds, die_change_round, with_drr);
+        var rg = new RainGame(n_teams, competition_data.settings);
+        // n_beans, n_rounds, die_change_round, with_drr);
 
         for(i=0;i<n_teams;i++)
         {
