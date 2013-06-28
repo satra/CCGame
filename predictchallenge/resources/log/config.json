@@ -1,0 +1,13 @@
+{
+	"type": "Collection",
+	"properties": {
+		"logString": {
+			"name": "logString",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "logString",
+			"order": 0
+		}
+	}
+}
