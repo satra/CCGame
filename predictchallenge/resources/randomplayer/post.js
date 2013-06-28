@@ -2,8 +2,12 @@
 
 // this needs to be mapped to site-specific location
 //var numeric = require('/Users/stonerri/Documents/SatraPrediction/CCGame/web/predictchallenge/node_modules/numeric');
-var numeric = require('node_modules/numeric');
+//var numeric = require('node_modules/numeric');
+//if(!numeric){
 
+var numeric = require('numeric');
+//}
+//
 function getRandom(min, max, n_samples){
     /* Generate a random number between min and max inclusive
      */

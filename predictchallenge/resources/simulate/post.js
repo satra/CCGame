@@ -2,8 +2,8 @@
 //var numeric = require('/Users/stonerri/Documents/SatraPrediction/CCGame/web/predictchallenge/node_modules/numeric');
 
 var numeric = require('numeric');
-if(!numeric)
-    var numeric = require('node_modules/numeric');
+///if(!numeric)
+//    var numeric = require('node_modules/numeric');
 
 var debug = 0;
 
