@@ -25,9 +25,9 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
 
       if(!$scope.statusq)
       {
-        console.log('searching for all');
+        console.log('searching for completed');
         feed  = new GameList(
-                  {
+        {
           state: "completed"
         });  
 
@@ -54,9 +54,12 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
         $scope.gdata = feed.competitions;
       }
     }
-   });
+  });
 
-  feed  = new GameList();
+  feed  = new GameList(
+  {
+    state: "completed"
+  });  
 
   feed.refresh();
 
@@ -65,9 +68,9 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
   $scope.gdata = feed.competitions;
 
   dpd.on('CompetitionPosted', function(post){
-      console.log('allcomps competition posted')
-      console.log(feed.competitions);
-      feed.refresh();
+    console.log('allcomps competition posted')
+    console.log(feed.competitions);
+    feed.refresh();
   });
 
   var customCellTemplate = '<div ng-click="selectCompetition(row.entity)" class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{row.getProperty(col.field)}}</span></div>';
@@ -75,17 +78,17 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
   var dateTemplate = '<div class="ngCellText" ng-class="col.colIndex()">{{row.getProperty(col.field) | date:"medium"}}</div>';  
 
   $scope.gridOptions = { 
-        data: 'gdata',
-        jqueryUITheme: false,
-        showFilter: true,
-        columnDefs: [
-          {field:'createDate', displayName:'Date created', cellTemplate: dateTemplate},
-          {field:'name', displayName:'Name', cellTemplate: customCellTemplate },
-          {field:'organizerName', displayName:'Organizer', width:'100px'},
-          {field:'state', displayName:'Status', width: '100px'},
-          {field:'name', displayName:'Actions', cellTemplate: openCompetitionTemplate }
-        ]
-      };
+    data: 'gdata',
+    jqueryUITheme: false,
+    showFilter: true,
+    columnDefs: [
+    {field:'createDate', displayName:'Date created', cellTemplate: dateTemplate},
+    {field:'name', displayName:'Name', cellTemplate: customCellTemplate },
+    {field:'organizerName', displayName:'Organizer', width:'100px'},
+    {field:'state', displayName:'Status', width: '100px'},
+    {field:'name', displayName:'Actions', cellTemplate: openCompetitionTemplate }
+    ]
+  };
 
   $scope.openCompetitionWindow = function(competition) {
     window.location = '/competition.html?name=' + competition.name;

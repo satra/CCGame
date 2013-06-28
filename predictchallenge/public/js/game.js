@@ -57,7 +57,10 @@ app.controller('AllCompControl', function($scope, GameList, $modal, $rootScope) 
     }
    });
 
-  feed  = new GameList();
+        feed  = new GameList(
+                  {
+          state: "open"
+        }); 
 
   feed.refresh();
 
