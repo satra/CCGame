@@ -5,7 +5,13 @@ var numeric = require('numeric');
 if(!numeric)
     var numeric = require('node_modules/numeric');
 
-var debug = 0;
+var debug = 1;
+
+// debug 0 = no debugging
+// debug 1 = minimal, only save simulation result
+// debug 2 =
+
+var logString = '';
 
 function getUniformRandom(min, max, n_samples){
     /* Generate a random number between min and max inclusive
@@ -41,9 +47,17 @@ function probabilityGenerator(type)
     return {min:min, max:max};
 }
 
+function logTo(tag, _str)
+{
+    logString += tag + '\n' + JSON.stringify(_str) + '\n';
+}
+
 function getRandomModel(settings, dieChanged, n_teams){
 
-    console.log(settings);
+//    console.log(settings);
+    if(debug >= 3){
+        logTo('getRandomModel', settings);
+    }
 
     var probafterplayer, probbeforeplayer;
     var probafterregion, probbeforeregion;
@@ -74,7 +88,6 @@ function getRandomModel(settings, dieChanged, n_teams){
             max: settings.beforeDenominator2
         }
     }
-
 
     // player generator after climate change
     if (settings.probafter1 != '6'){
@@ -141,14 +154,21 @@ function generateRainfall(settings, die_changed, n_teams){
 function adjustBeans(beans, payments, flooded, round_idx, drr_teams, penalty, drr_penalty, drr_round_start){
     /*Adjust the beans according to payments, flooding and penalty
     */
+
     var cur_drr_penality = drr_penalty;
     if (round_idx < drr_round_start){
         cur_drr_penalty = penalty;
     }
     var payments = numeric.mul(payments, numeric.geq(beans, 1));
-    if (debug>2) console.log('ab payments: ' + payments);
+
+    if(debug >= 3){
+        logTo('ab payments', payments);
+    }
     var penalized = numeric.max(numeric.sub(flooded, payments), 0)
-    if (debug>2) console.log('ab penalized: ' + penalized);
+
+    if(debug >= 3){
+        logTo('ab penalized', penalized);
+    }
     var beans_to_remove = numeric.add(numeric.mul(cur_drr_penalty,
                                                   penalized,
                                                   numeric.eq(drr_teams,
@@ -157,9 +177,16 @@ function adjustBeans(beans, payments, flooded, round_idx, drr_teams, penalty, dr
                                                   penalized,
                                                   numeric.eq(drr_teams,
                                                              0)));
-    if (debug>2) console.log('ab beans_to_remove: ' + beans_to_remove);
+    if(debug >= 3){
+        logTo('ab beans_to_remove ', beans_to_remove);
+    }
+
     var already_in_crisis = numeric.mul(beans, numeric.leq(beans, -1));
-    if (debug>2) console.log('ab already_in_crisis: ' + already_in_crisis);
+
+    if(debug >= 3){
+        logTo('ab already_in_crisis ', already_in_crisis);
+    }
+
     beans = numeric.mul(beans, numeric.geq(already_in_crisis, 0));
     beans = numeric.sub(beans, numeric.add(payments, beans_to_remove));
     var beans_joining_crisis = numeric.leq(beans, -1);
@@ -230,8 +257,9 @@ function sortWithIndices(toSort) {
   return toSort;
 }
 
-function RainGame(n_teams, settings){
+function RainGame(n_teams, settings, _logString){
         this.settings = settings;
+        this.logString = _logString;
         this.n_teams = n_teams;
         this.n_persons_per_team = 1;
         this.n_beans = settings.numberBeans;
@@ -253,23 +281,34 @@ RainGame.prototype.get_team_index = function(team_id){
 };
 
 RainGame.prototype.submitStrategy = function(team_id, strategy){
+
+        if(debug >= 1){
+            this.toLog('Team strategy: ' + team_id, strategy)
+        }
+
         this.strategies[team_id] = strategy;
         this.submit_forecast_bid(team_id, strategy['forecast_bid']);
         if (this.with_drr)
             this.submit_drr_bid(team_id, strategy['drr_bid']);
-        //if (debug) console.log(strategy);
+
 };
 
 RainGame.prototype.submit_forecast_bid = function(team_id, bid){
+
         team_index = this.get_team_index(team_id);
-        //if (debug) console.log(team_index);
+
         this.forecast_bids[team_index] = bid;
 };
 
 RainGame.prototype.submit_drr_bid = function(team_id, bid){
+
         team_index = this.get_team_index(team_id);
-        //if (debug) console.log(team_index);
+
         this.drr_bids[team_index] = bid;
+};
+
+RainGame.prototype.toLog = function(tag, _str){
+       this.logString += tag + '\n' + JSON.stringify(_str) + '\n';
 };
 
 RainGame.prototype.getPayments = function(regional_rainfall, forecast_teams, drr_teams, turn){
@@ -277,17 +316,26 @@ RainGame.prototype.getPayments = function(regional_rainfall, forecast_teams, drr
         0+ - if [F and DRR/F/DRR/neither] and [round eeq/geq/leq (1,10)] and
              [regional forecast >= int(1, 6 or 8)] then take early action
     */
+
     payments = zeros([this.n_teams]);
-    //if (debug) console.log(this);
+
     for(var i=0; i< this.teams.length; i++){
         var team = this.teams[i];
         team_index = this.get_team_index(team);
         var rules = this.strategies[team]['rules'];
-        if (debug>2) console.log(team);
+
+        if(debug>=3){
+            this.toLog('team', team);
+        }
+
         var paid = false;
         for(var j=0; j<rules.length & !paid; j++){
             var rule = rules[j];
-            if (debug>2) console.log(rule);
+
+            if(debug>=3){
+                this.toLog('rule', rule);
+            }
+
             var regional_forecast_bad = (regional_rainfall[team_index] >= rule[3]);
             if (regional_forecast_bad){
                 valid_round = (((rule[1] == 'eeq') & (turn == rule[2])) |
@@ -304,6 +352,9 @@ RainGame.prototype.getPayments = function(regional_rainfall, forecast_teams, drr
         if (paid) payments[team_index] =  1;
     };
     //if (debug) console.log(payments);
+    if(debug >=3){
+        this.toLog('payments', payments);
+    }
     return payments;
 };
 
@@ -311,12 +362,20 @@ RainGame.prototype.simulateOnce = function(random_state){
     var beans = numeric.mul(this.n_beans, ones([this.n_teams]));
     var crises = zeros([this.n_teams]);
 
-    if (debug) console.log('Getting winning forecast bids');
+//    if (debug) console.log('Getting winning forecast bids');
+
     //# perform forecast bids
     var forecast_bids = this.forecast_bids.slice(0);
     sortWithIndices(forecast_bids);
-    if (debug) console.log('f bids: ' + this.forecast_bids);
-    if (debug) console.log(forecast_bids.sortIndices);
+
+    if(debug >=3){
+        this.toLog('f bids', this.forecast_bids);
+    }
+
+    if(debug >=3){
+        this.toLog('f sortIndices', forecast_bids.sortIndices);
+    }
+
     var half_teams = Math.floor(this.n_teams/2);
     var forecast_teams = zeros([this.n_teams]);
     for(var i=half_teams; i<this.n_teams; i++){
@@ -327,26 +386,39 @@ RainGame.prototype.simulateOnce = function(random_state){
     beans = numeric.sub(beans, numeric.mul(forecast_teams, this.forecast_bids));
 
     var drr_teams = zeros([this.n_teams]);
+
     if (this.with_drr){
-        if (debug) console.log('Getting winning drr bids');
+
         //# perform drr bids
         var drr_bids = this.drr_bids.slice(0);
         sortWithIndices(drr_bids);
-        if (debug) console.log('d bids: ' + this.drr_bids);
-        if (debug) console.log(drr_bids.sortIndices);
+
+//        if (debug) console.log('d bids: ' + this.drr_bids);
+        if(debug >= 3){
+            this.toLog('d bids', this.drr_bids);
+        }
+
+        if(debug >= 3 ){
+            this.toLog('d sortIndices', this.sortIndices);
+        }
+
         drr_teams[drr_bids.sortIndices[this.n_teams - 1]] = 1;
+
         //# Winning teams pay their beans
         beans = numeric.sub(beans, numeric.mul(drr_teams, this.drr_bids));
     };
-    if (debug){
-        console.log('beans: ' + beans);
-        console.log('forecast: ' + forecast_teams);
-        console.log('drr: ' + drr_teams);
+
+    if (debug >= 3 ){
+
+        this.toLog('beans', beans);
+        this.toLog('forecast', forecast_teams);
+        this.toLog('drr', drr_teams);
+
     }
     numeric.seedrandom.seedrandom(random_state);
 
     for(var turn=1; turn <= this.n_rounds; turn++){
-        if (debug>2) console.log('Turn: ' + turn);
+//        if (debug>2) console.log('Turn: ' + turn);
         var die_changed = false;
         if (turn >= this.n_die_change) 
             die_changed = true;
@@ -356,15 +428,26 @@ RainGame.prototype.simulateOnce = function(random_state){
         payments = this.getPayments(rain['regional'],
                                     forecast_teams, drr_teams,
                                     turn);
-        if (debug>2) console.log('Flood: ' + rain['flood']);
-        if (debug>2) console.log('Regional: ' + rain['regional']);
-        if (debug>2) console.log('Payments: ' + payments);
+
+        if( debug >= 3 ){
+            this.toLog('Flood', rain['flood']);
+            this.toLog('Regional', rain['regional']);
+            this.toLog('Payments', payments);
+
+        }
+
         beans = adjustBeans(beans.slice(0), payments, rain['flood'], turn,
                             drr_teams, this.penalty, this.drr_penalty,
                             this.drr_round_start);
-        if (debug) console.log('Beans[' + turn + ']: ' + beans);
+
+        if(debug >= 3){
+            this.toLog('Beans[' + turn + ']' , beans );
+        }
     }
-    if (debug) console.log(beans);
+
+    if(debug >= 3){
+        this.toLog('Beans' , beans);
+    }
     return beans;
 };
 
@@ -373,7 +456,11 @@ RainGame.prototype.simulate = function(n_iters){
     var crises = zeros([this.n_teams]);
     var total_beans = zeros([this.n_teams]);
     for(var i=0; i<n_iters; i++){
-        if (debug>1) console.log('Simulating iteration: ' + i);
+
+        if(debug >= 3){
+            this.toLog('Simulating iteration' , i);
+        }
+
         var beans = this.simulateOnce(0);
         for(var j=0; j<this.n_teams; j++){
             if (beans[j]<0) 
@@ -381,16 +468,18 @@ RainGame.prototype.simulate = function(n_iters){
             else
                 total_beans[j] += beans[j];
         }
-        if (debug>2) console.log('crises: ' + crises);
+        if(debug >= 3){
+            this.toLog('Simulating iteration' , i);
+            this.toLog('crises' , crises);
+        }
     }
-    if (debug) console.log('collecting stats');
+
     result = [];
+
     for(i=0; i<this.teams.length; i++){
         team = this.teams[i];
         team_index = this.get_team_index(team);
-        //if (debug) console.log(i);
-        //if (debug) console.log(team);
-        //if (debug) console.log(team_index);
+
         result.push({'team': team,
                      'beans': total_beans[team_index]/n_iters,
                      'crises': crises[team_index]/n_iters,
@@ -410,7 +499,7 @@ dpd.game.get(body.compname,
 //        console.log(competition_data);
 
         var n_teams = competition_data.data.length;
-        var rg = new RainGame(n_teams, competition_data.settings);
+        var rg = new RainGame(n_teams, competition_data.settings, logString);
         // n_beans, n_rounds, die_change_round, with_drr);
 
         for(i=0;i<n_teams;i++)
@@ -426,7 +515,10 @@ dpd.game.get(body.compname,
 
         var simresult = rg.simulate(1000);
 
-//        console.log(simresult);
+
+        if(debug >= 1){
+            logTo('simresult', simresult);
+        }
         
         var createDate = new Date().getTime();
         
@@ -439,8 +531,6 @@ dpd.game.get(body.compname,
             
             dpd.strategy.get(outcome.team, function(r, e)
             {
-                // we now hoave a single strategy
-                
                 r.competitionID = body.compid;
                 r.aggregateBeans.push(outcome.beans);
                 r.aggregateCrises.push(outcome.crises);
@@ -449,8 +539,6 @@ dpd.game.get(body.compname,
                 
             });
         }
-        
-//        console.log('weve saved the strategy');
 
         // update competition data
         for(k=0;k<simresult.length;k++)
@@ -461,10 +549,8 @@ dpd.game.get(body.compname,
             {
                 if(competition_data.data[m].stratid == outcome.team)
                 {
-                    // matched
-//                    console.log('matched');
                     competition_data.data[m].beans = outcome.beans;
-                    competition_data.data[m].crises = outcome.crises;
+                    competition_data.data[m].crises = outcome.crises * -1;
                     competition_data.data[m].bids = outcome.forecast;
                     competition_data.data[m].ddr = outcome.drr;
 
@@ -472,11 +558,19 @@ dpd.game.get(body.compname,
             }            
         }
 
+        // save simulation results
         dpd.game.put(competition_data.id, competition_data);
+
+        // save log result
+        dpd.log.post({"logString":logString}, function(result, err) {
+            console.log(err);
+        });
 
         emit('SimulationDone', competition_data);
 
         setResult(competition_data);
+
+
 });
 
 
