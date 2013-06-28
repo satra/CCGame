@@ -1,13 +1,7 @@
 
 
-// this needs to be mapped to site-specific location
-//var numeric = require('/Users/stonerri/Documents/SatraPrediction/CCGame/web/predictchallenge/node_modules/numeric');
-//var numeric = require('node_modules/numeric');
-//if(!numeric){
-
 var numeric = require('numeric');
-//}
-//
+
 function getRandom(min, max, n_samples){
     /* Generate a random number between min and max inclusive
      */
@@ -120,6 +114,7 @@ dpd.game.get(body.compname,
         }, function (result, err) {
             if(err)
             {
+                setResult(err);
               return console.log('error', err);
             }
             else
@@ -140,13 +135,17 @@ dpd.game.get(body.compname,
               dpd.game.put(competitionData.id, competitionData,
                 function(result, err) {
                   if(err) {
+                    
+                    setResult(err);
                     return console.log(err);
-                    setResult(result);
+                    
+                    
 
                   }
                   else
                   {
                     console.log('strategy added successfully');
+                    setResult(result);
                   }
                 });
             }

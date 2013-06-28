@@ -225,8 +225,24 @@ app.controller('CompDetailsCtrl', function ($scope, $timeout, GameList, $modal, 
 
             function (result) {
 
-                console.log(result);
+
+                $scope.competitionData = result;
+                $scope.runDate = new Date($scope.competitionData.runtime);
+                $scope.data = getChartData($scope.competitionData.data);
+
+                if (result.state == "completed") {
+                    $scope.completed = true;
+                    $timeout($scope.presentResultsChart, 300);
+
+                    console.log('completed');
+                }
+
                 $scope.$apply();
+
+                // console.log(result);
+
+
+                // $scope.$apply();
 
             }, "json");
 
